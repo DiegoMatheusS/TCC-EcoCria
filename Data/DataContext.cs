@@ -12,6 +12,7 @@ namespace TCCEcoCria.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
             
+            
         }
 
         public DbSet<Nomedamodel> TB_nomedamodel { get; set; }
