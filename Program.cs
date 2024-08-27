@@ -1,5 +1,5 @@
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+//using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-   options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoAzure"));
+   options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoLocal"));
 });
 
 
@@ -28,7 +28,7 @@ builder.Services.AddControllers();
 
 
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) //baixar o framework e fazer as partes de autenticacao
+/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) //baixar o framework e fazer as partes de autenticacao
 .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -46,7 +46,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options => //baixar framewor
 );
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
+*/
 
 
 
