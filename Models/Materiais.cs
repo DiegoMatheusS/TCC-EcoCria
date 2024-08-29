@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using TCCEcoCria.Models.Enuns;
 
 namespace Models
 {
@@ -10,7 +11,9 @@ namespace Models
     {
         public int IdMaterial { get; set; }
         public string NomeMaterial { get; set; } = string.Empty;
-        public string Cor { get; set; } = string.Empty;
+        public MateriaisEnun Material { get; set; }
+
+
         public int? IdUsuario { get; set; }  
 
 
