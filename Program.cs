@@ -4,6 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using TCCEcoCria.Data;
+using TCCEcoCria.Interfaces;
+using TCCEcoCria.Mappings;
+using TCCEcoCria.Rest;
+using TCCEcoCria.Services;
+using AutoMapper;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +23,12 @@ builder.Services.AddDbContext<DataContext>(options =>
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<IEnderecoServices, EnderecoService>();
+
+builder.Services.AddSingleton<IBrasilApi, BrasilApiRest>();
+
+builder.Services.AddAutoMapper(typeof(EnderecoMapping));
+
 builder.Services.AddControllers();
 
 
@@ -50,19 +61,42 @@ builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
 
-
-
-
-
-
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Minha API", Version = "v1" });
+});
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configura o pipeline de requisições
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
+
+// Habilita o Swagger
+app.UseSwagger();
+
+// Habilita a UI do Swagger
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API V1");
+});
+
+app.Run();
+
 
 app.UseHttpsRedirection();
 
@@ -90,6 +124,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+
 
 app.Run();
 

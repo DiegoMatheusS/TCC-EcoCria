@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using TCCEcoCria.Data;
 using System.Security.Claims;
+using TCCEcoCria.Models.Enuns;
 
 namespace TCCEcoCria.Controllers
 {
@@ -14,12 +15,10 @@ namespace TCCEcoCria.Controllers
     [Route("[controller]")]
     public class MateriaisController : ControllerBase
     {
-         private readonly DataContext _context;
+        private readonly DataContext _context;
         public MateriaisController(DataContext context)
         {
             _context = context;
-
-
         }
 
 
@@ -55,13 +54,13 @@ namespace TCCEcoCria.Controllers
 
     private static List<Materiais> TipoMaterial = new List<Materiais>()
     {
-        new Materiais() { IdMaterial = 1, NomeMaterial = "Garrafa Pet", Cor= "Transparente", IdUsuario = 1 },
-        new Materiais() { IdMaterial = 2, NomeMaterial = "Papelão", Cor= "Bege", IdUsuario = 1 },
-        new Materiais() { IdMaterial = 3, NomeMaterial = "Saco Plástico", Cor= "Colorido", IdUsuario = 1 },
-        new Materiais() { IdMaterial = 4, NomeMaterial = "Óleo", Cor= "Amarelo", IdUsuario = 1 },
-        new Materiais() { IdMaterial = 5, NomeMaterial = "Latinha", Cor= "Prata", IdUsuario = 1 },
-        new Materiais() { IdMaterial = 6, NomeMaterial = "Garrafa Pet", Cor= "Verde Transparente", IdUsuario = 1 },      
-        new Materiais() { IdMaterial = 7, NomeMaterial = "Vidro", Cor= "Transparente", IdUsuario = 1 },
+        new Materiais() { IdMaterial = 1, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico, IdUsuario = 1 },
+        new Materiais() { IdMaterial = 2, NomeMaterial = "Papelão", Material=MateriaisEnun.Papel, IdUsuario = 1 },
+        new Materiais() { IdMaterial = 3, NomeMaterial = "Saco Plástico", Material=MateriaisEnun.Plastico, IdUsuario = 1 },
+        new Materiais() { IdMaterial = 4, NomeMaterial = "Lata de Feijoada", Material=MateriaisEnun.Metal, IdUsuario = 1 },
+        new Materiais() { IdMaterial = 5, NomeMaterial = "Latinha", Material=MateriaisEnun.Metal, IdUsuario = 1 },
+        new Materiais() { IdMaterial = 6, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico, IdUsuario = 1 },      
+        new Materiais() { IdMaterial = 7, NomeMaterial = "Jarra de Vidro", Material=MateriaisEnun.Vidro, IdUsuario = 1 }
     };
 
     [HttpGet("GetAll")]
@@ -88,12 +87,11 @@ namespace TCCEcoCria.Controllers
         {
             Materiais materialAlterado = TipoMaterial.Find(mat => mat.IdMaterial == i.IdMaterial);
             materialAlterado.NomeMaterial = i.NomeMaterial;
-            materialAlterado.Cor = i.Cor;
 
             return Ok(TipoMaterial);
         } 
 
-     [HttpDelete("{id}")]
+    [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             TipoMaterial.RemoveAll(mat => mat.IdMaterial == id);
