@@ -25,7 +25,7 @@ namespace TCCEcoCria.Controllers
         
 
 
-        [HttpGet("busca/{cep}")]
+        [HttpGet("cep/{cep}")]
         public async Task<IActionResult> BuscarEndereco([FromRoute]string cep)
         {
             var response  = await _enderecoServices.BuscarEndereco(cep);

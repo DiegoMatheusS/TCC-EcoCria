@@ -14,7 +14,7 @@ namespace TCCEcoCria.Rest
     {
        public async Task<ResponseGenerico<Endereco>> BuscarEnderecoPorCEP(string cep)
        {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"https://brasilapi.com.br/api/cep/v1/{cep}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://brasilapi.com.br/api/cep/v2/{cep}");
 
             var response = new ResponseGenerico<Endereco>();
             using (var client = new HttpClient())

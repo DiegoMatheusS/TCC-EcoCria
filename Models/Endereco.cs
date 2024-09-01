@@ -26,5 +26,7 @@ namespace TCCEcoCria.Models
 
         [JsonPropertyName("service")]
         public string? Servico { get; set; }
+        
+
     }
 }
