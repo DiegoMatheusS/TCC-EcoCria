@@ -17,5 +17,6 @@ namespace TCCEcoCria.Dtos
 
         [JsonIgnore]        
         public string? Servico { get; set; }
+        
     }
 }
