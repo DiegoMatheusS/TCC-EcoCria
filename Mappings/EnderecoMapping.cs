@@ -15,7 +15,7 @@ namespace TCCEcoCria.Mappings
         {
             CreateMap(typeof(ResponseGenerico<>), typeof(ResponseGenerico<>));
             CreateMap<EnderecoResponse, Endereco>();
-            CreateMap<Usuario, EnderecoResponse>();
+            CreateMap<Endereco, EnderecoResponse>();
         }
     }
 }
