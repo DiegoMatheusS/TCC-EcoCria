@@ -17,24 +17,16 @@ namespace Models
 
         [NotMapped]
         public string PasswordUsuario { get; set; } = string.Empty;
-
-
-
+        public byte[]? FotoUsuario { get; set; }
+        //public Usuario? Usuario { get; set; }
 
         public List<Materiais> Materiais { get; set; } = new List<Materiais>();
 
         public List<Parceiros> Parceiros { get; set; } = new List<Parceiros>();
 
-
-
-
-
-
         //using System.Collections.Generic;
         public string Perfil { get; set; }  = string.Empty;
         public string EmailUsuario { get; set; } = string.Empty;
-
-
 
         public byte[]? PasswordHash { get; set; }
         public byte[]? PasswordSalt { get; set; }

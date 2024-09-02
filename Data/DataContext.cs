@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Models;
-using RpgApi.Utils;
+using TCCEcoCria.Utils;
 using TCCEcoCria.Models.Enuns;
 
 namespace TCCEcoCria.Data
@@ -13,10 +13,7 @@ namespace TCCEcoCria.Data
     public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
-        {
-            
-            
-        }
+        {}
 
         public DbSet<Materiais> TB_MATERIAIS{ get; set; }
         public DbSet<Usuario> TB_USUARIOS { get; set; }
@@ -27,11 +24,7 @@ namespace TCCEcoCria.Data
         {
             modelBuilder.Entity<Materiais>().ToTable("TB_MATERIAIS");
             modelBuilder.Entity<Usuario>().ToTable("TB_USUARIOS");
-
             modelBuilder.Entity<Usuario>().ToTable("TB_PARCEIROS");
-
-
-
 
 
             //Relacionamento One to Many (Um para muitos)
@@ -40,6 +33,13 @@ namespace TCCEcoCria.Data
                 .WithOne(e => e.Usuario)
                 .HasForeignKey(e => e.IdUsuario)
                 .IsRequired(false);
+
+             modelBuilder.Entity<Materiais>()
+                .HasKey(x => new {x.IdMaterial});
+
+                modelBuilder.Entity<Usuario>()
+                .HasKey(x => new {x.IdUsuario});
+
 
         modelBuilder.Entity<Materiais>().HasData
         (
@@ -74,13 +74,17 @@ namespace TCCEcoCria.Data
             user.PasswordHash = hash;
             user.PasswordHash = salt;
             user.Perfil = "Admin";
-            user.EmailUsuario = "seuEmail@gamil.com";
+            user.EmailUsuario = "seuEmail@gmail.com";
             user.Latitude = -23.5200241;
             user.Longitude = -46.596498;
 
             modelBuilder.Entity<Usuario>().HasData(user);
             modelBuilder.Entity<Usuario>().Property(u => u.Perfil).HasDefaultValue("Cliente");
 
+        }
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)//convensao para configurar a base, regras
+        {
+            configurationBuilder.Properties<string>().HaveColumnType("Varchar").HaveMaxLength(200);
         }
 
     }
