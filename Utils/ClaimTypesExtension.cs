@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace RpgApi.Utils
+namespace TCCEcoCria.Utils
 {
     public static class ClaimTypesExtension //metodos para adaptar as extensao
     {
