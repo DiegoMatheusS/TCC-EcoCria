@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class Pontucao
+    public class Pontuacao
     {
         public int QuantidadePontos { get; set; }
-        public string StatusPontos { get; set; } = string.Empty;
+        public Boolean StatusPontos { get; set; } 
     }
 }

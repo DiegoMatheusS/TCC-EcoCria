@@ -17,10 +17,8 @@ namespace Models
 
         [NotMapped]
         public string PasswordUsuario { get; set; } = string.Empty;
-        public byte[]? FotoUsuario { get; set; }
+        //public byte[]? FotoUsuario { get; set; }
         //public Usuario? Usuario { get; set; }
-
-        public List<Materiais> Materiais { get; set; } = new List<Materiais>();
 
         public List<Parceiros> Parceiros { get; set; } = new List<Parceiros>();
 

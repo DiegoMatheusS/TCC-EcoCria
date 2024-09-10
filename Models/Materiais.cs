@@ -13,15 +13,7 @@ namespace Models
         public string NomeMaterial { get; set; } = string.Empty;
         public MateriaisEnun Material { get; set; }
 
-
-        public int? IdUsuario { get; set; }  
-
-
-        [JsonIgnore]
-        public Usuario? Usuario { get; set; }
-
-
-        [JsonIgnore]
-        public PontoseMateriais? PontoseMateriais { get; set; }
+        /*[JsonIgnore]
+        public PontoseMateriais? PontoseMateriais { get; set; }*/
     }
 }

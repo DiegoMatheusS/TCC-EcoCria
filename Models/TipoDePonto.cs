@@ -9,6 +9,6 @@ namespace Models
     {
         public int IdTipoPonto { get; set; }
         public string DescricaoTipoPonto { get; set; } = string.Empty;
-        public string StatusTipoPonto { get; set; } = string.Empty;
+        public Boolean StatusTipoPonto { get; set; }
     }
 }

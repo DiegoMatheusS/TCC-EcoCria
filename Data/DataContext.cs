@@ -27,29 +27,15 @@ namespace TCCEcoCria.Data
             modelBuilder.Entity<Usuario>().ToTable("TB_PARCEIROS");
 
 
-            //Relacionamento One to Many (Um para muitos)
-            modelBuilder.Entity<Usuario>()
-                .HasMany(e => e.Materiais)
-                .WithOne(e => e.Usuario)
-                .HasForeignKey(e => e.IdUsuario)
-                .IsRequired(false);
-
-             modelBuilder.Entity<Materiais>()
-                .HasKey(x => new {x.IdMaterial});
-
-                modelBuilder.Entity<Usuario>()
-                .HasKey(x => new {x.IdUsuario});
-
-
-        modelBuilder.Entity<Materiais>().HasData
+       /* modelBuilder.Entity<Materiais>().HasData
         (
-            new Materiais() { IdMaterial = 1, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico, IdUsuario = 1 },
-            new Materiais() { IdMaterial = 2, NomeMaterial = "Papelão", Material=MateriaisEnun.Papel, IdUsuario = 1 },
-            new Materiais() { IdMaterial = 3, NomeMaterial = "Saco Plástico", Material=MateriaisEnun.Plastico, IdUsuario = 1 },
-            new Materiais() { IdMaterial = 4, NomeMaterial = "Lata de Feijoada", Material=MateriaisEnun.Metal, IdUsuario = 1 },
-            new Materiais() { IdMaterial = 5, NomeMaterial = "Latinha", Material=MateriaisEnun.Metal, IdUsuario = 1 },
-            new Materiais() { IdMaterial = 6, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico, IdUsuario = 1 },      
-            new Materiais() { IdMaterial = 7, NomeMaterial = "Jarra de Vidro", Material=MateriaisEnun.Vidro, IdUsuario = 1 }
+            new Materiais() { IdMaterial = 1, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico},
+            new Materiais() { IdMaterial = 2, NomeMaterial = "Papelão", Material=MateriaisEnun.Papel},
+            new Materiais() { IdMaterial = 3, NomeMaterial = "Saco Plástico", Material=MateriaisEnun.Plastico},
+            new Materiais() { IdMaterial = 4, NomeMaterial = "Lata de Feijoada", Material=MateriaisEnun.Metal},
+            new Materiais() { IdMaterial = 5, NomeMaterial = "Latinha", Material=MateriaisEnun.Metal},
+            new Materiais() { IdMaterial = 6, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico},      
+            new Materiais() { IdMaterial = 7, NomeMaterial = "Jarra de Vidro", Material=MateriaisEnun.Vidro}
         );
 
         modelBuilder.Entity<Parceiros>().HasData
@@ -64,7 +50,7 @@ namespace TCCEcoCria.Data
         );
 
 
-
+*/
 
             Usuario user = new Usuario();
             Criptografia.CriarPasswordHash("123456", out byte[]hash, out byte[]salt);
