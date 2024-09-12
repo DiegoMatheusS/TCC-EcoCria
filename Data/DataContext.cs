@@ -24,10 +24,14 @@ namespace TCCEcoCria.Data
         {
             modelBuilder.Entity<Materiais>().ToTable("TB_MATERIAIS");
             modelBuilder.Entity<Usuario>().ToTable("TB_USUARIOS");
-            modelBuilder.Entity<Usuario>().ToTable("TB_PARCEIROS");
+            modelBuilder.Entity<Parceiros>().ToTable("TB_PARCEIROS");
 
+        modelBuilder.Entity<Materiais>().HasKey(m => m.IdMaterial);
+        modelBuilder.Entity<Usuario>().HasKey(m => m.IdUsuario);
+        modelBuilder.Entity<Parceiros>().HasKey(m => m.IdParceiro);
+           
 
-       /* modelBuilder.Entity<Materiais>().HasData
+       modelBuilder.Entity<Materiais>().HasData
         (
             new Materiais() { IdMaterial = 1, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico},
             new Materiais() { IdMaterial = 2, NomeMaterial = "Papelão", Material=MateriaisEnun.Papel},
@@ -50,7 +54,7 @@ namespace TCCEcoCria.Data
         );
 
 
-*/
+
 
             Usuario user = new Usuario();
             Criptografia.CriarPasswordHash("123456", out byte[]hash, out byte[]salt);

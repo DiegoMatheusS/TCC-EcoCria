@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "K8m8mI3mbro=",
+  "dgSpecHash": "/sh3DZaKMew=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Matheus\\Documents\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj",
+  "projectFilePath": "C:\\Users\\Matheus\\OneDrive\\Documentos\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Matheus\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Matheus\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

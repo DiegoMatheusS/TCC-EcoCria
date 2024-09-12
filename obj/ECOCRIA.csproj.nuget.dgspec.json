@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Matheus\\Documents\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj": {}
+    "C:\\Users\\Matheus\\OneDrive\\Documentos\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Matheus\\Documents\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj": {
+    "C:\\Users\\Matheus\\OneDrive\\Documentos\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Matheus\\Documents\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj",
+        "projectUniqueName": "C:\\Users\\Matheus\\OneDrive\\Documentos\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj",
         "projectName": "ECOCRIA",
-        "projectPath": "C:\\Users\\Matheus\\Documents\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj",
+        "projectPath": "C:\\Users\\Matheus\\OneDrive\\Documentos\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj",
         "packagesPath": "C:\\Users\\Matheus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Matheus\\Documents\\ETEC\\3°SEM\\ECOCRIA\\obj\\",
+        "outputPath": "C:\\Users\\Matheus\\OneDrive\\Documentos\\ETEC\\3°SEM\\ECOCRIA\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Matheus\\AppData\\Roaming\\NuGet\\NuGet.Config"

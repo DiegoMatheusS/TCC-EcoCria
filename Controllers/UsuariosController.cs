@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -15,31 +14,11 @@ using TCCEcoCria.Utils;
 
 namespace TCCEcoCria.Controllers
 {
-=======
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Models;
-using TCCEcoCria.Data;
-using TCCEcoCria.Models;
-using TCCEcoCria.Utils;
-
-namespace RpgApi.Controllers
-{
-    [Authorize]
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
     [ApiController]
     [Route("[controller]")]
     public class UsuariosController : ControllerBase
     {
         private readonly DataContext _context;
-<<<<<<< HEAD
 
         public UsuariosController(DataContext context)
         {
@@ -49,61 +28,14 @@ namespace RpgApi.Controllers
        private async Task<bool> UsuarioExistente(string NomeUsuario)
         {
             if (await _context.TB_USUARIOS.AnyAsync(x => x.NomeUsuario.ToLower() == NomeUsuario.ToLower()))
-=======
-        private readonly IConfiguration _configuration;
-
-        public UsuariosController(DataContext context, IConfiguration configuration)
-        {
-            _context = context;
-            _configuration = configuration;
-        }
-
-        private string CriarToken(Usuario usuario)
-        {
-            List<Claim> claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
-                new Claim(ClaimTypes.Name, usuario.NomeUsuario),
-                new Claim(ClaimTypes.Role, usuario.Perfil)
-            };
-
-            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("ConfiguracaoToken:Chave").Value));
-
-            SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = creds
-            };
-
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-
-
-
-        }
-
-        private async Task<bool> UsuarioExistente(string username)
-        {
-            if (await _context.TB_USUARIOS.AnyAsync(x => x.NomeUsuario.ToLower() == username.ToLower()))
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
             {
                 return true;
             }
             return false;
         }
 
-<<<<<<< HEAD
         [HttpPost("Registrar")]
         public async Task<IActionResult> RegistraUsuario(Usuario user)
-=======
-        [AllowAnonymous]
-        [HttpPost("Registrar")]
-        public async Task<IActionResult> RegistrarUsuario(Usuario user)
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
         {
             try
             {
@@ -125,20 +57,13 @@ namespace RpgApi.Controllers
             }
         }
 
-<<<<<<< HEAD
 
         [HttpPost("Autenticar")]
         public async Task<IActionResult> AtutenticarUsuario(Usuario credenciais)
-=======
-        [AllowAnonymous]
-        [HttpPost("Autenticar")]
-        public async Task<IActionResult> AutenticarUsuario(Usuario credenciais)
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
         {
             try
             {
                 Usuario? usuario = await _context.TB_USUARIOS
-<<<<<<< HEAD
                     .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower().Equals(credenciais.NomeUsuario.ToLower()));
                     
                 if (usuario == null)
@@ -155,98 +80,22 @@ namespace RpgApi.Controllers
                     return Ok(usuario);
                 }
 
-=======
-                   .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower().Equals(credenciais.NomeUsuario.ToLower()));
-
-                if (usuario == null)
-                {
-                    throw new System.Exception("Usuário não encontrado.");
-                }
-                else if (!Criptografia.VerificarPasswordHash(credenciais.PasswordUsuario, usuario.PasswordHash, usuario.PasswordSalt))
-                {
-                    throw new System.Exception("Senha incorreta.");
-                }
-                else
-                {
-                    usuario.DataAcesso = DateTime.Now;
-                    _context.TB_USUARIOS.Update(usuario);
-                    await _context.SaveChangesAsync();
-
-                    usuario.PasswordHash = null;
-                    usuario.PasswordSalt = null;
-                    usuario.Token = CriarToken(usuario);
-                    
-                    return Ok(usuario);
-                }
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
             }
             catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
-<<<<<<< HEAD
 
             }
         }
 
         [HttpGet("{Id}")]
-=======
-            }
-        }
-
-        //Método para alteração de Senha.
-        [HttpPut("AlterarSenha")]
-        public async Task<IActionResult> AlterarSenhaUsuario(Usuario credenciais)
-        {
-            try
-            {
-                Usuario? usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do login
-                   .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower().Equals(credenciais.NomeUsuario.ToLower()));
-
-                if (usuario == null) //Se não achar nenhum usuário pelo login, retorna mensagem.
-                    throw new System.Exception("Usuário não encontrado.");
-
-                Criptografia.CriarPasswordHash(credenciais.PasswordUsuario, out byte[] hash, out byte[] salt);
-                usuario.PasswordHash = hash; //Se o usuário existir, executa a criptografia 
-                usuario.PasswordSalt = salt; //guardando o hash e o salt nas propriedades do usuário 
-
-                _context.TB_USUARIOS.Update(usuario);
-                int linhasAfetadas = await _context.SaveChangesAsync(); //Confirma a alteração no banco
-                return Ok(linhasAfetadas); //Retorna as linhas afetadas (Geralmente sempre 1 linha msm)
-            }
-            catch (System.Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetUsuarios()
-        {
-            try
-            {
-                List<Usuario> lista = await _context.TB_USUARIOS.ToListAsync();
-                return Ok(lista);
-            }
-            catch (System.Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("{usuarioId}")]
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
         public async Task<IActionResult> GetUsuario(int usuarioId)
         {
             try
             {
                 //List exigirá o using System.Collections.Generic
                 Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do Id
-<<<<<<< HEAD
                 .FirstOrDefaultAsync(x => x.IdUsuario == usuarioId);
-=======
-                   .FirstOrDefaultAsync(x => x.IdUsuario == usuarioId);
-
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
                 return Ok(usuario);
             }
             catch (System.Exception ex)
@@ -255,10 +104,7 @@ namespace RpgApi.Controllers
             }
         }
 
-<<<<<<< HEAD
         /*
-=======
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
         [HttpGet("GetByLogin/{login}")]
         public async Task<IActionResult> GetUsuario(string login)
         {
@@ -266,12 +112,7 @@ namespace RpgApi.Controllers
             {
                 //List exigirá o using System.Collections.Generic
                 Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do login
-<<<<<<< HEAD
                 .FirstOrDefaultAsync(x => x.Username.ToLower() == login.ToLower());
-=======
-                   .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower() == login.ToLower());
-
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
                 return Ok(usuario);
             }
             catch (System.Exception ex)
@@ -287,7 +128,6 @@ namespace RpgApi.Controllers
             try
             {
                 Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do Id
-<<<<<<< HEAD
                 .FirstOrDefaultAsync(x => x.Id == u.Id);
                 usuario.Latitude = u.Latitude;
                 usuario.Longitude = u.Longitude;
@@ -295,18 +135,6 @@ namespace RpgApi.Controllers
                 attach.Property(x => x.Id).IsModified = false;
                 attach.Property(x => x.Latitude).IsModified = true;
                 attach.Property(x => x.Longitude).IsModified = true;
-=======
-                   .FirstOrDefaultAsync(x => x.IdUsuario == u.IdUsuario);
-
-                usuario.Latitude = u.Latitude;
-                usuario.Longitude = u.Longitude;
-
-                var attach = _context.Attach(usuario);
-                attach.Property(x => x.IdUsuario).IsModified = false;
-                attach.Property(x => x.Latitude).IsModified = true;
-                attach.Property(x => x.Longitude).IsModified = true;
-
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
                 int linhasAfetadas = await _context.SaveChangesAsync(); //Confirma a alteração no banco
                 return Ok(linhasAfetadas); //Retorna as linhas afetadas (Geralmente sempre 1 linha msm)
             }
@@ -315,33 +143,17 @@ namespace RpgApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-<<<<<<< HEAD
-=======
-
-        //Método para alteração do e-mail
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
         [HttpPut("AtualizarEmail")]
         public async Task<IActionResult> AtualizarEmail(Usuario u)
         {
             try
             {
                 Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do Id
-<<<<<<< HEAD
                 .FirstOrDefaultAsync(x => x.Id == u.Id);
                 usuario.Email = u.Email;
                 var attach = _context.Attach(usuario);
                 attach.Property(x => x.Id).IsModified = false;
                 attach.Property(x => x.Email).IsModified = true;
-=======
-                   .FirstOrDefaultAsync(x => x.IdUsuario == u.IdUsuario);
-
-                usuario.EmailUsuario = u.EmailUsuario;                
-
-                var attach = _context.Attach(usuario);
-                attach.Property(x => x.IdUsuario).IsModified = false;
-                attach.Property(x => x.EmailUsuario).IsModified = true;                
-
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
                 int linhasAfetadas = await _context.SaveChangesAsync(); //Confirma a alteração no banco
                 return Ok(linhasAfetadas); //Retorna as linhas afetadas (Geralmente sempre 1 linha msm)
             }
@@ -350,7 +162,6 @@ namespace RpgApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-<<<<<<< HEAD
         //Método para alteração da foto
         /*[HttpPut("AtualizarFoto")]
         public async Task<IActionResult> AtualizarFoto(Usuario u)
@@ -371,7 +182,5 @@ namespace RpgApi.Controllers
                 return BadRequest(ex.Message);
             }
         }*/
-=======
->>>>>>> 4653fba5b6919e5194c5295b6abbe452e5904fc0
     }
 }
