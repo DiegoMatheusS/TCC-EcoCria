@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using TCCEcoCria.Data;
 
@@ -19,36 +20,72 @@ namespace TCC.Controllers
             _context = context;
         }
 
-        private static List<Pontos> TipoPonto = new List<Pontos>()
-    {
-        new Pontos() { IdPonto = 1, NomePonto = "", EnderecoPonto= "", CidadeEndereco= "", UfEndereco= "", CepEndereco= 12345678},
-        new Pontos() { IdPonto = 2, NomePonto = "", EnderecoPonto= "", CidadeEndereco= "", UfEndereco= "", CepEndereco= 12345678},
-        new Pontos() { IdPonto = 3, NomePonto = "", EnderecoPonto= "", CidadeEndereco= "", UfEndereco= "", CepEndereco= 12345678},
-        new Pontos() { IdPonto = 4, NomePonto = "", EnderecoPonto= "", CidadeEndereco= "", UfEndereco= "", CepEndereco= 12345678},
-        new Pontos() { IdPonto = 5, NomePonto = "", EnderecoPonto= "", CidadeEndereco= "", UfEndereco= "", CepEndereco= 12345678},
-        new Pontos() { IdPonto = 6, NomePonto = "", EnderecoPonto= "", CidadeEndereco= "", UfEndereco= "", CepEndereco= 12345678},      
-        new Pontos() { IdPonto = 7, NomePonto = "", EnderecoPonto= "", CidadeEndereco= "", UfEndereco= "", CepEndereco= 12345678}
-    };
-
         [HttpPost]
-        public IActionResult AddPonto(Pontos novoPonto)
+        public async Task<IActionResult> AddPonto(Pontos novoPonto)
         {
-            TipoPonto.Add(novoPonto);
-            return Ok(TipoPonto);
+            try
+            {
+                await _context.TB_PONTOS.AddAsync(novoPonto);
+                await _context.SaveChangesAsync();
+
+                return Ok (novoPonto.IdPonto);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }  
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [HttpPut]
+        public async Task<IActionResult> Update(Pontos novoPonto)
         {
-            TipoPonto.RemoveAll(mat => mat.IdPonto == id);
+            try
+            {
+                if (novoPonto.UfEndereco != "SP")
+                {
+                    throw new System.Exception("Estado fora do alcance de busca. ");
+                }
+                    _context.TB_PONTOS.Update(novoPonto);
+                    int alteracao = await _context.SaveChangesAsync();
 
-            return Ok(TipoPonto);
+                return Ok(alteracao);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                Pontos removerP = await _context.TB_PONTOS.FirstOrDefaultAsync(r => r.IdPonto == id);
+                _context.TB_PONTOS.Remove(removerP);
+                int att = await _context.SaveChangesAsync();
+                return Ok(att);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }   
 
         [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
-        {
-            return Ok(TipoPonto.FirstOrDefault(mat => mat.IdPonto == id));
+        public async Task<IActionResult> GetSingle(int id)
+        {   
+            try
+            {
+                Pontos p = await _context.TB_PONTOS.FirstOrDefaultAsync(busca => busca.IdPonto == id);
+
+                return Ok (p);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }    
 
         

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Models
@@ -13,6 +14,11 @@ namespace Models
         public int CepEndereco { get; set; }
         public string UfEndereco { get; set; } = string.Empty;
         public string CidadeEndereco { get; set; } = string.Empty;
+
+        public TipoDePonto TipoDePonto {get; set; } = null!;
+        public int IdTipoPonto {get; set; }
+
+ 
 
     }
 }

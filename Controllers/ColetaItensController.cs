@@ -28,8 +28,8 @@ namespace TCC.Controllers
         new ColetaItens() { IdItemColeta = 5, QuantidadeColeta = 1},
         new ColetaItens() { IdItemColeta = 6, QuantidadeColeta = 2},      
         new ColetaItens() { IdItemColeta = 7, QuantidadeColeta = 1}
-    };
-
+    }; 
+    
         [HttpPost]
         public IActionResult AddItem(ColetaItens novoItem)
         {
