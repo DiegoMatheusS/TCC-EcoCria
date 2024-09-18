@@ -9,5 +9,12 @@ namespace Models
     {
         public int IdItemColeta { get; set; }
         public int QuantidadeColeta { get; set; }
+        public int IdColeta { get; set; }
+        public int IdMaterial { get; set; }
+        public int IdOrdemGrandeza { get; set; }
+        public Coletas? Coletas { get; set; }
+        public Materiais? Materiais { get; set; }
+        public OrdemDeGrandeza? OrdemDeGrandeza { get; set; }
+
     }
 }

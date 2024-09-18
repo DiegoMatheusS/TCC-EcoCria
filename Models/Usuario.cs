@@ -20,7 +20,12 @@ namespace Models
         //public byte[]? FotoUsuario { get; set; }
         //public Usuario? Usuario { get; set; }
 
-        public List<Parceiros> Parceiros { get; set; }
+        [JsonIgnore]
+        public List<Parceiros>? Parceiros { get; set; }
+
+        [JsonIgnore]
+        public List<Coletas>? Coletas {get; set;} 
+
         //using System.Collections.Generic;
         public string Perfil { get; set; }  = string.Empty;
         public string EmailUsuario { get; set; } = string.Empty;

@@ -71,12 +71,38 @@ namespace TCCEcoCria.Data
             modelBuilder.Entity<Pontos>()
                 .HasOne(e => e.TipoDePonto)
                 .WithOne(e => e.Pontos)
-                .HasForeignKey<TipoDePonto>(e => e.IdTipoPonto)
+                .HasForeignKey<Pontos>(e => e.IdTipoPonto)
                 .IsRequired();
+            
+            modelBuilder.Entity<Coletas>()
+                .HasOne(e => e.Pontos)
+                .WithMany(e => e.Coletas)
+                .HasForeignKey(e => e.IdPonto);
 
-                 
+            modelBuilder.Entity<Coletas>()
+                .HasOne(e => e.Usuario)
+                .WithMany(e => e.Coletas)
+                .HasForeignKey(e => e.IdUsuario);
 
-       modelBuilder.Entity<Materiais>().HasData
+            modelBuilder.Entity<Coletas>()
+                .HasMany(e => e.ColetaItens)
+                .WithOne(e => e.Coletas)
+                .HasForeignKey(e => e.IdColeta)
+                .OnDelete(DeleteBehavior.Cascade);
+
+             modelBuilder.Entity<ColetaItens>()
+                .HasOne(e => e.Materiais)
+                .WithMany(e => e.ColetaItens)
+                .HasForeignKey(e => e.IdMaterial);
+
+            modelBuilder.Entity<ColetaItens>()
+                .HasOne(e => e.OrdemDeGrandeza)
+                .WithMany(e => e.ColetaItens)
+                .HasForeignKey(e => e.IdOrdemGrandeza);
+
+
+
+        modelBuilder.Entity<Materiais>().HasData
         (
             new Materiais() { IdMaterial = 1, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico},
             new Materiais() { IdMaterial = 2, NomeMaterial = "Papelão", Material=MateriaisEnun.Papel},
@@ -96,6 +122,17 @@ namespace TCCEcoCria.Data
             new Parceiros() { IdParceiro = 5, NomeParceiro = "Empresa Rainiken", DoacaoParceiro= 500, IdUsuario = 5 },
             new Parceiros() { IdParceiro = 6, NomeParceiro = "Empresa squol", DoacaoParceiro= 500, IdUsuario = 6 },      
             new Parceiros() { IdParceiro = 7, NomeParceiro = "Empresa suifiti", DoacaoParceiro= 500, IdUsuario = 7 }
+        );
+
+        modelBuilder.Entity<ColetaItens>().HasData
+        (
+            new ColetaItens() { IdItemColeta = 1, QuantidadeColeta = 1, IdColeta= 1, IdMaterial = 1, IdOrdemGrandeza = 1},
+            new ColetaItens() { IdItemColeta = 2, QuantidadeColeta = 2, IdColeta= 2, IdMaterial = 2, IdOrdemGrandeza = 2},
+            new ColetaItens() { IdItemColeta = 3, QuantidadeColeta = 1, IdColeta= 3, IdMaterial = 3, IdOrdemGrandeza = 3},
+            new ColetaItens() { IdItemColeta = 4, QuantidadeColeta = 2, IdColeta= 4, IdMaterial = 4, IdOrdemGrandeza = 4},
+            new ColetaItens() { IdItemColeta = 5, QuantidadeColeta = 1, IdColeta= 5, IdMaterial = 51, IdOrdemGrandeza = 5},
+            new ColetaItens() { IdItemColeta = 6, QuantidadeColeta = 2, IdColeta= 6, IdMaterial = 6, IdOrdemGrandeza = 6},      
+            new ColetaItens() { IdItemColeta = 7, QuantidadeColeta = 1, IdColeta= 7, IdMaterial = 7, IdOrdemGrandeza = 7}
         );
 
             Usuario user = new Usuario();

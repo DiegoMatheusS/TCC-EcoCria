@@ -94,50 +94,6 @@ namespace ECOCRIA.Migrations
                     b.HasKey("IdMaterial");
 
                     b.ToTable("TB_MATERIAIS", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            IdMaterial = 1,
-                            Material = 1,
-                            NomeMaterial = "Garrafa Pet"
-                        },
-                        new
-                        {
-                            IdMaterial = 2,
-                            Material = 4,
-                            NomeMaterial = "Papelão"
-                        },
-                        new
-                        {
-                            IdMaterial = 3,
-                            Material = 1,
-                            NomeMaterial = "Saco Plástico"
-                        },
-                        new
-                        {
-                            IdMaterial = 4,
-                            Material = 2,
-                            NomeMaterial = "Lata de Feijoada"
-                        },
-                        new
-                        {
-                            IdMaterial = 5,
-                            Material = 2,
-                            NomeMaterial = "Latinha"
-                        },
-                        new
-                        {
-                            IdMaterial = 6,
-                            Material = 1,
-                            NomeMaterial = "Garrafa Pet"
-                        },
-                        new
-                        {
-                            IdMaterial = 7,
-                            Material = 3,
-                            NomeMaterial = "Jarra de Vidro"
-                        });
                 });
 
             modelBuilder.Entity("Models.OrdemDeGrandeza", b =>
@@ -191,77 +147,15 @@ namespace ECOCRIA.Migrations
                     b.HasIndex("UsuarioIdUsuario");
 
                     b.ToTable("TB_PARCEIROS", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            IdParceiro = 1,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 1,
-                            NomeParceiro = "Empresa BlaBla",
-                            StatusParceiro = false
-                        },
-                        new
-                        {
-                            IdParceiro = 2,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 2,
-                            NomeParceiro = "Market Empresa",
-                            StatusParceiro = false
-                        },
-                        new
-                        {
-                            IdParceiro = 3,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 3,
-                            NomeParceiro = "Empresa Eletro",
-                            StatusParceiro = false
-                        },
-                        new
-                        {
-                            IdParceiro = 4,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 4,
-                            NomeParceiro = "Empresa Papel",
-                            StatusParceiro = false
-                        },
-                        new
-                        {
-                            IdParceiro = 5,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 5,
-                            NomeParceiro = "Empresa Rainiken",
-                            StatusParceiro = false
-                        },
-                        new
-                        {
-                            IdParceiro = 6,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 6,
-                            NomeParceiro = "Empresa squol",
-                            StatusParceiro = false
-                        },
-                        new
-                        {
-                            IdParceiro = 7,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 7,
-                            NomeParceiro = "Empresa suifiti",
-                            StatusParceiro = false
-                        });
                 });
 
             modelBuilder.Entity("Models.Pontos", b =>
                 {
                     b.Property<int>("IdPonto")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPonto"));
 
                     b.Property<int>("CepEndereco")
                         .HasColumnType("int");
@@ -276,6 +170,9 @@ namespace ECOCRIA.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("Varchar");
 
+                    b.Property<int>("IdTipoPonto")
+                        .HasColumnType("int");
+
                     b.Property<string>("NomePonto")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -287,6 +184,9 @@ namespace ECOCRIA.Migrations
                         .HasColumnType("Varchar");
 
                     b.HasKey("IdPonto");
+
+                    b.HasIndex("IdTipoPonto")
+                        .IsUnique();
 
                     b.ToTable("TB_PONTOS", (string)null);
                 });
@@ -378,9 +278,6 @@ namespace ECOCRIA.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("Varchar");
 
-                    b.Property<int>("IdPonto")
-                        .HasColumnType("int");
-
                     b.Property<bool>("StatusTipoPonto")
                         .HasColumnType("bit");
 
@@ -457,7 +354,7 @@ namespace ECOCRIA.Migrations
                             Latitude = -23.520024100000001,
                             Longitude = -46.596497999999997,
                             NomeUsuario = "admin",
-                            PasswordHash = new byte[] { 93, 178, 207, 244, 151, 242, 194, 132, 187, 137, 114, 201, 129, 32, 27, 12, 20, 115, 93, 45, 188, 131, 71, 230, 123, 98, 79, 51, 218, 154, 147, 155, 145, 236, 23, 150, 91, 73, 161, 136, 207, 241, 59, 41, 116, 155, 145, 101, 151, 93, 97, 225, 31, 145, 43, 120, 128, 161, 246, 184, 9, 188, 112, 24, 64, 40, 97, 84, 239, 236, 104, 142, 6, 199, 144, 204, 249, 78, 246, 237, 93, 209, 227, 8, 132, 52, 152, 104, 52, 137, 32, 249, 109, 48, 124, 223, 48, 39, 61, 211, 186, 169, 190, 230, 25, 228, 246, 253, 227, 246, 91, 26, 155, 55, 141, 9, 255, 189, 135, 67, 231, 83, 229, 13, 253, 203, 167, 219 },
+                            PasswordHash = new byte[] { 196, 140, 239, 78, 249, 216, 186, 51, 112, 152, 153, 136, 73, 138, 230, 250, 218, 165, 80, 116, 192, 105, 183, 148, 75, 64, 149, 158, 36, 125, 145, 212, 84, 128, 174, 168, 97, 75, 113, 213, 225, 248, 181, 122, 185, 105, 156, 166, 149, 200, 162, 154, 208, 247, 160, 86, 194, 47, 40, 203, 192, 176, 96, 156, 196, 209, 255, 12, 202, 127, 21, 175, 124, 208, 168, 201, 30, 141, 166, 220, 211, 162, 170, 188, 25, 187, 252, 79, 146, 139, 145, 45, 48, 76, 1, 226, 180, 110, 198, 157, 165, 231, 140, 146, 217, 54, 95, 22, 5, 199, 221, 251, 247, 17, 188, 246, 64, 20, 41, 119, 89, 233, 13, 139, 125, 192, 147, 61 },
                             Perfil = "Admin"
                         });
                 });
@@ -475,7 +372,7 @@ namespace ECOCRIA.Migrations
                 {
                     b.HasOne("Models.TipoDePonto", "TipoDePonto")
                         .WithOne("Pontos")
-                        .HasForeignKey("Models.Pontos", "IdPonto")
+                        .HasForeignKey("Models.Pontos", "IdTipoPonto")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -484,8 +381,7 @@ namespace ECOCRIA.Migrations
 
             modelBuilder.Entity("Models.TipoDePonto", b =>
                 {
-                    b.Navigation("Pontos")
-                        .IsRequired();
+                    b.Navigation("Pontos");
                 });
 
             modelBuilder.Entity("Models.Usuario", b =>

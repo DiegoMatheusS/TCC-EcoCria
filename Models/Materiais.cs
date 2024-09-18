@@ -12,6 +12,8 @@ namespace Models
         public int IdMaterial { get; set; }
         public string NomeMaterial { get; set; } = string.Empty;
         public MateriaisEnun Material { get; set; }
+        [JsonIgnore]
+        public List<ColetaItens> ColetaItens { get; set; }
 
         /*[JsonIgnore]
         public PontoseMateriais? PontoseMateriais { get; set; }*/

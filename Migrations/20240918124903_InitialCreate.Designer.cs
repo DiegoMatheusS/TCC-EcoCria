@@ -12,8 +12,8 @@ using TCCEcoCria.Data;
 namespace ECOCRIA.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240917161748_Pontos")]
-    partial class Pontos
+    [Migration("20240918124903_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,50 +97,6 @@ namespace ECOCRIA.Migrations
                     b.HasKey("IdMaterial");
 
                     b.ToTable("TB_MATERIAIS", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            IdMaterial = 1,
-                            Material = 1,
-                            NomeMaterial = "Garrafa Pet"
-                        },
-                        new
-                        {
-                            IdMaterial = 2,
-                            Material = 4,
-                            NomeMaterial = "Papelão"
-                        },
-                        new
-                        {
-                            IdMaterial = 3,
-                            Material = 1,
-                            NomeMaterial = "Saco Plástico"
-                        },
-                        new
-                        {
-                            IdMaterial = 4,
-                            Material = 2,
-                            NomeMaterial = "Lata de Feijoada"
-                        },
-                        new
-                        {
-                            IdMaterial = 5,
-                            Material = 2,
-                            NomeMaterial = "Latinha"
-                        },
-                        new
-                        {
-                            IdMaterial = 6,
-                            Material = 1,
-                            NomeMaterial = "Garrafa Pet"
-                        },
-                        new
-                        {
-                            IdMaterial = 7,
-                            Material = 3,
-                            NomeMaterial = "Jarra de Vidro"
-                        });
                 });
 
             modelBuilder.Entity("Models.OrdemDeGrandeza", b =>
@@ -194,71 +150,6 @@ namespace ECOCRIA.Migrations
                     b.HasIndex("UsuarioIdUsuario");
 
                     b.ToTable("TB_PARCEIROS", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            IdParceiro = 1,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 1,
-                            NomeParceiro = "Empresa BlaBla",
-                            StatusParceiro = false
-                        },
-                        new
-                        {
-                            IdParceiro = 2,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 2,
-                            NomeParceiro = "Market Empresa",
-                            StatusParceiro = false
-                        },
-                        new
-                        {
-                            IdParceiro = 3,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 3,
-                            NomeParceiro = "Empresa Eletro",
-                            StatusParceiro = false
-                        },
-                        new
-                        {
-                            IdParceiro = 4,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 4,
-                            NomeParceiro = "Empresa Papel",
-                            StatusParceiro = false
-                        },
-                        new
-                        {
-                            IdParceiro = 5,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 5,
-                            NomeParceiro = "Empresa Rainiken",
-                            StatusParceiro = false
-                        },
-                        new
-                        {
-                            IdParceiro = 6,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 6,
-                            NomeParceiro = "Empresa squol",
-                            StatusParceiro = false
-                        },
-                        new
-                        {
-                            IdParceiro = 7,
-                            DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoacaoParceiro = 500.0,
-                            IdUsuario = 7,
-                            NomeParceiro = "Empresa suifiti",
-                            StatusParceiro = false
-                        });
                 });
 
             modelBuilder.Entity("Models.Pontos", b =>
@@ -282,6 +173,9 @@ namespace ECOCRIA.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("Varchar");
 
+                    b.Property<int>("IdTipoPonto")
+                        .HasColumnType("int");
+
                     b.Property<string>("NomePonto")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -293,6 +187,9 @@ namespace ECOCRIA.Migrations
                         .HasColumnType("Varchar");
 
                     b.HasKey("IdPonto");
+
+                    b.HasIndex("IdTipoPonto")
+                        .IsUnique();
 
                     b.ToTable("TB_PONTOS", (string)null);
                 });
@@ -460,7 +357,7 @@ namespace ECOCRIA.Migrations
                             Latitude = -23.520024100000001,
                             Longitude = -46.596497999999997,
                             NomeUsuario = "admin",
-                            PasswordHash = new byte[] { 58, 21, 63, 103, 119, 209, 30, 120, 56, 64, 9, 101, 232, 111, 116, 120, 60, 102, 242, 31, 9, 145, 4, 43, 107, 243, 116, 236, 227, 210, 48, 53, 252, 61, 81, 76, 167, 206, 214, 120, 236, 32, 204, 150, 41, 101, 221, 51, 214, 31, 50, 254, 134, 136, 241, 76, 31, 40, 138, 51, 177, 90, 22, 187, 218, 32, 59, 28, 77, 14, 81, 50, 74, 153, 138, 33, 228, 238, 156, 124, 211, 192, 15, 18, 70, 219, 8, 157, 227, 75, 6, 1, 57, 86, 161, 23, 236, 152, 139, 173, 125, 65, 202, 233, 37, 120, 252, 37, 151, 230, 229, 87, 18, 116, 39, 204, 101, 105, 52, 29, 167, 142, 117, 63, 61, 58, 102, 138 },
+                            PasswordHash = new byte[] { 196, 140, 239, 78, 249, 216, 186, 51, 112, 152, 153, 136, 73, 138, 230, 250, 218, 165, 80, 116, 192, 105, 183, 148, 75, 64, 149, 158, 36, 125, 145, 212, 84, 128, 174, 168, 97, 75, 113, 213, 225, 248, 181, 122, 185, 105, 156, 166, 149, 200, 162, 154, 208, 247, 160, 86, 194, 47, 40, 203, 192, 176, 96, 156, 196, 209, 255, 12, 202, 127, 21, 175, 124, 208, 168, 201, 30, 141, 166, 220, 211, 162, 170, 188, 25, 187, 252, 79, 146, 139, 145, 45, 48, 76, 1, 226, 180, 110, 198, 157, 165, 231, 140, 146, 217, 54, 95, 22, 5, 199, 221, 251, 247, 17, 188, 246, 64, 20, 41, 119, 89, 233, 13, 139, 125, 192, 147, 61 },
                             Perfil = "Admin"
                         });
                 });
@@ -472,6 +369,22 @@ namespace ECOCRIA.Migrations
                         .HasForeignKey("UsuarioIdUsuario");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Models.Pontos", b =>
+                {
+                    b.HasOne("Models.TipoDePonto", "TipoDePonto")
+                        .WithOne("Pontos")
+                        .HasForeignKey("Models.Pontos", "IdTipoPonto")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TipoDePonto");
+                });
+
+            modelBuilder.Entity("Models.TipoDePonto", b =>
+                {
+                    b.Navigation("Pontos");
                 });
 
             modelBuilder.Entity("Models.Usuario", b =>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using TCCEcoCria.Data;
 
@@ -31,18 +32,35 @@ namespace TCC.Controllers
     }; 
     
         [HttpPost]
-        public IActionResult AddItem(Coletas novoItem)
+        public async Task<IActionResult> AddItem(Coletas novaColeta)
         {
-            TipoColeta.Add(novoItem);
-            return Ok(TipoColeta);
+            try 
+            {
+                await _context.TB_COLETAS.AddAsync(novaColeta);
+                await _context.SaveChangesAsync();
+
+                return Ok(novaColeta.IdColeta);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }  
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            TipoColeta.RemoveAll(mat => mat.IdColeta == id);
-
-            return Ok(TipoColeta);
+            try
+            {
+                Coletas removerC = await _context.TB_COLETAS.FirstOrDefaultAsync(i => i.IdColeta == id);
+                _context.TB_COLETAS.Remove(removerC);
+                int att = await _context.SaveChangesAsync();
+                return Ok(att);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         

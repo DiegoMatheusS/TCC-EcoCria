@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using TCCEcoCria.Data;
 
@@ -19,28 +20,35 @@ namespace TCC.Controllers
             _context = context;
         }
 
-        private static List<TipoDePonto> TipoPonto = new List<TipoDePonto>()
-        {
-            new TipoDePonto() { IdTipoPonto = 1, DescricaoTipoPonto ="Somente Eletrônicos", StatusTipoPonto = true},
-            new TipoDePonto() { IdTipoPonto = 2, DescricaoTipoPonto ="Reciclagem em geral", StatusTipoPonto = true},
-            new TipoDePonto() { IdTipoPonto = 3, DescricaoTipoPonto ="Apenas descartes químicos", StatusTipoPonto = true},
-            new TipoDePonto() { IdTipoPonto = 4, DescricaoTipoPonto ="Reciclagem", StatusTipoPonto = true},
-            new TipoDePonto() { IdTipoPonto = 5, DescricaoTipoPonto ="Descarte de óleo", StatusTipoPonto = true},
-            new TipoDePonto() { IdTipoPonto = 6, DescricaoTipoPonto ="Entulhos", StatusTipoPonto = true},      
-            new TipoDePonto() { IdTipoPonto = 7, DescricaoTipoPonto ="Lixo", StatusTipoPonto = true}
-        };
-
         [HttpPost]
-        public IActionResult AddPonto(TipoDePonto novoPonto)
+        public async Task<IActionResult> AddPonto(TipoDePonto novoPonto)
         {
-            TipoPonto.Add(novoPonto);
-            return Ok(TipoPonto);
+            try
+            {
+                await _context.TB_TIPOPONTO.AddAsync(novoPonto);
+                await _context.SaveChangesAsync();
+
+                return Ok(novoPonto.IdTipoPonto);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
+        public async Task<IActionResult> GetSingle(int id)
         {
-            return Ok(TipoPonto.FirstOrDefault(mat => mat.IdTipoPonto == id));
+            try
+            {
+                TipoDePonto tp = await _context.TB_TIPOPONTO.FirstOrDefaultAsync(bsc => bsc.IdTipoPonto == id);
+
+                return Ok(tp);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         } 
 
     }
