@@ -32,14 +32,21 @@ namespace TCC.Controllers
     }; 
     
         [HttpPost]
-        public async Task<IActionResult> AddItem(Coletas novaColeta)
+        public async Task<IActionResult> AddItem(Coletas? novaColeta)
         {
             try 
             {
                 await _context.TB_COLETAS.AddAsync(novaColeta);
                 await _context.SaveChangesAsync();
 
-                return Ok(novaColeta.IdColeta);
+                var resultado = new 
+                {
+                    idColeta = novaColeta.IdColeta,
+                    idPonto = novaColeta.IdPonto,
+                    idUsuario = novaColeta.IdUsuario
+                };
+
+                return Ok(resultado);
             }
             catch(System.Exception ex)
             {

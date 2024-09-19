@@ -10,12 +10,12 @@ namespace Models
     {
         public int IdColeta { get; set; }
         public DateTime MomentoColeta { get; set; }
-        public int IdPonto {get; set;}
-        public int IdUsuario { get; set; }
-
+        public int? IdPonto {get; set;}
+        public int? IdUsuario { get; set; }
         public Pontos? Pontos { get; set; }
         public Usuario? Usuario { get; set; }
 
+        [JsonIgnore]
         public List<ColetaItens> ColetaItens {get; set;} = new List<ColetaItens>();
 
 

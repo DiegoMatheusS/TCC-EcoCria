@@ -16,11 +16,12 @@ namespace Models
         public string CidadeEndereco { get; set; } = string.Empty;
         
         public TipoDePonto? TipoDePonto {get; set; } = null!;
+        
         [JsonIgnore]
-        public int IdTipoPonto {get; set; }
+        public int? IdTipoPonto {get; set; }
 
         [JsonIgnore]
-        public List<Coletas> Coletas {get; set;}
+        public List<Coletas>? Coletas {get; set;}
 
  
 

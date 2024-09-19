@@ -88,7 +88,7 @@ namespace TCCEcoCria.Data
                 .HasMany(e => e.ColetaItens)
                 .WithOne(e => e.Coletas)
                 .HasForeignKey(e => e.IdColeta)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
              modelBuilder.Entity<ColetaItens>()
                 .HasOne(e => e.Materiais)
@@ -130,9 +130,42 @@ namespace TCCEcoCria.Data
             new ColetaItens() { IdItemColeta = 2, QuantidadeColeta = 2, IdColeta= 2, IdMaterial = 2, IdOrdemGrandeza = 2},
             new ColetaItens() { IdItemColeta = 3, QuantidadeColeta = 1, IdColeta= 3, IdMaterial = 3, IdOrdemGrandeza = 3},
             new ColetaItens() { IdItemColeta = 4, QuantidadeColeta = 2, IdColeta= 4, IdMaterial = 4, IdOrdemGrandeza = 4},
-            new ColetaItens() { IdItemColeta = 5, QuantidadeColeta = 1, IdColeta= 5, IdMaterial = 51, IdOrdemGrandeza = 5},
+            new ColetaItens() { IdItemColeta = 5, QuantidadeColeta = 1, IdColeta= 5, IdMaterial = 5, IdOrdemGrandeza = 5},
             new ColetaItens() { IdItemColeta = 6, QuantidadeColeta = 2, IdColeta= 6, IdMaterial = 6, IdOrdemGrandeza = 6},      
             new ColetaItens() { IdItemColeta = 7, QuantidadeColeta = 1, IdColeta= 7, IdMaterial = 7, IdOrdemGrandeza = 7}
+        );
+
+        modelBuilder.Entity<Coletas>().HasData
+        (
+            new Coletas() { IdColeta = 1, MomentoColeta = DateTime.Now, IdPonto = 1, IdUsuario = 1},
+            new Coletas() { IdColeta = 2, MomentoColeta = DateTime.Now, IdPonto = 2, IdUsuario = 2},
+            new Coletas() { IdColeta = 3, MomentoColeta = DateTime.Now, IdPonto = 3, IdUsuario = 3},
+            new Coletas() { IdColeta = 4, MomentoColeta = DateTime.Now, IdPonto = 4, IdUsuario = 4},
+            new Coletas() { IdColeta = 5, MomentoColeta = DateTime.Now, IdPonto = 5, IdUsuario = 5},
+            new Coletas() { IdColeta = 6, MomentoColeta = DateTime.Now, IdPonto = 6, IdUsuario = 6},      
+            new Coletas() { IdColeta = 7, MomentoColeta = DateTime.Now, IdPonto = 7, IdUsuario = 7}
+        );
+
+        modelBuilder.Entity<Pontos>().HasData
+        (
+            new Pontos() { IdPonto = 1, NomePonto = "São Quirino Sucatas", EnderecoPonto= "Rua São Quirino, 468 - Vila Guilherme", CepEndereco = 02056-070, CidadeEndereco = "São Paulo", UfEndereco = "SP" , IdTipoPonto = 1},
+            new Pontos() { IdPonto = 2, NomePonto = "Reciclagem, Sucatas e Aparas Farpec", EnderecoPonto= "R. Santa Clara, 350 - Brás", CepEndereco = 03025-030, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 2},
+            new Pontos() { IdPonto = 3, NomePonto = "Helio & Richard Reciclagem", EnderecoPonto= "R. Dr. Miguel Paulo Capalbo, 75 - Pari", CepEndereco = 03035-040, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 3},
+            new Pontos() { IdPonto = 4, NomePonto = "Ecoponto Vila Guilherme", EnderecoPonto= "Rua José Bernardo Pinto, 1480 - Vila Guilherme", CepEndereco = 02055-001, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 4},
+            new Pontos() { IdPonto = 5, NomePonto = "Latasa Reciclagem", EnderecoPonto= "Av. Guilherme Cotching, 726 - Vila Maria Baixa", CepEndereco = 02113-010, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 5},
+            new Pontos() { IdPonto = 6, NomePonto = "Ciclopel Com de Aparas de Papel", EnderecoPonto= "R. Henrique Felipe da Costa, 650 - Vila Guilherme", CepEndereco = 02054-050, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 6},      
+            new Pontos() { IdPonto = 7, NomePonto = "COLETATEC", EnderecoPonto= "R. Eli, 190 - Vila Maria Baixa", CepEndereco = 02114-010, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 7}
+        );
+
+        modelBuilder.Entity<TipoDePonto>().HasData
+        (
+            new TipoDePonto() { IdTipoPonto = 1, DescricaoTipoPonto = "Ferro velho em geral"},
+            new TipoDePonto() { IdTipoPonto = 2, DescricaoTipoPonto = "Reciclagem"},
+            new TipoDePonto() { IdTipoPonto = 3, DescricaoTipoPonto = "Reciclagem em geral"},
+            new TipoDePonto() { IdTipoPonto = 4, DescricaoTipoPonto = "Ecoponto"},
+            new TipoDePonto() { IdTipoPonto = 5, DescricaoTipoPonto = "Recilagem de metais"},
+            new TipoDePonto() { IdTipoPonto = 6, DescricaoTipoPonto = "Recilcagem de papel e celulose"},      
+            new TipoDePonto() { IdTipoPonto = 7, DescricaoTipoPonto = "Recilcagem "}
         );
 
             Usuario user = new Usuario();
