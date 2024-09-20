@@ -12,6 +12,6 @@ namespace Models
         public string DescricaoOrdemGrandeza { get; set; } = string.Empty;
 
         [JsonIgnore]
-        public List<ColetaItens> ColetaItens { get; set; }
+        public List<ColetaItens>? ColetaItens { get; set; }
     }
 }

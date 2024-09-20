@@ -39,6 +39,13 @@ namespace TCC.Controllers
                 await _context.TB_COLETAITENS.AddAsync(novoItem);
                 await _context.SaveChangesAsync();
 
+                var resultado = new 
+                {
+                    IdItemColeta = novoItem.IdColeta,
+                    idMaterial = novoItem.IdMaterial,
+                    idOrdemGrandeza = novoItem.IdOrdemGrandeza
+                };
+
                 return Ok(novoItem.IdItemColeta);
             }
             catch(System.Exception ex)
@@ -62,6 +69,22 @@ namespace TCC.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSingle(int id)
+        {   
+            try
+            {
+                ColetaItens ci = await _context.TB_COLETAITENS.FirstOrDefaultAsync(busca => busca.IdItemColeta == id);
+
+                return Ok (ci);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+        }   
 
         
     }

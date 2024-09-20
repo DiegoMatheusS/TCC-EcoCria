@@ -61,7 +61,7 @@ namespace TCCEcoCria.Data
             modelBuilder.Entity<OrdemDeGrandeza>().HasKey(m => m.IdOrdemGrandeza);
             modelBuilder.Entity<Pontos>().HasKey(m => m.IdPonto);
             modelBuilder.Entity<PontoseMateriais>().HasNoKey();
-            modelBuilder.Entity<Pontuacao>().HasNoKey();
+            modelBuilder.Entity<Pontuacao>().HasKey(m => m.IdPontuacao);
             modelBuilder.Entity<Premios>().HasKey(m => m.IdPremio);
             modelBuilder.Entity<Publicacao>().HasKey(m => m.IdPublicacao);
             modelBuilder.Entity<TipoDePonto>().HasKey(m => m.IdTipoPonto);

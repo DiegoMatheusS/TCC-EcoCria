@@ -32,12 +32,13 @@ namespace TCC.Controllers
         };
 
         [HttpPost]
-        public async Task<IActionResult> AddPonto(OrdemDeGrandeza novaGrandeza)
+        public async Task<IActionResult> AddOrdem(OrdemDeGrandeza novaGrandeza)
         {
             try 
             {
                 await _context.TB_ORDEMGRANDEZA.AddAsync(novaGrandeza);
                 await _context.SaveChangesAsync();
+                
                 return Ok(novaGrandeza.IdOrdemGrandeza);
             }
             catch(System.Exception ex)
@@ -62,21 +63,5 @@ namespace TCC.Controllers
 
         } 
 
-        /*[HttpGet("GetAll")]
-        public async Task<IActionResult> Get()
-        {
-            try
-            {
-                OrdemDeGrandeza o = await _context.TB_ORDEMGRANDEZA.FirstOrDefaultAsync(busca => busca.IdOrdemGrandeza == id);
-                return Ok(o);
-            }
-            catch(System.Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-        } 
-
-        */
     }
 }

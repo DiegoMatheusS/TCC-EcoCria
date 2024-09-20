@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using TCCEcoCria.Data;
 
@@ -31,18 +32,34 @@ namespace TCC.Controllers
         };
 
         [HttpPost]
-        public IActionResult AddPontos(Pontuacao novaPontucao)
+        public async Task<IActionResult> AddPontos(Pontuacao novaPontucao)
         {
-            Pontuacao.Add(novaPontucao);
-            return Ok(Pontuacao);
+            try
+            {
+                await _context.TB_PONTUACAO.AddAsync(novaPontucao);
+                await _context.SaveChangesAsync();
+
+                return Ok(novaPontucao.IdPontuacao);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
-        /*[HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSingle(int id)
         {
-            return Ok(Pontucao.FirstOrDefault(mat => mat.novaPontucao == id));
-        } */
-
-        
+            try
+            {
+                Pontuacao p = await _context.TB_PONTUACAO.FirstOrDefaultAsync(x => x.IdPontuacao == id);
+                return Ok(p);                
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -70,6 +70,22 @@ namespace TCC.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSingle(int id)
+        {   
+            try
+            {
+                Coletas c = await _context.TB_COLETAS.FirstOrDefaultAsync(busca => busca.IdColeta == id);
+
+                return Ok (c);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+        }   
+
         
     }
 }
