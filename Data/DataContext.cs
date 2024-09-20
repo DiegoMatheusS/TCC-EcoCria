@@ -115,35 +115,35 @@ namespace TCCEcoCria.Data
 
         modelBuilder.Entity<Parceiros>().HasData
         (
-            new Parceiros() { IdParceiro = 1, NomeParceiro = "Empresa BlaBla", DoacaoParceiro= 500, IdUsuario = 1 },
-            new Parceiros() { IdParceiro = 2, NomeParceiro = "Market Empresa", DoacaoParceiro= 500 , IdUsuario = 2 },
-            new Parceiros() { IdParceiro = 3, NomeParceiro = "Empresa Eletro", DoacaoParceiro= 500, IdUsuario = 3 },
-            new Parceiros() { IdParceiro = 4, NomeParceiro = "Empresa Papel", DoacaoParceiro= 500, IdUsuario = 4 },
-            new Parceiros() { IdParceiro = 5, NomeParceiro = "Empresa Rainiken", DoacaoParceiro= 500, IdUsuario = 5 },
-            new Parceiros() { IdParceiro = 6, NomeParceiro = "Empresa squol", DoacaoParceiro= 500, IdUsuario = 6 },      
-            new Parceiros() { IdParceiro = 7, NomeParceiro = "Empresa suifiti", DoacaoParceiro= 500, IdUsuario = 7 }
+            new Parceiros() { IdParceiro = 1, NomeParceiro = "Empresa BlaBla", DoacaoParceiro= 500},
+            new Parceiros() { IdParceiro = 2, NomeParceiro = "Market Empresa", DoacaoParceiro= 500 },
+            new Parceiros() { IdParceiro = 3, NomeParceiro = "Empresa Eletro", DoacaoParceiro= 500},
+            new Parceiros() { IdParceiro = 4, NomeParceiro = "Empresa Papel", DoacaoParceiro= 500},
+            new Parceiros() { IdParceiro = 5, NomeParceiro = "Empresa Rainiken", DoacaoParceiro= 500},
+            new Parceiros() { IdParceiro = 6, NomeParceiro = "Empresa squol", DoacaoParceiro= 500},     
+            new Parceiros() { IdParceiro = 7, NomeParceiro = "Empresa suifiti", DoacaoParceiro= 500} 
         );
 
         modelBuilder.Entity<ColetaItens>().HasData
         (
-            new ColetaItens() { IdItemColeta = 1, QuantidadeColeta = 1, IdColeta= 1, IdMaterial = 1, IdOrdemGrandeza = 1},
-            new ColetaItens() { IdItemColeta = 2, QuantidadeColeta = 2, IdColeta= 2, IdMaterial = 2, IdOrdemGrandeza = 2},
-            new ColetaItens() { IdItemColeta = 3, QuantidadeColeta = 1, IdColeta= 3, IdMaterial = 3, IdOrdemGrandeza = 3},
-            new ColetaItens() { IdItemColeta = 4, QuantidadeColeta = 2, IdColeta= 4, IdMaterial = 4, IdOrdemGrandeza = 4},
-            new ColetaItens() { IdItemColeta = 5, QuantidadeColeta = 1, IdColeta= 5, IdMaterial = 5, IdOrdemGrandeza = 5},
-            new ColetaItens() { IdItemColeta = 6, QuantidadeColeta = 2, IdColeta= 6, IdMaterial = 6, IdOrdemGrandeza = 6},      
-            new ColetaItens() { IdItemColeta = 7, QuantidadeColeta = 1, IdColeta= 7, IdMaterial = 7, IdOrdemGrandeza = 7}
+            new ColetaItens() { IdItemColeta = 1, QuantidadeColeta = 1},
+            new ColetaItens() { IdItemColeta = 2, QuantidadeColeta = 2},
+            new ColetaItens() { IdItemColeta = 3, QuantidadeColeta = 1},
+            new ColetaItens() { IdItemColeta = 4, QuantidadeColeta = 2},
+            new ColetaItens() { IdItemColeta = 5, QuantidadeColeta = 1},
+            new ColetaItens() { IdItemColeta = 6, QuantidadeColeta = 2},   
+            new ColetaItens() { IdItemColeta = 7, QuantidadeColeta = 1} 
         );
 
         modelBuilder.Entity<Coletas>().HasData
         (
-            new Coletas() { IdColeta = 1, MomentoColeta = DateTime.Now, IdPonto = 1, IdUsuario = 1},
-            new Coletas() { IdColeta = 2, MomentoColeta = DateTime.Now, IdPonto = 2, IdUsuario = 2},
-            new Coletas() { IdColeta = 3, MomentoColeta = DateTime.Now, IdPonto = 3, IdUsuario = 3},
-            new Coletas() { IdColeta = 4, MomentoColeta = DateTime.Now, IdPonto = 4, IdUsuario = 4},
-            new Coletas() { IdColeta = 5, MomentoColeta = DateTime.Now, IdPonto = 5, IdUsuario = 5},
-            new Coletas() { IdColeta = 6, MomentoColeta = DateTime.Now, IdPonto = 6, IdUsuario = 6},      
-            new Coletas() { IdColeta = 7, MomentoColeta = DateTime.Now, IdPonto = 7, IdUsuario = 7}
+            new Coletas() { IdColeta = 1, MomentoColeta = DateTime.Now},
+            new Coletas() { IdColeta = 2, MomentoColeta = DateTime.Now},
+            new Coletas() { IdColeta = 3, MomentoColeta = DateTime.Now},
+            new Coletas() { IdColeta = 4, MomentoColeta = DateTime.Now},
+            new Coletas() { IdColeta = 5, MomentoColeta = DateTime.Now},
+            new Coletas() { IdColeta = 6, MomentoColeta = DateTime.Now},     
+            new Coletas() { IdColeta = 7, MomentoColeta = DateTime.Now} 
         );
 
         modelBuilder.Entity<Pontos>().HasData

@@ -207,8 +207,8 @@ namespace ECOCRIA.Migrations
                     IdColeta = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MomentoColeta = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdPonto = table.Column<int>(type: "int", nullable: false),
-                    IdUsuario = table.Column<int>(type: "int", nullable: false)
+                    IdPonto = table.Column<int>(type: "int", nullable: true),
+                    IdUsuario = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -217,14 +217,12 @@ namespace ECOCRIA.Migrations
                         name: "FK_TB_COLETAS_TB_PONTOS_IdPonto",
                         column: x => x.IdPonto,
                         principalTable: "TB_PONTOS",
-                        principalColumn: "IdPonto",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdPonto");
                     table.ForeignKey(
                         name: "FK_TB_COLETAS_TB_USUARIOS_IdUsuario",
                         column: x => x.IdUsuario,
                         principalTable: "TB_USUARIOS",
-                        principalColumn: "IdUsuario",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdUsuario");
                 });
 
             migrationBuilder.CreateTable(
@@ -259,6 +257,34 @@ namespace ECOCRIA.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "TB_COLETAITENS",
+                columns: new[] { "IdItemColeta", "IdColeta", "IdMaterial", "IdOrdemGrandeza", "QuantidadeColeta" },
+                values: new object[,]
+                {
+                    { 1, null, null, null, 1 },
+                    { 2, null, null, null, 2 },
+                    { 3, null, null, null, 1 },
+                    { 4, null, null, null, 2 },
+                    { 5, null, null, null, 1 },
+                    { 6, null, null, null, 2 },
+                    { 7, null, null, null, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TB_COLETAS",
+                columns: new[] { "IdColeta", "IdPonto", "IdUsuario", "MomentoColeta" },
+                values: new object[,]
+                {
+                    { 1, null, null, new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9043) },
+                    { 2, null, null, new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9057) },
+                    { 3, null, null, new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9059) },
+                    { 4, null, null, new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9061) },
+                    { 5, null, null, new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9063) },
+                    { 6, null, null, new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9064) },
+                    { 7, null, null, new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9066) }
+                });
+
+            migrationBuilder.InsertData(
                 table: "TB_MATERIAIS",
                 columns: new[] { "IdMaterial", "Material", "NomeMaterial" },
                 values: new object[,]
@@ -277,13 +303,13 @@ namespace ECOCRIA.Migrations
                 columns: new[] { "IdParceiro", "DataDoacao", "DoacaoParceiro", "IdUsuario", "NomeParceiro", "StatusParceiro", "UsuarioIdUsuario" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 1, "Empresa BlaBla", false, null },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 2, "Market Empresa", false, null },
-                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 3, "Empresa Eletro", false, null },
-                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 4, "Empresa Papel", false, null },
-                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 5, "Empresa Rainiken", false, null },
-                    { 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 6, "Empresa squol", false, null },
-                    { 7, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 7, "Empresa suifiti", false, null }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, null, "Empresa BlaBla", false, null },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, null, "Market Empresa", false, null },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, null, "Empresa Eletro", false, null },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, null, "Empresa Papel", false, null },
+                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, null, "Empresa Rainiken", false, null },
+                    { 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, null, "Empresa squol", false, null },
+                    { 7, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, null, "Empresa suifiti", false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -303,7 +329,7 @@ namespace ECOCRIA.Migrations
             migrationBuilder.InsertData(
                 table: "TB_USUARIOS",
                 columns: new[] { "IdUsuario", "DataAcesso", "EmailUsuario", "Latitude", "Longitude", "NomeUsuario", "PasswordHash", "PasswordSalt", "Perfil" },
-                values: new object[] { 1, null, "seuEmail@gmail.com", -23.520024100000001, -46.596497999999997, "admin", new byte[] { 20, 190, 192, 164, 116, 57, 158, 84, 28, 110, 5, 149, 229, 73, 166, 220, 60, 74, 58, 93, 224, 0, 127, 211, 180, 59, 114, 247, 104, 97, 181, 116, 38, 235, 69, 159, 66, 216, 129, 74, 131, 206, 136, 76, 236, 251, 114, 236, 41, 20, 62, 235, 81, 29, 222, 188, 142, 231, 199, 67, 20, 50, 80, 200, 96, 208, 11, 97, 43, 78, 144, 249, 250, 35, 28, 115, 209, 162, 128, 127, 77, 255, 204, 242, 245, 90, 133, 244, 221, 156, 18, 78, 10, 20, 214, 39, 91, 82, 176, 118, 221, 25, 155, 79, 148, 169, 108, 9, 211, 26, 12, 120, 249, 70, 238, 97, 240, 75, 208, 207, 136, 113, 58, 50, 86, 66, 221, 151 }, null, "Admin" });
+                values: new object[] { 1, null, "seuEmail@gmail.com", -23.520024100000001, -46.596497999999997, "admin", new byte[] { 201, 175, 60, 237, 43, 158, 168, 211, 226, 6, 127, 76, 169, 217, 40, 88, 226, 2, 147, 89, 158, 172, 106, 60, 4, 201, 190, 77, 29, 0, 188, 187, 165, 49, 197, 201, 108, 60, 237, 146, 94, 158, 208, 67, 175, 55, 23, 55, 146, 211, 48, 201, 39, 223, 181, 235, 124, 203, 146, 11, 137, 57, 18, 216, 98, 0, 149, 232, 160, 223, 144, 176, 237, 93, 242, 159, 211, 226, 153, 80, 134, 179, 237, 152, 148, 154, 133, 99, 176, 103, 92, 94, 18, 115, 66, 0, 199, 114, 93, 4, 159, 58, 32, 22, 185, 86, 210, 252, 192, 87, 230, 242, 52, 180, 223, 162, 119, 209, 167, 218, 117, 244, 45, 62, 230, 108, 91, 87 }, null, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "TB_PONTOS",
@@ -317,34 +343,6 @@ namespace ECOCRIA.Migrations
                     { 5, 2103, "São Paulo", "Av. Guilherme Cotching, 726 - Vila Maria Baixa", 5, "Latasa Reciclagem", "SP" },
                     { 6, 2004, "São Paulo", "R. Henrique Felipe da Costa, 650 - Vila Guilherme", 6, "Ciclopel Com de Aparas de Papel", "SP" },
                     { 7, 2104, "São Paulo", "R. Eli, 190 - Vila Maria Baixa", 7, "COLETATEC", "SP" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "TB_COLETAS",
-                columns: new[] { "IdColeta", "IdPonto", "IdUsuario", "MomentoColeta" },
-                values: new object[,]
-                {
-                    { 1, 1, 1, new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7880) },
-                    { 2, 2, 2, new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7897) },
-                    { 3, 3, 3, new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7899) },
-                    { 4, 4, 4, new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7901) },
-                    { 5, 5, 5, new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7903) },
-                    { 6, 6, 6, new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7905) },
-                    { 7, 7, 7, new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7907) }
-                });
-
-            migrationBuilder.InsertData(
-                table: "TB_COLETAITENS",
-                columns: new[] { "IdItemColeta", "IdColeta", "IdMaterial", "IdOrdemGrandeza", "QuantidadeColeta" },
-                values: new object[,]
-                {
-                    { 1, 1, 1, 1, 1 },
-                    { 2, 2, 2, 2, 2 },
-                    { 3, 3, 3, 3, 1 },
-                    { 4, 4, 4, 4, 2 },
-                    { 5, 5, 51, 5, 1 },
-                    { 6, 6, 6, 6, 2 },
-                    { 7, 7, 7, 7, 1 }
                 });
 
             migrationBuilder.CreateIndex(

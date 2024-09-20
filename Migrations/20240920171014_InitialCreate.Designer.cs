@@ -12,7 +12,7 @@ using TCCEcoCria.Data;
 namespace ECOCRIA.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240919181515_InitialCreate")]
+    [Migration("20240920171014_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -59,73 +59,52 @@ namespace ECOCRIA.Migrations
                         new
                         {
                             IdItemColeta = 1,
-                            IdColeta = 1,
-                            IdMaterial = 1,
-                            IdOrdemGrandeza = 1,
                             QuantidadeColeta = 1
                         },
                         new
                         {
                             IdItemColeta = 2,
-                            IdColeta = 2,
-                            IdMaterial = 2,
-                            IdOrdemGrandeza = 2,
                             QuantidadeColeta = 2
                         },
                         new
                         {
                             IdItemColeta = 3,
-                            IdColeta = 3,
-                            IdMaterial = 3,
-                            IdOrdemGrandeza = 3,
                             QuantidadeColeta = 1
                         },
                         new
                         {
                             IdItemColeta = 4,
-                            IdColeta = 4,
-                            IdMaterial = 4,
-                            IdOrdemGrandeza = 4,
                             QuantidadeColeta = 2
                         },
                         new
                         {
                             IdItemColeta = 5,
-                            IdColeta = 5,
-                            IdMaterial = 51,
-                            IdOrdemGrandeza = 5,
                             QuantidadeColeta = 1
                         },
                         new
                         {
                             IdItemColeta = 6,
-                            IdColeta = 6,
-                            IdMaterial = 6,
-                            IdOrdemGrandeza = 6,
                             QuantidadeColeta = 2
                         },
                         new
                         {
                             IdItemColeta = 7,
-                            IdColeta = 7,
-                            IdMaterial = 7,
-                            IdOrdemGrandeza = 7,
                             QuantidadeColeta = 1
                         });
                 });
 
             modelBuilder.Entity("Models.Coletas", b =>
                 {
-                    b.Property<int?>("IdColeta")
+                    b.Property<int>("IdColeta")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("IdColeta"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdColeta"));
 
-                    b.Property<int>("IdPonto")
+                    b.Property<int?>("IdPonto")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdUsuario")
+                    b.Property<int?>("IdUsuario")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("MomentoColeta")
@@ -143,51 +122,37 @@ namespace ECOCRIA.Migrations
                         new
                         {
                             IdColeta = 1,
-                            IdPonto = 1,
-                            IdUsuario = 1,
-                            MomentoColeta = new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7880)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9043)
                         },
                         new
                         {
                             IdColeta = 2,
-                            IdPonto = 2,
-                            IdUsuario = 2,
-                            MomentoColeta = new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7897)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9057)
                         },
                         new
                         {
                             IdColeta = 3,
-                            IdPonto = 3,
-                            IdUsuario = 3,
-                            MomentoColeta = new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7899)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9059)
                         },
                         new
                         {
                             IdColeta = 4,
-                            IdPonto = 4,
-                            IdUsuario = 4,
-                            MomentoColeta = new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7901)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9061)
                         },
                         new
                         {
                             IdColeta = 5,
-                            IdPonto = 5,
-                            IdUsuario = 5,
-                            MomentoColeta = new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7903)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9063)
                         },
                         new
                         {
                             IdColeta = 6,
-                            IdPonto = 6,
-                            IdUsuario = 6,
-                            MomentoColeta = new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7905)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9064)
                         },
                         new
                         {
                             IdColeta = 7,
-                            IdPonto = 7,
-                            IdUsuario = 7,
-                            MomentoColeta = new DateTime(2024, 9, 19, 15, 15, 15, 268, DateTimeKind.Local).AddTicks(7907)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9066)
                         });
                 });
 
@@ -335,7 +300,6 @@ namespace ECOCRIA.Migrations
                             IdParceiro = 1,
                             DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoacaoParceiro = 500.0,
-                            IdUsuario = 1,
                             NomeParceiro = "Empresa BlaBla",
                             StatusParceiro = false
                         },
@@ -344,7 +308,6 @@ namespace ECOCRIA.Migrations
                             IdParceiro = 2,
                             DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoacaoParceiro = 500.0,
-                            IdUsuario = 2,
                             NomeParceiro = "Market Empresa",
                             StatusParceiro = false
                         },
@@ -353,7 +316,6 @@ namespace ECOCRIA.Migrations
                             IdParceiro = 3,
                             DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoacaoParceiro = 500.0,
-                            IdUsuario = 3,
                             NomeParceiro = "Empresa Eletro",
                             StatusParceiro = false
                         },
@@ -362,7 +324,6 @@ namespace ECOCRIA.Migrations
                             IdParceiro = 4,
                             DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoacaoParceiro = 500.0,
-                            IdUsuario = 4,
                             NomeParceiro = "Empresa Papel",
                             StatusParceiro = false
                         },
@@ -371,7 +332,6 @@ namespace ECOCRIA.Migrations
                             IdParceiro = 5,
                             DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoacaoParceiro = 500.0,
-                            IdUsuario = 5,
                             NomeParceiro = "Empresa Rainiken",
                             StatusParceiro = false
                         },
@@ -380,7 +340,6 @@ namespace ECOCRIA.Migrations
                             IdParceiro = 6,
                             DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoacaoParceiro = 500.0,
-                            IdUsuario = 6,
                             NomeParceiro = "Empresa squol",
                             StatusParceiro = false
                         },
@@ -389,7 +348,6 @@ namespace ECOCRIA.Migrations
                             IdParceiro = 7,
                             DataDoacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoacaoParceiro = 500.0,
-                            IdUsuario = 7,
                             NomeParceiro = "Empresa suifiti",
                             StatusParceiro = false
                         });
@@ -416,7 +374,8 @@ namespace ECOCRIA.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("Varchar");
 
-                    b.Property<int>("IdTipoPonto")
+                    b.Property<int?>("IdTipoPonto")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("NomePonto")
@@ -716,7 +675,7 @@ namespace ECOCRIA.Migrations
                             Latitude = -23.520024100000001,
                             Longitude = -46.596497999999997,
                             NomeUsuario = "admin",
-                            PasswordHash = new byte[] { 20, 190, 192, 164, 116, 57, 158, 84, 28, 110, 5, 149, 229, 73, 166, 220, 60, 74, 58, 93, 224, 0, 127, 211, 180, 59, 114, 247, 104, 97, 181, 116, 38, 235, 69, 159, 66, 216, 129, 74, 131, 206, 136, 76, 236, 251, 114, 236, 41, 20, 62, 235, 81, 29, 222, 188, 142, 231, 199, 67, 20, 50, 80, 200, 96, 208, 11, 97, 43, 78, 144, 249, 250, 35, 28, 115, 209, 162, 128, 127, 77, 255, 204, 242, 245, 90, 133, 244, 221, 156, 18, 78, 10, 20, 214, 39, 91, 82, 176, 118, 221, 25, 155, 79, 148, 169, 108, 9, 211, 26, 12, 120, 249, 70, 238, 97, 240, 75, 208, 207, 136, 113, 58, 50, 86, 66, 221, 151 },
+                            PasswordHash = new byte[] { 201, 175, 60, 237, 43, 158, 168, 211, 226, 6, 127, 76, 169, 217, 40, 88, 226, 2, 147, 89, 158, 172, 106, 60, 4, 201, 190, 77, 29, 0, 188, 187, 165, 49, 197, 201, 108, 60, 237, 146, 94, 158, 208, 67, 175, 55, 23, 55, 146, 211, 48, 201, 39, 223, 181, 235, 124, 203, 146, 11, 137, 57, 18, 216, 98, 0, 149, 232, 160, 223, 144, 176, 237, 93, 242, 159, 211, 226, 153, 80, 134, 179, 237, 152, 148, 154, 133, 99, 176, 103, 92, 94, 18, 115, 66, 0, 199, 114, 93, 4, 159, 58, 32, 22, 185, 86, 210, 252, 192, 87, 230, 242, 52, 180, 223, 162, 119, 209, 167, 218, 117, 244, 45, 62, 230, 108, 91, 87 },
                             Perfil = "Admin"
                         });
                 });
@@ -747,15 +706,11 @@ namespace ECOCRIA.Migrations
                 {
                     b.HasOne("Models.Pontos", "Pontos")
                         .WithMany("Coletas")
-                        .HasForeignKey("IdPonto")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdPonto");
 
                     b.HasOne("Models.Usuario", "Usuario")
                         .WithMany("Coletas")
-                        .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdUsuario");
 
                     b.Navigation("Pontos");
 

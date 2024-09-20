@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ECOCRIA")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3fe30aaa8fff388b83bab1e103d339046f6928bb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+49e00229cb891e80394989cb0491f9b7a9e4d909")]
 [assembly: System.Reflection.AssemblyProductAttribute("ECOCRIA")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ECOCRIA")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
