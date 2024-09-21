@@ -97,7 +97,7 @@ namespace TCCEcoCria.Data
             new Parceiros() { IdParceiro = 6, NomeParceiro = "Empresa squol", DoacaoParceiro= 500, IdUsuario = 6 },      
             new Parceiros() { IdParceiro = 7, NomeParceiro = "Empresa suifiti", DoacaoParceiro= 500, IdUsuario = 7 }
         );
-
+          //inicio da criacao de usuário padrão
             Usuario user = new Usuario();
             Criptografia.CriarPasswordHash("123456", out byte[]hash, out byte[]salt);
             user.IdUsuario = 1;
@@ -110,8 +110,8 @@ namespace TCCEcoCria.Data
             user.Latitude = -23.5200241;
             user.Longitude = -46.596498;
 
-            modelBuilder.Entity<Usuario>().HasData(user);
-            modelBuilder.Entity<Usuario>().Property(u => u.Perfil).HasDefaultValue("Cliente");
+            modelBuilder.Entity<Usuario>().HasData(user); //fim da criacao do usuario padrao
+            modelBuilder.Entity<Usuario>().Property(u => u.Perfil).HasDefaultValue("Cliente"); //Define que se o perfil nao for informado, o valor padrao sera jogador
 
         }
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)//convensao para configurar a base, regras

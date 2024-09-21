@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ECOCRIA.Migrations
 {
     /// <inheritdoc />
-    public partial class Pontos : Migration
+    public partial class InicialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -52,6 +54,20 @@ namespace ECOCRIA.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TB_MATERIAIS",
+                columns: table => new
+                {
+                    IdMaterial = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NomeMaterial = table.Column<string>(type: "Varchar(200)", maxLength: 200, nullable: false),
+                    Material = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TB_MATERIAIS", x => x.IdMaterial);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TB_ORDEMGRANDEZA",
                 columns: table => new
                 {
@@ -74,7 +90,8 @@ namespace ECOCRIA.Migrations
                     EnderecoPonto = table.Column<string>(type: "Varchar(200)", maxLength: 200, nullable: false),
                     CepEndereco = table.Column<int>(type: "int", nullable: false),
                     UfEndereco = table.Column<string>(type: "Varchar(200)", maxLength: 200, nullable: false),
-                    CidadeEndereco = table.Column<string>(type: "Varchar(200)", maxLength: 200, nullable: false)
+                    CidadeEndereco = table.Column<string>(type: "Varchar(200)", maxLength: 200, nullable: false),
+                    IdTipoPonto = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -134,20 +151,6 @@ namespace ECOCRIA.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TB_TIPOPONTO",
-                columns: table => new
-                {
-                    IdTipoPonto = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DescricaoTipoPonto = table.Column<string>(type: "Varchar(200)", maxLength: 200, nullable: false),
-                    StatusTipoPonto = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TB_TIPOPONTO", x => x.IdTipoPonto);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TB_TROCAS",
                 columns: table => new
                 {
@@ -160,12 +163,105 @@ namespace ECOCRIA.Migrations
                     table.PrimaryKey("PK_TB_TROCAS", x => x.IdTroca);
                 });
 
-            migrationBuilder.UpdateData(
+            migrationBuilder.CreateTable(
+                name: "TB_USUARIOS",
+                columns: table => new
+                {
+                    IdUsuario = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NomeUsuario = table.Column<string>(type: "Varchar(200)", maxLength: 200, nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: true),
+                    Longitude = table.Column<double>(type: "float", nullable: true),
+                    Perfil = table.Column<string>(type: "Varchar(200)", maxLength: 200, nullable: false, defaultValue: "Cliente"),
+                    EmailUsuario = table.Column<string>(type: "Varchar(200)", maxLength: 200, nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    DataAcesso = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TB_USUARIOS", x => x.IdUsuario);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TB_TIPOPONTO",
+                columns: table => new
+                {
+                    IdTipoPonto = table.Column<int>(type: "int", nullable: false),
+                    DescricaoTipoPonto = table.Column<string>(type: "Varchar(200)", maxLength: 200, nullable: false),
+                    StatusTipoPonto = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TB_TIPOPONTO", x => x.IdTipoPonto);
+                    table.ForeignKey(
+                        name: "FK_TB_TIPOPONTO_TB_PONTOS_IdTipoPonto",
+                        column: x => x.IdTipoPonto,
+                        principalTable: "TB_PONTOS",
+                        principalColumn: "IdPonto",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TB_PARCEIROS",
+                columns: table => new
+                {
+                    IdParceiro = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NomeParceiro = table.Column<string>(type: "Varchar(200)", maxLength: 200, nullable: false),
+                    StatusParceiro = table.Column<bool>(type: "bit", nullable: false),
+                    DoacaoParceiro = table.Column<double>(type: "float", nullable: false),
+                    DataDoacao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IdUsuario = table.Column<int>(type: "int", nullable: true),
+                    UsuarioIdUsuario = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TB_PARCEIROS", x => x.IdParceiro);
+                    table.ForeignKey(
+                        name: "FK_TB_PARCEIROS_TB_USUARIOS_UsuarioIdUsuario",
+                        column: x => x.UsuarioIdUsuario,
+                        principalTable: "TB_USUARIOS",
+                        principalColumn: "IdUsuario");
+                });
+
+            migrationBuilder.InsertData(
+                table: "TB_MATERIAIS",
+                columns: new[] { "IdMaterial", "Material", "NomeMaterial" },
+                values: new object[,]
+                {
+                    { 1, 1, "Garrafa Pet" },
+                    { 2, 4, "Papelão" },
+                    { 3, 1, "Saco Plástico" },
+                    { 4, 2, "Lata de Feijoada" },
+                    { 5, 2, "Latinha" },
+                    { 6, 1, "Garrafa Pet" },
+                    { 7, 3, "Jarra de Vidro" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TB_PARCEIROS",
+                columns: new[] { "IdParceiro", "DataDoacao", "DoacaoParceiro", "IdUsuario", "NomeParceiro", "StatusParceiro", "UsuarioIdUsuario" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 1, "Empresa BlaBla", false, null },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 2, "Market Empresa", false, null },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 3, "Empresa Eletro", false, null },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 4, "Empresa Papel", false, null },
+                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 5, "Empresa Rainiken", false, null },
+                    { 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 6, "Empresa squol", false, null },
+                    { 7, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 500.0, 7, "Empresa suifiti", false, null }
+                });
+
+            migrationBuilder.InsertData(
                 table: "TB_USUARIOS",
-                keyColumn: "IdUsuario",
-                keyValue: 1,
-                column: "PasswordHash",
-                value: new byte[] { 58, 21, 63, 103, 119, 209, 30, 120, 56, 64, 9, 101, 232, 111, 116, 120, 60, 102, 242, 31, 9, 145, 4, 43, 107, 243, 116, 236, 227, 210, 48, 53, 252, 61, 81, 76, 167, 206, 214, 120, 236, 32, 204, 150, 41, 101, 221, 51, 214, 31, 50, 254, 134, 136, 241, 76, 31, 40, 138, 51, 177, 90, 22, 187, 218, 32, 59, 28, 77, 14, 81, 50, 74, 153, 138, 33, 228, 238, 156, 124, 211, 192, 15, 18, 70, 219, 8, 157, 227, 75, 6, 1, 57, 86, 161, 23, 236, 152, 139, 173, 125, 65, 202, 233, 37, 120, 252, 37, 151, 230, 229, 87, 18, 116, 39, 204, 101, 105, 52, 29, 167, 142, 117, 63, 61, 58, 102, 138 });
+                columns: new[] { "IdUsuario", "DataAcesso", "EmailUsuario", "Latitude", "Longitude", "NomeUsuario", "PasswordHash", "PasswordSalt", "Perfil" },
+                values: new object[] { 1, null, "seuEmail@gmail.com", -23.520024100000001, -46.596497999999997, "admin", new byte[] { 235, 218, 148, 20, 120, 115, 104, 20, 108, 118, 251, 148, 117, 226, 74, 125, 55, 226, 39, 200, 160, 135, 195, 3, 197, 44, 148, 165, 82, 243, 102, 53, 31, 172, 26, 143, 151, 25, 75, 234, 47, 176, 37, 8, 116, 163, 58, 15, 13, 195, 237, 30, 38, 167, 89, 59, 24, 132, 32, 79, 69, 148, 232, 110, 87, 132, 221, 19, 46, 210, 41, 28, 171, 62, 15, 119, 232, 51, 19, 68, 134, 233, 131, 123, 208, 9, 183, 216, 85, 183, 140, 144, 202, 194, 121, 28, 196, 197, 219, 225, 236, 1, 151, 224, 245, 210, 177, 127, 126, 5, 124, 181, 39, 184, 168, 177, 5, 78, 209, 120, 69, 104, 37, 115, 41, 12, 62, 116 }, null, "Admin" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TB_PARCEIROS_UsuarioIdUsuario",
+                table: "TB_PARCEIROS",
+                column: "UsuarioIdUsuario");
         }
 
         /// <inheritdoc />
@@ -181,10 +277,13 @@ namespace ECOCRIA.Migrations
                 name: "TB_COMENTARIOS");
 
             migrationBuilder.DropTable(
+                name: "TB_MATERIAIS");
+
+            migrationBuilder.DropTable(
                 name: "TB_ORDEMGRANDEZA");
 
             migrationBuilder.DropTable(
-                name: "TB_PONTOS");
+                name: "TB_PARCEIROS");
 
             migrationBuilder.DropTable(
                 name: "TB_PONTOSMATERIAIS");
@@ -204,12 +303,11 @@ namespace ECOCRIA.Migrations
             migrationBuilder.DropTable(
                 name: "TB_TROCAS");
 
-            migrationBuilder.UpdateData(
-                table: "TB_USUARIOS",
-                keyColumn: "IdUsuario",
-                keyValue: 1,
-                column: "PasswordHash",
-                value: new byte[] { 233, 212, 81, 184, 27, 82, 133, 230, 117, 217, 16, 70, 250, 82, 24, 122, 30, 226, 215, 235, 174, 125, 238, 198, 157, 18, 165, 78, 143, 44, 239, 190, 21, 216, 198, 120, 15, 107, 186, 24, 149, 109, 53, 16, 6, 34, 254, 10, 153, 87, 30, 95, 212, 207, 202, 133, 231, 178, 47, 116, 199, 188, 208, 2, 140, 4, 76, 238, 13, 19, 153, 101, 93, 226, 250, 162, 254, 67, 73, 243, 86, 224, 98, 185, 173, 247, 78, 49, 74, 244, 206, 129, 103, 154, 189, 198, 197, 91, 111, 98, 132, 62, 6, 104, 203, 254, 37, 194, 166, 210, 152, 115, 13, 32, 203, 129, 165, 20, 101, 5, 45, 176, 134, 75, 174, 30, 239, 172 });
+            migrationBuilder.DropTable(
+                name: "TB_USUARIOS");
+
+            migrationBuilder.DropTable(
+                name: "TB_PONTOS");
         }
     }
 }
