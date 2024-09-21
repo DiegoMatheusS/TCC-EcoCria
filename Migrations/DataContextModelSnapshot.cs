@@ -261,7 +261,10 @@ namespace ECOCRIA.Migrations
             modelBuilder.Entity("Models.Pontos", b =>
                 {
                     b.Property<int>("IdPonto")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPonto"));
 
                     b.Property<int>("CepEndereco")
                         .HasColumnType("int");
@@ -275,6 +278,9 @@ namespace ECOCRIA.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("Varchar");
+
+                    b.Property<int>("IdTipoPonto")
+                        .HasColumnType("int");
 
                     b.Property<string>("NomePonto")
                         .IsRequired()
@@ -368,18 +374,12 @@ namespace ECOCRIA.Migrations
             modelBuilder.Entity("Models.TipoDePonto", b =>
                 {
                     b.Property<int>("IdTipoPonto")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTipoPonto"));
 
                     b.Property<string>("DescricaoTipoPonto")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("Varchar");
-
-                    b.Property<int>("IdPonto")
-                        .HasColumnType("int");
 
                     b.Property<bool>("StatusTipoPonto")
                         .HasColumnType("bit");
@@ -457,7 +457,7 @@ namespace ECOCRIA.Migrations
                             Latitude = -23.520024100000001,
                             Longitude = -46.596497999999997,
                             NomeUsuario = "admin",
-                            PasswordHash = new byte[] { 93, 178, 207, 244, 151, 242, 194, 132, 187, 137, 114, 201, 129, 32, 27, 12, 20, 115, 93, 45, 188, 131, 71, 230, 123, 98, 79, 51, 218, 154, 147, 155, 145, 236, 23, 150, 91, 73, 161, 136, 207, 241, 59, 41, 116, 155, 145, 101, 151, 93, 97, 225, 31, 145, 43, 120, 128, 161, 246, 184, 9, 188, 112, 24, 64, 40, 97, 84, 239, 236, 104, 142, 6, 199, 144, 204, 249, 78, 246, 237, 93, 209, 227, 8, 132, 52, 152, 104, 52, 137, 32, 249, 109, 48, 124, 223, 48, 39, 61, 211, 186, 169, 190, 230, 25, 228, 246, 253, 227, 246, 91, 26, 155, 55, 141, 9, 255, 189, 135, 67, 231, 83, 229, 13, 253, 203, 167, 219 },
+                            PasswordHash = new byte[] { 235, 218, 148, 20, 120, 115, 104, 20, 108, 118, 251, 148, 117, 226, 74, 125, 55, 226, 39, 200, 160, 135, 195, 3, 197, 44, 148, 165, 82, 243, 102, 53, 31, 172, 26, 143, 151, 25, 75, 234, 47, 176, 37, 8, 116, 163, 58, 15, 13, 195, 237, 30, 38, 167, 89, 59, 24, 132, 32, 79, 69, 148, 232, 110, 87, 132, 221, 19, 46, 210, 41, 28, 171, 62, 15, 119, 232, 51, 19, 68, 134, 233, 131, 123, 208, 9, 183, 216, 85, 183, 140, 144, 202, 194, 121, 28, 196, 197, 219, 225, 236, 1, 151, 224, 245, 210, 177, 127, 126, 5, 124, 181, 39, 184, 168, 177, 5, 78, 209, 120, 69, 104, 37, 115, 41, 12, 62, 116 },
                             Perfil = "Admin"
                         });
                 });
@@ -471,20 +471,20 @@ namespace ECOCRIA.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("Models.Pontos", b =>
+            modelBuilder.Entity("Models.TipoDePonto", b =>
                 {
-                    b.HasOne("Models.TipoDePonto", "TipoDePonto")
-                        .WithOne("Pontos")
-                        .HasForeignKey("Models.Pontos", "IdPonto")
+                    b.HasOne("Models.Pontos", "Pontos")
+                        .WithOne("TipoDePonto")
+                        .HasForeignKey("Models.TipoDePonto", "IdTipoPonto")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TipoDePonto");
+                    b.Navigation("Pontos");
                 });
 
-            modelBuilder.Entity("Models.TipoDePonto", b =>
+            modelBuilder.Entity("Models.Pontos", b =>
                 {
-                    b.Navigation("Pontos")
+                    b.Navigation("TipoDePonto")
                         .IsRequired();
                 });
 

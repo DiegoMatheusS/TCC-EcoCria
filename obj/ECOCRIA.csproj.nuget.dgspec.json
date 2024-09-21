@@ -1,25 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Matheus\\OneDrive\\Documentos\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj": {}
+    "C:\\Users\\dmsdi\\OneDrive\\Área de Trabalho\\ECOCRIA\\TCC-EcoCria\\TCC-EcoCria\\ECOCRIA.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Matheus\\OneDrive\\Documentos\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj": {
+    "C:\\Users\\dmsdi\\OneDrive\\Área de Trabalho\\ECOCRIA\\TCC-EcoCria\\TCC-EcoCria\\ECOCRIA.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Matheus\\OneDrive\\Documentos\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj",
+        "projectUniqueName": "C:\\Users\\dmsdi\\OneDrive\\Área de Trabalho\\ECOCRIA\\TCC-EcoCria\\TCC-EcoCria\\ECOCRIA.csproj",
         "projectName": "ECOCRIA",
-        "projectPath": "C:\\Users\\Matheus\\OneDrive\\Documentos\\ETEC\\3°SEM\\ECOCRIA\\ECOCRIA.csproj",
-        "packagesPath": "C:\\Users\\Matheus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Matheus\\OneDrive\\Documentos\\ETEC\\3°SEM\\ECOCRIA\\obj\\",
+        "projectPath": "C:\\Users\\dmsdi\\OneDrive\\Área de Trabalho\\ECOCRIA\\TCC-EcoCria\\TCC-EcoCria\\ECOCRIA.csproj",
+        "packagesPath": "C:\\Users\\dmsdi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\dmsdi\\OneDrive\\Área de Trabalho\\ECOCRIA\\TCC-EcoCria\\TCC-EcoCria\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Matheus\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\dmsdi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -51,6 +58,10 @@
               "target": "Package",
               "version": "[12.0.1, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
               "version": "[8.0.8, )"
@@ -69,6 +80,10 @@
               "target": "Package",
               "version": "[8.0.8, )"
             },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
@@ -76,6 +91,10 @@
             "Swashbuckle.AspNetCore.Swagger": {
               "target": "Package",
               "version": "[6.7.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.0.2, )"
             }
           },
           "imports": [
@@ -97,7 +116,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.301/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

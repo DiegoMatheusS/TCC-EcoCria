@@ -26,7 +26,14 @@ namespace TCCEcoCria.Models
 
         [JsonPropertyName("service")]
         public string? Servico { get; set; }
-        
+
+        public List<Locacao> Tipo { get; set; } = new List<Locacao>();
+
+
+        public List<Coordenadas> Latitude { get; set; } = new List<Coordenadas>{ };
+
+
+        public List<Coordenadas> Longitude { get; set; } = new List<Coordenadas>{ };
 
     }
 }
