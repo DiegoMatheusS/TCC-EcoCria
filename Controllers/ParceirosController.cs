@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using Models;
 using TCCEcoCria.Data;
 
@@ -31,14 +32,14 @@ namespace TCCEcoCria.Controllers
             new Parceiros() { IdParceiro = 7, StatusParceiro= true, NomeParceiro = "Empresa suifiti", DoacaoParceiro= 10500.95, DataDoacao = DateTime.Now, IdUsuario = 7 }
         };
 
-       /* [HttpGet("{id}")] //Buscar pelo id
+        [HttpGet("{id}")] //Buscar pelo id
         public async Task<IActionResult> GetSingle(int id)
         {
             try
             {
                 Parceiros? p = await _context.TB_PARCEIROS               
-                    .Include(us => us.IdUsuario)   //Inclui na propriedade Usuario do objeto                   
-                    .FirstOrDefaultAsync(pBusca => pBusca.IdParceiro == id);
+                .Include(us => us.IdUsuario)   //Inclui na propriedade Usuario do objeto                   
+                .FirstOrDefaultAsync(pBusca => pBusca.IdParceiro == id);
 
                 return Ok(p);
             }
@@ -55,7 +56,6 @@ namespace TCCEcoCria.Controllers
             try
             {
                 List<Parceiros> lista = await _context.TB_PARCEIROS.ToListAsync();
-
                 return Ok(lista);
             }
             catch (System.Exception ex)
@@ -63,54 +63,59 @@ namespace TCCEcoCria.Controllers
 
                 return BadRequest(ex.Message);
             }
-        }*/
-        [HttpGet("GetAll")]
-        public IActionResult Get()
-        {
-            return Ok(TipoParceiro);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
-        {
-            return Ok(TipoParceiro.FirstOrDefault(mat => mat.IdParceiro == id));
-        } 
-
-
         [HttpPut]
-        public IActionResult UpdateParceiro(Parceiros i)
+        public async Task<IActionResult> UpdateParceiro(Parceiros i)
         {
-            Parceiros parceiroAlterado = TipoParceiro.Find(mat => mat.IdParceiro == i.IdParceiro);
-            parceiroAlterado.NomeParceiro = i.NomeParceiro;
-            parceiroAlterado.DoacaoParceiro = i.DoacaoParceiro;
-            parceiroAlterado.DataDoacao = i.DataDoacao;
+            try
+            {
+                Parceiros parceiroAlterado = TipoParceiro.Find(mat => mat.IdParceiro == i.IdParceiro);
 
-            return Ok(TipoParceiro);
+                parceiroAlterado.NomeParceiro = i.NomeParceiro;
+                parceiroAlterado.DoacaoParceiro = i.DoacaoParceiro;
+                parceiroAlterado.DataDoacao = i.DataDoacao;
+
+                return Ok(i);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         } 
 
         [HttpPost]
-        public IActionResult AddParceiro(Parceiros novoParceiro)
+        public async Task<IActionResult> AddParceiro(Parceiros novoParceiro)
         {
-            TipoParceiro.Add(novoParceiro);
-            return Ok(TipoParceiro);
+            try
+            {
+                await _context.TB_PARCEIROS.AddAsync(novoParceiro);
+                await _context.SaveChangesAsync();
+
+                return Ok(novoParceiro.IdParceiro);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }  
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            TipoParceiro.RemoveAll(mat => mat.IdParceiro == id);
+            try
+            {
+                Parceiros removerP = await _context.TB_PARCEIROS.FirstOrDefaultAsync(i => i.IdParceiro == id);
+                _context.TB_PARCEIROS.Remove(removerP);
+                int att = await _context.SaveChangesAsync();
 
-            return Ok(TipoParceiro);
+                return Ok(att);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         } 
-
-
-
-
-
-
-
-
-
 
 
     }
