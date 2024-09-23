@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using TCCEcoCria.Data;
 
@@ -31,16 +32,35 @@ namespace TCC.Controllers
         };
 
         [HttpPost]
-        public IActionResult AddTroca(Trocas novaTroca)
+        public async Task<IActionResult> AddTroca(Trocas novaTroca)
         {
-            TipoTroca.Add(novaTroca);
-            return Ok(TipoTroca);
+            try
+            {
+                await _context.TB_TROCAS.AddAsync(novaTroca);
+                await _context.SaveChangesAsync();
+
+                return Ok(novaTroca.IdTroca);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
+        public async Task<IActionResult> GetSingle(int id)
         {
-            return Ok(TipoTroca.FirstOrDefault(mat => mat.IdTroca == id));
+            try
+            {
+                Trocas t = await _context.TB_TROCAS.FirstOrDefaultAsync(x => x.IdTroca == id);
+                return Ok(t);
+
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         } 
 
         

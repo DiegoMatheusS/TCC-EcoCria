@@ -4533,23 +4533,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\dmsdi\\.nuget\\packages\\": {},
+    "C:\\Users\\etechas\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dmsdi\\OneDrive\\Área de Trabalho\\ECOCRIA\\TCC-EcoCria\\TCC-EcoCria\\ECOCRIA.csproj",
+      "projectUniqueName": "D:\\MatheusLeal3DS\\TCCECOCRIA\\ECOCRIA.csproj",
       "projectName": "ECOCRIA",
-      "projectPath": "C:\\Users\\dmsdi\\OneDrive\\Área de Trabalho\\ECOCRIA\\TCC-EcoCria\\TCC-EcoCria\\ECOCRIA.csproj",
-      "packagesPath": "C:\\Users\\dmsdi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dmsdi\\OneDrive\\Área de Trabalho\\ECOCRIA\\TCC-EcoCria\\TCC-EcoCria\\obj\\",
+      "projectPath": "D:\\MatheusLeal3DS\\TCCECOCRIA\\ECOCRIA.csproj",
+      "packagesPath": "C:\\Users\\etechas\\.nuget\\packages\\",
+      "outputPath": "D:\\MatheusLeal3DS\\TCCECOCRIA\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\dmsdi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\etechas\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4648,7 +4648,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
