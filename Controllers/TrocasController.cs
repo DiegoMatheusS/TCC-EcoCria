@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using TCCEcoCria.Data;
 
@@ -35,7 +36,14 @@ namespace TCC.Controllers
         {
             try
             {
+<<<<<<< HEAD
 
+=======
+                await _context.TB_TROCAS.AddAsync(novaTroca);
+                await _context.SaveChangesAsync();
+
+                return Ok(novaTroca.IdTroca);
+>>>>>>> origin/main
             }
             catch(System.Exception ex)
             {
@@ -49,6 +57,11 @@ namespace TCC.Controllers
         {
             try
             {
+<<<<<<< HEAD
+=======
+                Trocas t = await _context.TB_TROCAS.FirstOrDefaultAsync(x => x.IdTroca == id);
+                return Ok(t);
+>>>>>>> origin/main
 
             }
             catch(System.Exception ex)

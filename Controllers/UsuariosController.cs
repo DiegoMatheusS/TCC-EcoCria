@@ -9,22 +9,57 @@ using TCCEcoCria.Models;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using TCCEcoCria.Utils;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 
 
 namespace TCCEcoCria.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsuariosController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public UsuariosController(DataContext context)
+        private readonly IConfiguration _configuration;
+
+        public UsuariosController(DataContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
+        
+                private string CriarToken(Usuario usuario)
+        {
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
+                new Claim(ClaimTypes.Name, usuario.NomeUsuario)
+            };
+
+            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("ConfiguracaoToken:Chave").Value));
+
+            SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = creds
+            };
+
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+
+        }
+        
        private async Task<bool> UsuarioExistente(string NomeUsuario)
         {
             if (await _context.TB_USUARIOS.AnyAsync(x => x.NomeUsuario.ToLower() == NomeUsuario.ToLower()))
@@ -34,6 +69,7 @@ namespace TCCEcoCria.Controllers
             return false;
         }
 
+        [AllowAnonymous] //permitir anonymous
         [HttpPost("Registrar")]
         public async Task<IActionResult> RegistraUsuario(Usuario user)
         {
@@ -57,7 +93,7 @@ namespace TCCEcoCria.Controllers
             }
         }
 
-
+        [AllowAnonymous] //permitir anonymous
         [HttpPost("Autenticar")]
         public async Task<IActionResult> AtutenticarUsuario(Usuario credenciais)
         {
@@ -65,7 +101,6 @@ namespace TCCEcoCria.Controllers
             {
                 Usuario? usuario = await _context.TB_USUARIOS
                     .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower().Equals(credenciais.NomeUsuario.ToLower()));
-                    
                 if (usuario == null)
                 {
                     throw new System.Exception("Usuário não encontrado.");
@@ -77,6 +112,14 @@ namespace TCCEcoCria.Controllers
                 }
                 else
                 {
+                    usuario.DataAcesso = DateTime.Now;
+                    _context.TB_USUARIOS.Update(usuario);
+                    await _context.SaveChangesAsync();
+
+                    usuario.PasswordHash = null;
+                    usuario.PasswordSalt = null;
+                    usuario.Token = CriarToken(usuario);
+
                     return Ok(usuario);
                 }
 
@@ -88,7 +131,8 @@ namespace TCCEcoCria.Controllers
             }
         }
 
-        [HttpGet("{Id}")]
+
+        [HttpGet("{IdUsuario}")]
         public async Task<IActionResult> GetUsuario(int usuarioId)
         {
             try
@@ -104,7 +148,7 @@ namespace TCCEcoCria.Controllers
             }
         }
 
-        /*
+        
         [HttpGet("GetByLogin/{login}")]
         public async Task<IActionResult> GetUsuario(string login)
         {
@@ -112,7 +156,7 @@ namespace TCCEcoCria.Controllers
             {
                 //List exigirá o using System.Collections.Generic
                 Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do login
-                .FirstOrDefaultAsync(x => x.Username.ToLower() == login.ToLower());
+                .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower() == login.ToLower());
                 return Ok(usuario);
             }
             catch (System.Exception ex)
@@ -128,11 +172,11 @@ namespace TCCEcoCria.Controllers
             try
             {
                 Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do Id
-                .FirstOrDefaultAsync(x => x.Id == u.Id);
+                .FirstOrDefaultAsync(x => x.IdUsuario == u.IdUsuario);
                 usuario.Latitude = u.Latitude;
                 usuario.Longitude = u.Longitude;
                 var attach = _context.Attach(usuario);
-                attach.Property(x => x.Id).IsModified = false;
+                attach.Property(x => x.IdUsuario).IsModified = false;
                 attach.Property(x => x.Latitude).IsModified = true;
                 attach.Property(x => x.Longitude).IsModified = true;
                 int linhasAfetadas = await _context.SaveChangesAsync(); //Confirma a alteração no banco
@@ -149,11 +193,11 @@ namespace TCCEcoCria.Controllers
             try
             {
                 Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do Id
-                .FirstOrDefaultAsync(x => x.Id == u.Id);
-                usuario.Email = u.Email;
+                .FirstOrDefaultAsync(x => x.IdUsuario == u.IdUsuario);
+                usuario.EmailUsuario = u.EmailUsuario;
                 var attach = _context.Attach(usuario);
-                attach.Property(x => x.Id).IsModified = false;
-                attach.Property(x => x.Email).IsModified = true;
+                attach.Property(x => x.IdUsuario).IsModified = false;
+                attach.Property(x => x.EmailUsuario).IsModified = true;
                 int linhasAfetadas = await _context.SaveChangesAsync(); //Confirma a alteração no banco
                 return Ok(linhasAfetadas); //Retorna as linhas afetadas (Geralmente sempre 1 linha msm)
             }
@@ -162,25 +206,6 @@ namespace TCCEcoCria.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        //Método para alteração da foto
-        /*[HttpPut("AtualizarFoto")]
-        public async Task<IActionResult> AtualizarFoto(Usuario u)
-        {
-            try
-            {
-                Usuario usuario = await _context.TB_USUARIOS
-                .FirstOrDefaultAsync(x => x.Id == u.Id);
-                usuario.Foto = u.Foto;
-                var attach = _context.Attach(usuario);
-                attach.Property(x => x.Id).IsModified = false;
-                attach.Property(x => x.Foto).IsModified = true;
-                int linhasAfetadas = await _context.SaveChangesAsync();
-                return Ok(linhasAfetadas);
-            }
-            catch (System.Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }*/
+        
     }
 }

@@ -12,8 +12,8 @@ using TCCEcoCria.Data;
 namespace ECOCRIA.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240912193019_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240921192733_InicialMigration")]
+    partial class InicialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,59 @@ namespace ECOCRIA.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Models.ColetaItens", b =>
+                {
+                    b.Property<int>("IdItemColeta")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdItemColeta"));
+
+                    b.Property<int>("QuantidadeColeta")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdItemColeta");
+
+                    b.ToTable("TB_COLETAITENS", (string)null);
+                });
+
+            modelBuilder.Entity("Models.Coletas", b =>
+                {
+                    b.Property<int>("IdColeta")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdColeta"));
+
+                    b.Property<DateTime>("MomentoColeta")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("IdColeta");
+
+                    b.ToTable("TB_COLETAS", (string)null);
+                });
+
+            modelBuilder.Entity("Models.Comentarios", b =>
+                {
+                    b.Property<int>("IdComentario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdComentario"));
+
+                    b.Property<DateTime>("MomentoComentario")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TextoComentario")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("Varchar");
+
+                    b.HasKey("IdComentario");
+
+                    b.ToTable("TB_COMENTARIOS", (string)null);
+                });
 
             modelBuilder.Entity("Models.Materiais", b =>
                 {
@@ -88,6 +141,24 @@ namespace ECOCRIA.Migrations
                             Material = 3,
                             NomeMaterial = "Jarra de Vidro"
                         });
+                });
+
+            modelBuilder.Entity("Models.OrdemDeGrandeza", b =>
+                {
+                    b.Property<int>("IdOrdemGrandeza")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdOrdemGrandeza"));
+
+                    b.Property<string>("DescricaoOrdemGrandeza")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("Varchar");
+
+                    b.HasKey("IdOrdemGrandeza");
+
+                    b.ToTable("TB_ORDEMGRANDEZA", (string)null);
                 });
 
             modelBuilder.Entity("Models.Parceiros", b =>
@@ -190,6 +261,153 @@ namespace ECOCRIA.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Models.Pontos", b =>
+                {
+                    b.Property<int>("IdPonto")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPonto"));
+
+                    b.Property<int>("CepEndereco")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CidadeEndereco")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("Varchar");
+
+                    b.Property<string>("EnderecoPonto")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("Varchar");
+
+                    b.Property<int>("IdTipoPonto")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NomePonto")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("Varchar");
+
+                    b.Property<string>("UfEndereco")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("Varchar");
+
+                    b.HasKey("IdPonto");
+
+                    b.ToTable("TB_PONTOS", (string)null);
+                });
+
+            modelBuilder.Entity("Models.PontoseMateriais", b =>
+                {
+                    b.Property<string>("DescricaoPontomaterial")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("Varchar");
+
+                    b.Property<bool>("StatusPontoMaterial")
+                        .HasColumnType("bit");
+
+                    b.ToTable("TB_PONTOSMATERIAIS", (string)null);
+                });
+
+            modelBuilder.Entity("Models.Pontuacao", b =>
+                {
+                    b.Property<int>("QuantidadePontos")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("StatusPontos")
+                        .HasColumnType("bit");
+
+                    b.ToTable("TB_PONTUACAO", (string)null);
+                });
+
+            modelBuilder.Entity("Models.Premios", b =>
+                {
+                    b.Property<int>("IdPremio")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPremio"));
+
+                    b.Property<string>("DescricaoPremio")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("Varchar");
+
+                    b.Property<int>("PontosPremio")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuantidadePremio")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdPremio");
+
+                    b.ToTable("TB_PREMIOS", (string)null);
+                });
+
+            modelBuilder.Entity("Models.Publicacao", b =>
+                {
+                    b.Property<int>("IdPublicacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPublicacao"));
+
+                    b.Property<DateTime>("DataPublicacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TextoPublicacao")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("Varchar");
+
+                    b.Property<string>("TituloPublicacao")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("Varchar");
+
+                    b.HasKey("IdPublicacao");
+
+                    b.ToTable("TB_PUBLICACAO", (string)null);
+                });
+
+            modelBuilder.Entity("Models.TipoDePonto", b =>
+                {
+                    b.Property<int>("IdTipoPonto")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DescricaoTipoPonto")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("Varchar");
+
+                    b.Property<bool>("StatusTipoPonto")
+                        .HasColumnType("bit");
+
+                    b.HasKey("IdTipoPonto");
+
+                    b.ToTable("TB_TIPOPONTO", (string)null);
+                });
+
+            modelBuilder.Entity("Models.Trocas", b =>
+                {
+                    b.Property<int>("IdTroca")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTroca"));
+
+                    b.Property<DateTime>("MomentoTroca")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("IdTroca");
+
+                    b.ToTable("TB_TROCAS", (string)null);
+                });
+
             modelBuilder.Entity("Models.Usuario", b =>
                 {
                     b.Property<int>("IdUsuario")
@@ -242,7 +460,7 @@ namespace ECOCRIA.Migrations
                             Latitude = -23.520024100000001,
                             Longitude = -46.596497999999997,
                             NomeUsuario = "admin",
-                            PasswordHash = new byte[] { 233, 212, 81, 184, 27, 82, 133, 230, 117, 217, 16, 70, 250, 82, 24, 122, 30, 226, 215, 235, 174, 125, 238, 198, 157, 18, 165, 78, 143, 44, 239, 190, 21, 216, 198, 120, 15, 107, 186, 24, 149, 109, 53, 16, 6, 34, 254, 10, 153, 87, 30, 95, 212, 207, 202, 133, 231, 178, 47, 116, 199, 188, 208, 2, 140, 4, 76, 238, 13, 19, 153, 101, 93, 226, 250, 162, 254, 67, 73, 243, 86, 224, 98, 185, 173, 247, 78, 49, 74, 244, 206, 129, 103, 154, 189, 198, 197, 91, 111, 98, 132, 62, 6, 104, 203, 254, 37, 194, 166, 210, 152, 115, 13, 32, 203, 129, 165, 20, 101, 5, 45, 176, 134, 75, 174, 30, 239, 172 },
+                            PasswordHash = new byte[] { 235, 218, 148, 20, 120, 115, 104, 20, 108, 118, 251, 148, 117, 226, 74, 125, 55, 226, 39, 200, 160, 135, 195, 3, 197, 44, 148, 165, 82, 243, 102, 53, 31, 172, 26, 143, 151, 25, 75, 234, 47, 176, 37, 8, 116, 163, 58, 15, 13, 195, 237, 30, 38, 167, 89, 59, 24, 132, 32, 79, 69, 148, 232, 110, 87, 132, 221, 19, 46, 210, 41, 28, 171, 62, 15, 119, 232, 51, 19, 68, 134, 233, 131, 123, 208, 9, 183, 216, 85, 183, 140, 144, 202, 194, 121, 28, 196, 197, 219, 225, 236, 1, 151, 224, 245, 210, 177, 127, 126, 5, 124, 181, 39, 184, 168, 177, 5, 78, 209, 120, 69, 104, 37, 115, 41, 12, 62, 116 },
                             Perfil = "Admin"
                         });
                 });
@@ -254,6 +472,23 @@ namespace ECOCRIA.Migrations
                         .HasForeignKey("UsuarioIdUsuario");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Models.TipoDePonto", b =>
+                {
+                    b.HasOne("Models.Pontos", "Pontos")
+                        .WithOne("TipoDePonto")
+                        .HasForeignKey("Models.TipoDePonto", "IdTipoPonto")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pontos");
+                });
+
+            modelBuilder.Entity("Models.Pontos", b =>
+                {
+                    b.Navigation("TipoDePonto")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Models.Usuario", b =>
