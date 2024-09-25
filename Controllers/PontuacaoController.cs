@@ -39,7 +39,7 @@ namespace TCC.Controllers
                 await _context.TB_PONTUACAO.AddAsync(novaPontucao);
                 await _context.SaveChangesAsync();
 
-                return Ok(novaPontucao.IdUsuario);
+                return Ok(novaPontucao.IdPontuacao);
             }
             catch(System.Exception ex)
             {
@@ -53,7 +53,7 @@ namespace TCC.Controllers
         {
             try
             {
-                Pontuacao p = await _context.TB_PONTUACAO.FirstOrDefaultAsync(x => x.IdUsuario == id);
+                Pontuacao p = await _context.TB_PONTUACAO.FirstOrDefaultAsync(x => x.IdPontuacao == id);
                 return Ok(p);                
             }
             catch(System.Exception ex)

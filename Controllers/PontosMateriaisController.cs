@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using TCCEcoCria.Data;
 
@@ -21,20 +22,30 @@ namespace TCC.Controllers
 
         private static List<PontoseMateriais> TipoPontoMaterial = new List<PontoseMateriais>()
         {
-            new PontoseMateriais() { DescricaoPontomaterial = "Somente Eletrônicos", StatusPontoMaterial = true},
-            new PontoseMateriais() { DescricaoPontomaterial = "Reciclagem em geral", StatusPontoMaterial = true},
-            new PontoseMateriais() { DescricaoPontomaterial = "Apenas descartes químicos", StatusPontoMaterial = true},
-            new PontoseMateriais() { DescricaoPontomaterial = "Reciclagem", StatusPontoMaterial = true},
-            new PontoseMateriais() { DescricaoPontomaterial = "Descarte de óleo", StatusPontoMaterial = true},
-            new PontoseMateriais() { DescricaoPontomaterial = "Entulhos", StatusPontoMaterial = true},      
-            new PontoseMateriais() { DescricaoPontomaterial = "Lixo", StatusPontoMaterial = true}
+            new PontoseMateriais() { IdPontoMaterial = 1, DescricaoPontomaterial = "Somente Eletrônicos", StatusPontoMaterial = true},
+            new PontoseMateriais() { IdPontoMaterial = 2, DescricaoPontomaterial = "Reciclagem em geral", StatusPontoMaterial = true},
+            new PontoseMateriais() { IdPontoMaterial = 3, DescricaoPontomaterial = "Apenas descartes químicos", StatusPontoMaterial = true},
+            new PontoseMateriais() { IdPontoMaterial = 4, DescricaoPontomaterial = "Reciclagem", StatusPontoMaterial = true},
+            new PontoseMateriais() { IdPontoMaterial = 5, DescricaoPontomaterial = "Descarte de óleo", StatusPontoMaterial = true},
+            new PontoseMateriais() { IdPontoMaterial = 6, DescricaoPontomaterial = "Entulhos", StatusPontoMaterial = true},      
+            new PontoseMateriais() { IdPontoMaterial = 7, DescricaoPontomaterial = "Lixo", StatusPontoMaterial = true}
         };
 
-       /* [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetSingle(int id)
         {
-           return Ok(PontosMateriais.FirstOrDefault(mat => mat.IdPonto == id));
-        } */
+            try
+            {
+                PontoseMateriais pm = await _context.TB_PONTOSMATERIAIS.FirstOrDefaultAsync(x => x.IdPontoMaterial == id);
+
+                return Ok(pm);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        } 
+
 
         
     }

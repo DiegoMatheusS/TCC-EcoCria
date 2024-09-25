@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TCCEcoCria.Data;
 
@@ -11,9 +12,11 @@ using TCCEcoCria.Data;
 namespace ECOCRIA.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240920185946_Pontuacao")]
+    partial class Pontuacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -600,7 +603,10 @@ namespace ECOCRIA.Migrations
             modelBuilder.Entity("Models.TipoDePonto", b =>
                 {
                     b.Property<int>("IdTipoPonto")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTipoPonto"));
 
                     b.Property<string>("DescricaoTipoPonto")
                         .IsRequired()
@@ -787,7 +793,7 @@ namespace ECOCRIA.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("Models.TipoDePonto", b =>
+            modelBuilder.Entity("Models.Pontos", b =>
                 {
                     b.HasOne("Models.TipoDePonto", "TipoDePonto")
                         .WithOne("Pontos")
@@ -795,7 +801,7 @@ namespace ECOCRIA.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Pontos");
+                    b.Navigation("TipoDePonto");
                 });
 
             modelBuilder.Entity("Models.PontoseMateriais", b =>

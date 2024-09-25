@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TCCEcoCria.Data;
 
@@ -11,9 +12,11 @@ using TCCEcoCria.Data;
 namespace ECOCRIA.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240920171014_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,37 +122,37 @@ namespace ECOCRIA.Migrations
                         new
                         {
                             IdColeta = 1,
-                            MomentoColeta = new DateTime(2024, 9, 20, 15, 59, 45, 514, DateTimeKind.Local).AddTicks(3901)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9043)
                         },
                         new
                         {
                             IdColeta = 2,
-                            MomentoColeta = new DateTime(2024, 9, 20, 15, 59, 45, 514, DateTimeKind.Local).AddTicks(3918)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9057)
                         },
                         new
                         {
                             IdColeta = 3,
-                            MomentoColeta = new DateTime(2024, 9, 20, 15, 59, 45, 514, DateTimeKind.Local).AddTicks(3920)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9059)
                         },
                         new
                         {
                             IdColeta = 4,
-                            MomentoColeta = new DateTime(2024, 9, 20, 15, 59, 45, 514, DateTimeKind.Local).AddTicks(3921)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9061)
                         },
                         new
                         {
                             IdColeta = 5,
-                            MomentoColeta = new DateTime(2024, 9, 20, 15, 59, 45, 514, DateTimeKind.Local).AddTicks(3923)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9063)
                         },
                         new
                         {
                             IdColeta = 6,
-                            MomentoColeta = new DateTime(2024, 9, 20, 15, 59, 45, 514, DateTimeKind.Local).AddTicks(3924)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9064)
                         },
                         new
                         {
                             IdColeta = 7,
-                            MomentoColeta = new DateTime(2024, 9, 20, 15, 59, 45, 514, DateTimeKind.Local).AddTicks(3926)
+                            MomentoColeta = new DateTime(2024, 9, 20, 14, 10, 13, 522, DateTimeKind.Local).AddTicks(9066)
                         });
                 });
 
@@ -182,9 +185,6 @@ namespace ECOCRIA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdMaterial"));
 
-                    b.Property<int>("IdOrdemGrandeza")
-                        .HasColumnType("int");
-
                     b.Property<int>("Material")
                         .HasColumnType("int");
 
@@ -193,12 +193,7 @@ namespace ECOCRIA.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("Varchar");
 
-                    b.Property<int?>("OrdemDeGrandezaIdOrdemGrandeza")
-                        .HasColumnType("int");
-
                     b.HasKey("IdMaterial");
-
-                    b.HasIndex("OrdemDeGrandezaIdOrdemGrandeza");
 
                     b.ToTable("TB_MATERIAIS", (string)null);
 
@@ -206,49 +201,42 @@ namespace ECOCRIA.Migrations
                         new
                         {
                             IdMaterial = 1,
-                            IdOrdemGrandeza = 0,
                             Material = 1,
                             NomeMaterial = "Garrafa Pet"
                         },
                         new
                         {
                             IdMaterial = 2,
-                            IdOrdemGrandeza = 0,
                             Material = 4,
                             NomeMaterial = "Papelão"
                         },
                         new
                         {
                             IdMaterial = 3,
-                            IdOrdemGrandeza = 0,
                             Material = 1,
                             NomeMaterial = "Saco Plástico"
                         },
                         new
                         {
                             IdMaterial = 4,
-                            IdOrdemGrandeza = 0,
                             Material = 2,
                             NomeMaterial = "Lata de Feijoada"
                         },
                         new
                         {
                             IdMaterial = 5,
-                            IdOrdemGrandeza = 0,
                             Material = 2,
                             NomeMaterial = "Latinha"
                         },
                         new
                         {
                             IdMaterial = 6,
-                            IdOrdemGrandeza = 0,
                             Material = 1,
                             NomeMaterial = "Garrafa Pet"
                         },
                         new
                         {
                             IdMaterial = 7,
-                            IdOrdemGrandeza = 0,
                             Material = 3,
                             NomeMaterial = "Jarra de Vidro"
                         });
@@ -487,62 +475,19 @@ namespace ECOCRIA.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("Varchar");
 
-                    b.Property<int>("IdMaterial")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdPonto")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdPontoMaterial")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MateriaisIdMaterial")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PontosIdPonto")
-                        .HasColumnType("int");
-
                     b.Property<bool>("StatusPontoMaterial")
                         .HasColumnType("bit");
-
-                    b.HasIndex("MateriaisIdMaterial");
-
-                    b.HasIndex("PontosIdPonto");
 
                     b.ToTable("TB_PONTOSMATERIAIS", (string)null);
                 });
 
             modelBuilder.Entity("Models.Pontuacao", b =>
                 {
-                    b.Property<int>("IdPontuacao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPontuacao"));
-
-                    b.Property<int?>("ColetasIdColeta")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdColeta")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdUsuario")
-                        .HasColumnType("int");
-
                     b.Property<int>("QuantidadePontos")
                         .HasColumnType("int");
 
                     b.Property<bool>("StatusPontos")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("UsuarioIdUsuario")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdPontuacao");
-
-                    b.HasIndex("ColetasIdColeta");
-
-                    b.HasIndex("UsuarioIdUsuario");
 
                     b.ToTable("TB_PONTUACAO", (string)null);
                 });
@@ -600,7 +545,10 @@ namespace ECOCRIA.Migrations
             modelBuilder.Entity("Models.TipoDePonto", b =>
                 {
                     b.Property<int>("IdTipoPonto")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTipoPonto"));
 
                     b.Property<string>("DescricaoTipoPonto")
                         .IsRequired()
@@ -727,7 +675,7 @@ namespace ECOCRIA.Migrations
                             Latitude = -23.520024100000001,
                             Longitude = -46.596497999999997,
                             NomeUsuario = "admin",
-                            PasswordHash = new byte[] { 93, 194, 100, 207, 115, 148, 117, 130, 78, 97, 182, 85, 216, 157, 90, 201, 71, 28, 106, 11, 76, 9, 231, 229, 223, 9, 96, 180, 169, 27, 139, 212, 7, 130, 55, 95, 162, 121, 59, 144, 0, 9, 230, 89, 242, 51, 210, 193, 176, 41, 173, 126, 70, 113, 80, 192, 75, 11, 132, 215, 79, 130, 97, 43, 4, 86, 62, 184, 17, 151, 72, 84, 62, 50, 180, 186, 217, 13, 11, 28, 45, 66, 26, 204, 208, 247, 87, 33, 102, 249, 39, 62, 237, 187, 254, 59, 224, 150, 64, 178, 55, 27, 29, 150, 155, 117, 106, 252, 23, 53, 172, 240, 60, 180, 32, 160, 2, 178, 201, 166, 95, 113, 45, 115, 161, 233, 214, 200 },
+                            PasswordHash = new byte[] { 201, 175, 60, 237, 43, 158, 168, 211, 226, 6, 127, 76, 169, 217, 40, 88, 226, 2, 147, 89, 158, 172, 106, 60, 4, 201, 190, 77, 29, 0, 188, 187, 165, 49, 197, 201, 108, 60, 237, 146, 94, 158, 208, 67, 175, 55, 23, 55, 146, 211, 48, 201, 39, 223, 181, 235, 124, 203, 146, 11, 137, 57, 18, 216, 98, 0, 149, 232, 160, 223, 144, 176, 237, 93, 242, 159, 211, 226, 153, 80, 134, 179, 237, 152, 148, 154, 133, 99, 176, 103, 92, 94, 18, 115, 66, 0, 199, 114, 93, 4, 159, 58, 32, 22, 185, 86, 210, 252, 192, 87, 230, 242, 52, 180, 223, 162, 119, 209, 167, 218, 117, 244, 45, 62, 230, 108, 91, 87 },
                             Perfil = "Admin"
                         });
                 });
@@ -769,15 +717,6 @@ namespace ECOCRIA.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("Models.Materiais", b =>
-                {
-                    b.HasOne("Models.OrdemDeGrandeza", "OrdemDeGrandeza")
-                        .WithMany()
-                        .HasForeignKey("OrdemDeGrandezaIdOrdemGrandeza");
-
-                    b.Navigation("OrdemDeGrandeza");
-                });
-
             modelBuilder.Entity("Models.Parceiros", b =>
                 {
                     b.HasOne("Models.Usuario", "Usuario")
@@ -787,7 +726,7 @@ namespace ECOCRIA.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("Models.TipoDePonto", b =>
+            modelBuilder.Entity("Models.Pontos", b =>
                 {
                     b.HasOne("Models.TipoDePonto", "TipoDePonto")
                         .WithOne("Pontos")
@@ -795,37 +734,7 @@ namespace ECOCRIA.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Pontos");
-                });
-
-            modelBuilder.Entity("Models.PontoseMateriais", b =>
-                {
-                    b.HasOne("Models.Materiais", "Materiais")
-                        .WithMany()
-                        .HasForeignKey("MateriaisIdMaterial");
-
-                    b.HasOne("Models.Pontos", "Pontos")
-                        .WithMany()
-                        .HasForeignKey("PontosIdPonto");
-
-                    b.Navigation("Materiais");
-
-                    b.Navigation("Pontos");
-                });
-
-            modelBuilder.Entity("Models.Pontuacao", b =>
-                {
-                    b.HasOne("Models.Coletas", "Coletas")
-                        .WithMany()
-                        .HasForeignKey("ColetasIdColeta");
-
-                    b.HasOne("Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioIdUsuario");
-
-                    b.Navigation("Coletas");
-
-                    b.Navigation("Usuario");
+                    b.Navigation("TipoDePonto");
                 });
 
             modelBuilder.Entity("Models.Coletas", b =>

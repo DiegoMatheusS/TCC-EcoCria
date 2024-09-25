@@ -131,15 +131,30 @@ namespace TCCEcoCria.Controllers
             }
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                Usuario removerU = await _context.TB_USUARIOS.FirstOrDefaultAsync(r => r.IdUsuario == id);
+                _context.TB_USUARIOS.Remove(removerU);
+                int att = await _context.SaveChangesAsync();
+                return Ok(att);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        } 
+
 
         [HttpGet("{IdUsuario}")]
         public async Task<IActionResult> GetUsuario(int usuarioId)
         {
             try
             {
-                //List exigirá o using System.Collections.Generic
-                Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do Id
-                .FirstOrDefaultAsync(x => x.IdUsuario == usuarioId);
+                Usuario usuario = await _context.TB_USUARIOS.FirstOrDefaultAsync(x => x.IdUsuario == usuarioId);
+
                 return Ok(usuario);
             }
             catch (System.Exception ex)

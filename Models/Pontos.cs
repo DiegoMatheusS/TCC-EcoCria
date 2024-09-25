@@ -14,9 +14,14 @@ namespace Models
         public int CepEndereco { get; set; }
         public string UfEndereco { get; set; } = string.Empty;
         public string CidadeEndereco { get; set; } = string.Empty;
+        
+        public TipoDePonto? TipoDePonto {get; set; } = null!;
+        
+        [JsonIgnore]
+        public int? IdTipoPonto {get; set; }
 
-        public TipoDePonto TipoDePonto {get; set; } = null!;
-        public int IdTipoPonto {get; set; }
+        [JsonIgnore]
+        public List<Coletas>? Coletas {get; set;}
 
  
 

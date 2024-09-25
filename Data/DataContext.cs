@@ -61,7 +61,7 @@ namespace TCCEcoCria.Data
             modelBuilder.Entity<OrdemDeGrandeza>().HasKey(m => m.IdOrdemGrandeza);
             modelBuilder.Entity<Pontos>().HasKey(m => m.IdPonto);
             modelBuilder.Entity<PontoseMateriais>().HasNoKey();
-            modelBuilder.Entity<Pontuacao>().HasNoKey();
+            modelBuilder.Entity<Pontuacao>().HasKey(m => m.IdPontuacao);
             modelBuilder.Entity<Premios>().HasKey(m => m.IdPremio);
             modelBuilder.Entity<Publicacao>().HasKey(m => m.IdPublicacao);
             modelBuilder.Entity<TipoDePonto>().HasKey(m => m.IdTipoPonto);
@@ -71,12 +71,38 @@ namespace TCCEcoCria.Data
             modelBuilder.Entity<Pontos>()
                 .HasOne(e => e.TipoDePonto)
                 .WithOne(e => e.Pontos)
-                .HasForeignKey<TipoDePonto>(e => e.IdTipoPonto)
+                .HasForeignKey<Pontos>(e => e.IdTipoPonto)
                 .IsRequired();
+            
+            modelBuilder.Entity<Coletas>()
+                .HasOne(e => e.Pontos)
+                .WithMany(e => e.Coletas)
+                .HasForeignKey(e => e.IdPonto);
 
-                 
+            modelBuilder.Entity<Coletas>()
+                .HasOne(e => e.Usuario)
+                .WithMany(e => e.Coletas)
+                .HasForeignKey(e => e.IdUsuario);
 
-       modelBuilder.Entity<Materiais>().HasData
+            modelBuilder.Entity<Coletas>()
+                .HasMany(e => e.ColetaItens)
+                .WithOne(e => e.Coletas)
+                .HasForeignKey(e => e.IdColeta)
+                .OnDelete(DeleteBehavior.NoAction);
+
+             modelBuilder.Entity<ColetaItens>()
+                .HasOne(e => e.Materiais)
+                .WithMany(e => e.ColetaItens)
+                .HasForeignKey(e => e.IdMaterial);
+
+            modelBuilder.Entity<ColetaItens>()
+                .HasOne(e => e.OrdemDeGrandeza)
+                .WithMany(e => e.ColetaItens)
+                .HasForeignKey(e => e.IdOrdemGrandeza);
+
+
+
+        modelBuilder.Entity<Materiais>().HasData
         (
             new Materiais() { IdMaterial = 1, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico},
             new Materiais() { IdMaterial = 2, NomeMaterial = "Papelão", Material=MateriaisEnun.Papel},
@@ -89,13 +115,57 @@ namespace TCCEcoCria.Data
 
         modelBuilder.Entity<Parceiros>().HasData
         (
-            new Parceiros() { IdParceiro = 1, NomeParceiro = "Empresa BlaBla", DoacaoParceiro= 500, IdUsuario = 1 },
-            new Parceiros() { IdParceiro = 2, NomeParceiro = "Market Empresa", DoacaoParceiro= 500 , IdUsuario = 2 },
-            new Parceiros() { IdParceiro = 3, NomeParceiro = "Empresa Eletro", DoacaoParceiro= 500, IdUsuario = 3 },
-            new Parceiros() { IdParceiro = 4, NomeParceiro = "Empresa Papel", DoacaoParceiro= 500, IdUsuario = 4 },
-            new Parceiros() { IdParceiro = 5, NomeParceiro = "Empresa Rainiken", DoacaoParceiro= 500, IdUsuario = 5 },
-            new Parceiros() { IdParceiro = 6, NomeParceiro = "Empresa squol", DoacaoParceiro= 500, IdUsuario = 6 },      
-            new Parceiros() { IdParceiro = 7, NomeParceiro = "Empresa suifiti", DoacaoParceiro= 500, IdUsuario = 7 }
+            new Parceiros() { IdParceiro = 1, NomeParceiro = "Empresa BlaBla", DoacaoParceiro= 500},
+            new Parceiros() { IdParceiro = 2, NomeParceiro = "Market Empresa", DoacaoParceiro= 500 },
+            new Parceiros() { IdParceiro = 3, NomeParceiro = "Empresa Eletro", DoacaoParceiro= 500},
+            new Parceiros() { IdParceiro = 4, NomeParceiro = "Empresa Papel", DoacaoParceiro= 500},
+            new Parceiros() { IdParceiro = 5, NomeParceiro = "Empresa Rainiken", DoacaoParceiro= 500},
+            new Parceiros() { IdParceiro = 6, NomeParceiro = "Empresa squol", DoacaoParceiro= 500},     
+            new Parceiros() { IdParceiro = 7, NomeParceiro = "Empresa suifiti", DoacaoParceiro= 500} 
+        );
+
+        modelBuilder.Entity<ColetaItens>().HasData
+        (
+            new ColetaItens() { IdItemColeta = 1, QuantidadeColeta = 1},
+            new ColetaItens() { IdItemColeta = 2, QuantidadeColeta = 2},
+            new ColetaItens() { IdItemColeta = 3, QuantidadeColeta = 1},
+            new ColetaItens() { IdItemColeta = 4, QuantidadeColeta = 2},
+            new ColetaItens() { IdItemColeta = 5, QuantidadeColeta = 1},
+            new ColetaItens() { IdItemColeta = 6, QuantidadeColeta = 2},   
+            new ColetaItens() { IdItemColeta = 7, QuantidadeColeta = 1} 
+        );
+
+        modelBuilder.Entity<Coletas>().HasData
+        (
+            new Coletas() { IdColeta = 1, MomentoColeta = DateTime.Now},
+            new Coletas() { IdColeta = 2, MomentoColeta = DateTime.Now},
+            new Coletas() { IdColeta = 3, MomentoColeta = DateTime.Now},
+            new Coletas() { IdColeta = 4, MomentoColeta = DateTime.Now},
+            new Coletas() { IdColeta = 5, MomentoColeta = DateTime.Now},
+            new Coletas() { IdColeta = 6, MomentoColeta = DateTime.Now},     
+            new Coletas() { IdColeta = 7, MomentoColeta = DateTime.Now} 
+        );
+
+        modelBuilder.Entity<Pontos>().HasData
+        (
+            new Pontos() { IdPonto = 1, NomePonto = "São Quirino Sucatas", EnderecoPonto= "Rua São Quirino, 468 - Vila Guilherme", CepEndereco = 02056-070, CidadeEndereco = "São Paulo", UfEndereco = "SP" , IdTipoPonto = 1},
+            new Pontos() { IdPonto = 2, NomePonto = "Reciclagem, Sucatas e Aparas Farpec", EnderecoPonto= "R. Santa Clara, 350 - Brás", CepEndereco = 03025-030, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 2},
+            new Pontos() { IdPonto = 3, NomePonto = "Helio & Richard Reciclagem", EnderecoPonto= "R. Dr. Miguel Paulo Capalbo, 75 - Pari", CepEndereco = 03035-040, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 3},
+            new Pontos() { IdPonto = 4, NomePonto = "Ecoponto Vila Guilherme", EnderecoPonto= "Rua José Bernardo Pinto, 1480 - Vila Guilherme", CepEndereco = 02055-001, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 4},
+            new Pontos() { IdPonto = 5, NomePonto = "Latasa Reciclagem", EnderecoPonto= "Av. Guilherme Cotching, 726 - Vila Maria Baixa", CepEndereco = 02113-010, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 5},
+            new Pontos() { IdPonto = 6, NomePonto = "Ciclopel Com de Aparas de Papel", EnderecoPonto= "R. Henrique Felipe da Costa, 650 - Vila Guilherme", CepEndereco = 02054-050, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 6},      
+            new Pontos() { IdPonto = 7, NomePonto = "COLETATEC", EnderecoPonto= "R. Eli, 190 - Vila Maria Baixa", CepEndereco = 02114-010, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 7}
+        );
+
+        modelBuilder.Entity<TipoDePonto>().HasData
+        (
+            new TipoDePonto() { IdTipoPonto = 1, DescricaoTipoPonto = "Ferro velho em geral"},
+            new TipoDePonto() { IdTipoPonto = 2, DescricaoTipoPonto = "Reciclagem"},
+            new TipoDePonto() { IdTipoPonto = 3, DescricaoTipoPonto = "Reciclagem em geral"},
+            new TipoDePonto() { IdTipoPonto = 4, DescricaoTipoPonto = "Ecoponto"},
+            new TipoDePonto() { IdTipoPonto = 5, DescricaoTipoPonto = "Recilagem de metais"},
+            new TipoDePonto() { IdTipoPonto = 6, DescricaoTipoPonto = "Recilcagem de papel e celulose"},      
+            new TipoDePonto() { IdTipoPonto = 7, DescricaoTipoPonto = "Recilcagem "}
         );
           //inicio da criacao de usuário padrão
             Usuario user = new Usuario();

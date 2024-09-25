@@ -21,37 +21,6 @@ namespace TCCEcoCria.Controllers
             _context = context;
         }
 
-
-
-
-    /*private int ObterUsuarioId() //retorna numero inteiro
-        {
-            return int.Parse(_httpContextAccessor.HttpContext.User //ira fazer leitura do token, para pegar ID
-            .FindFirstValue(ClaimTypes.NameIdentifier));
-        } */  
-
-
-
-
-
-   /* [HttpGet("{id}")] //Buscar pelo id
-        public async Task<IActionResult> GetSingle(int id)
-        {
-            try
-            {
-                Materiais? p = await _context.TB_MATERIAIS               
-                    .Include(us => us.Usuario)   //Inclui na propriedade Usuario do objeto p
-                    //.Include(pm => pm.PontosMateriais)                        
-                    .FirstOrDefaultAsync(pBusca => pBusca.IdMaterial == id);
-
-                return Ok(p);
-            }
-            catch (System.Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }*/
-
     private static List<Materiais> TipoMaterial = new List<Materiais>()
     {
         new Materiais() { IdMaterial = 1, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico},
@@ -63,41 +32,61 @@ namespace TCCEcoCria.Controllers
         new Materiais() { IdMaterial = 7, NomeMaterial = "Jarra de Vidro", Material=MateriaisEnun.Vidro}
     };
 
-    [HttpGet("GetAll")]
-        public IActionResult Get()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSingle(int id)
         {
-            return Ok(TipoMaterial);
-        }
-
-    [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
-        {
-            return Ok(TipoMaterial.FirstOrDefault(mat => mat.IdMaterial == id));
+            try
+            {
+            Materiais m = await _context.TB_MATERIAIS.FirstOrDefaultAsync(x => x.IdMaterial == id);
+            return Ok(m);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }    
 
-    [HttpPost]
-        public IActionResult AddMaterial(Materiais novoMaterial)
+        [HttpPost]
+        public async Task<IActionResult> AddMaterial(Materiais novoMaterial)
         {
-            TipoMaterial.Add(novoMaterial);
-            return Ok(TipoMaterial);
+            try
+            {
+                await _context.TB_MATERIAIS.AddAsync(novoMaterial);
+                await _context.SaveChangesAsync();
+
+                return Ok(novoMaterial.IdMaterial);
+
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }  
 
-    [HttpPut]
-        public IActionResult UpdateMaterial(Materiais i)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            Materiais materialAlterado = TipoMaterial.Find(mat => mat.IdMaterial == i.IdMaterial);
-            materialAlterado.NomeMaterial = i.NomeMaterial;
+            try
+            {
+                Materiais removerM = await _context.TB_MATERIAIS.FirstOrDefaultAsync(x => x.IdMaterial == id);
+                _context.TB_MATERIAIS.Remove(removerM);
+                int att = await _context.SaveChangesAsync();
 
-            return Ok(TipoMaterial);
-        } 
-
-    [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            TipoMaterial.RemoveAll(mat => mat.IdMaterial == id);
-
-            return Ok(TipoMaterial);
+                return Ok(att);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest (ex.Message);
+            }
         }    
     
     }
+
+    
+    /*private int ObterUsuarioId() //retorna numero inteiro
+        {
+            return int.Parse(_httpContextAccessor.HttpContext.User //ira fazer leitura do token, para pegar ID
+            .FindFirstValue(ClaimTypes.NameIdentifier));
+        } */  
+
 }
