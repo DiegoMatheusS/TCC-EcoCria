@@ -29,7 +29,7 @@ namespace TCCEcoCria.Controllers
             new Parceiros() { IdParceiro = 7, StatusParceiro= true, NomeParceiro = "Empresa suifiti", DoacaoParceiro= 10500.95, DataDoacao = DateTime.Now, IdUsuario = 7 }
         };
 
-       /* [HttpGet("{id}")] //Buscar pelo id
+       [HttpGet("{id}")] //Buscar pelo id
         public async Task<IActionResult> GetSingle(int id)
         {
             try
@@ -61,19 +61,8 @@ namespace TCCEcoCria.Controllers
 
                 return BadRequest(ex.Message);
             }
-        }*/
-        [HttpGet("GetAll")]
-        public IActionResult Get()
-        {
-            return Ok(TipoParceiro);
         }
-
-        [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
-        {
-            return Ok(TipoParceiro.FirstOrDefault(mat => mat.IdParceiro == id));
-        } 
-
+        
 
         [HttpPut]
         public IActionResult UpdateParceiro(Parceiros i)
@@ -100,16 +89,6 @@ namespace TCCEcoCria.Controllers
 
             return Ok(TipoParceiro);
         } 
-
-
-
-
-
-
-
-
-
-
 
     }
 }

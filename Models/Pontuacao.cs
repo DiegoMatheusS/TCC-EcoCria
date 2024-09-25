@@ -9,5 +9,9 @@ namespace Models
     {
         public int QuantidadePontos { get; set; }
         public Boolean StatusPontos { get; set; } 
+
+        public Usuario? Usuario { get; set; }
+
+        public int IdUsuario { get; set; }
     }
 }

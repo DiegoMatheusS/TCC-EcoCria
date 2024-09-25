@@ -30,19 +30,32 @@ namespace TCC.Controllers
             new Premios() { IdPremio = 7, DescricaoPremio= "Acréscimo de 50%", QuantidadePremio = 1, PontosPremio= 10}
         };
 
-        [HttpPost]
-        public IActionResult AddPremio(Premios novoPremio)
+        /*[HttpPost]
+        public async Task<IActionResult> AddPremio(Premios novoPremio)
         {
-            TipoPremio.Add(novoPremio);
-            return Ok(TipoPremio);
+            try
+            {
+
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
+        public async Task<IActionResult> GetSingle(int id)
         {
-            return Ok(TipoPremio.FirstOrDefault(mat => mat.IdPremio == id));
+            try
+            {
+
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         } 
 
-        
+     */   
     }
 }

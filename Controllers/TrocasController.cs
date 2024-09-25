@@ -29,20 +29,34 @@ namespace TCC.Controllers
             new Trocas() { IdTroca = 6, MomentoTroca= DateTime.Now},      
             new Trocas() { IdTroca = 7, MomentoTroca= DateTime.Now}
         };
-
+/*
         [HttpPost]
-        public IActionResult AddTroca(Trocas novaTroca)
+        public async Task<IActionResult> AddTroca(Trocas novaTroca)
         {
-            TipoTroca.Add(novaTroca);
-            return Ok(TipoTroca);
+            try
+            {
+
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
+        public async Task<IActionResult> GetSingle(int id)
         {
-            return Ok(TipoTroca.FirstOrDefault(mat => mat.IdTroca == id));
+            try
+            {
+
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         } 
 
-        
+        */
     }
 }
