@@ -31,23 +31,11 @@ namespace TCC.Controllers
             new Premios() { IdPremio = 7, DescricaoPremio= "Acréscimo de 50%", QuantidadePremio = 1, PontosPremio= 10}
         };
 
-<<<<<<< HEAD
         /*[HttpPost]
-=======
-        [HttpPost]
->>>>>>> origin/main
         public async Task<IActionResult> AddPremio(Premios novoPremio)
         {
             try
             {
-<<<<<<< HEAD
-
-=======
-                await _context.TB_PREMIOS.AddAsync(novoPremio);
-                await _context.SaveChangesAsync();
-
-                return Ok(novoPremio.IdPremio);
->>>>>>> origin/main
             }
             catch(System.Exception ex)
             {
@@ -60,12 +48,6 @@ namespace TCC.Controllers
         {
             try
             {
-<<<<<<< HEAD
-
-=======
-                Premios p = await _context.TB_PREMIOS.FirstOrDefaultAsync(x => x.IdPremio == id);
-                return Ok(p);
->>>>>>> origin/main
             }
             catch(System.Exception ex)
             {

@@ -32,11 +32,7 @@ namespace TCCEcoCria.Controllers
             new Parceiros() { IdParceiro = 7, StatusParceiro= true, NomeParceiro = "Empresa suifiti", DoacaoParceiro= 10500.95, DataDoacao = DateTime.Now, IdUsuario = 7 }
         };
 
-<<<<<<< HEAD
        [HttpGet("{id}")] //Buscar pelo id
-=======
-        [HttpGet("{id}")] //Buscar pelo id
->>>>>>> origin/main
         public async Task<IActionResult> GetSingle(int id)
         {
             try
@@ -68,10 +64,6 @@ namespace TCCEcoCria.Controllers
                 return BadRequest(ex.Message);
             }
         }
-<<<<<<< HEAD
-        
-=======
->>>>>>> origin/main
 
         [HttpPut]
         public async Task<IActionResult> UpdateParceiro(Parceiros i)
@@ -125,9 +117,5 @@ namespace TCCEcoCria.Controllers
             }
         } 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/main
     }
 }
