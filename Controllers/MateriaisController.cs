@@ -21,16 +21,7 @@ namespace TCCEcoCria.Controllers
             _context = context;
         }
 
-    private static List<Materiais> TipoMaterial = new List<Materiais>()
-    {
-        new Materiais() { IdMaterial = 1, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico},
-        new Materiais() { IdMaterial = 2, NomeMaterial = "Papelão", Material=MateriaisEnun.Papel},
-        new Materiais() { IdMaterial = 3, NomeMaterial = "Saco Plástico", Material=MateriaisEnun.Plastico},
-        new Materiais() { IdMaterial = 4, NomeMaterial = "Lata de Feijoada", Material=MateriaisEnun.Metal},
-        new Materiais() { IdMaterial = 5, NomeMaterial = "Latinha", Material=MateriaisEnun.Metal},
-        new Materiais() { IdMaterial = 6, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico},      
-        new Materiais() { IdMaterial = 7, NomeMaterial = "Jarra de Vidro", Material=MateriaisEnun.Vidro}
-    };
+   
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSingle(int id)
@@ -62,6 +53,13 @@ namespace TCCEcoCria.Controllers
                 return BadRequest(ex.Message);
             }
         }  
+        
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll(int id)
+        {
+            return Ok(id);
+        }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
