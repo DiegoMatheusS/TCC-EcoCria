@@ -115,6 +115,7 @@ namespace TCCEcoCria.Controllers
                     usuario.DataAcesso = DateTime.Now;
                     _context.TB_USUARIOS.Update(usuario);
                     await _context.SaveChangesAsync();
+                    
 
                     usuario.PasswordHash = null;
                     usuario.PasswordSalt = null;
