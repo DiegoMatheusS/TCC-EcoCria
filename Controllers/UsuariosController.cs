@@ -116,7 +116,6 @@ namespace TCCEcoCria.Controllers
                     _context.TB_USUARIOS.Update(usuario);
                     await _context.SaveChangesAsync();
                     
-
                     usuario.PasswordHash = null;
                     usuario.PasswordSalt = null;
                     usuario.Token = CriarToken(usuario);
