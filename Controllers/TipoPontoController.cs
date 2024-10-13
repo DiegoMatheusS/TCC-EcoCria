@@ -26,6 +26,7 @@ namespace TCC.Controllers
             try
             {
                 await _context.TB_TIPOPONTO.AddAsync(novoPonto);
+                  
                 await _context.SaveChangesAsync();
 
                 return Ok(novoPonto.IdTipoPonto);
@@ -41,7 +42,9 @@ namespace TCC.Controllers
         {
             try
             {
-                TipoDePonto tp = await _context.TB_TIPOPONTO.FirstOrDefaultAsync(bsc => bsc.IdTipoPonto == id);
+                TipoDePonto tp = await _context.TB_TIPOPONTO
+                .Include(x => x.IdTipoPonto)
+                .FirstOrDefaultAsync(bsc => bsc.IdTipoPonto == id);
 
                 return Ok(tp);
             }

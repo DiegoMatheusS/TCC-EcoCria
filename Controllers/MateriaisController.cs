@@ -55,9 +55,19 @@ namespace TCCEcoCria.Controllers
         }  
         
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll(int id)
+        public async Task<IActionResult> Get()
         {
-            return Ok(id);
+            try
+            {
+                List<Materiais> lista = await _context.TB_MATERIAIS.ToListAsync();
+
+                return Ok(lista);
+            }
+            catch (System.Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
         }
 
 

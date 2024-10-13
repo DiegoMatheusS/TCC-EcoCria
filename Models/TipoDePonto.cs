@@ -12,7 +12,8 @@ namespace Models
         public string DescricaoTipoPonto { get; set; } = string.Empty;
         public Boolean StatusTipoPonto { get; set; }
 
+
         [JsonIgnore]
-        public Pontos? Pontos {get; set;}
+       public ICollection<Pontos> Pontos { get; set; }
     }
 }

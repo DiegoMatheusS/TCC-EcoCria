@@ -19,8 +19,8 @@ namespace TCCEcoCria.Data
         public DbSet<Materiais> TB_MATERIAIS{ get; set; }
         public DbSet<Usuario> TB_USUARIOS { get; set; }
         public DbSet<Parceiros> TB_PARCEIROS { get; set; }
-        public DbSet<Coletas> TB_COLETAS{get; set;}
         public DbSet<ColetaItens> TB_COLETAITENS{get; set;}
+        public DbSet<Coletas> TB_COLETAS{get; set;}
         public DbSet<Comentarios> TB_COMENTARIOS{get; set;}
         public DbSet<OrdemDeGrandeza> TB_ORDEMGRANDEZA{get; set;}
         public DbSet<Pontos> TB_PONTOS{get; set;}
@@ -69,10 +69,12 @@ namespace TCCEcoCria.Data
 
 
             modelBuilder.Entity<Pontos>()
-                .HasOne(e => e.TipoDePonto)
-                .WithOne(e => e.Pontos)
-                .HasForeignKey<Pontos>(e => e.IdTipoPonto)
+                .HasOne(e => e.TipoPonto)
+                .WithMany(e => e.Pontos)
+                .HasForeignKey(e => e.IdTipoPonto)
                 .IsRequired();
+
+            base.OnModelCreating(modelBuilder);
             
             modelBuilder.Entity<Coletas>()
                 .HasOne(e => e.Pontos)
@@ -99,6 +101,7 @@ namespace TCCEcoCria.Data
                 .HasOne(e => e.OrdemDeGrandeza)
                 .WithMany(e => e.ColetaItens)
                 .HasForeignKey(e => e.IdOrdemGrandeza);
+                
 
 
 
@@ -111,6 +114,10 @@ namespace TCCEcoCria.Data
             new Materiais() { IdMaterial = 5, NomeMaterial = "Latinha", Material=MateriaisEnun.Metal},
             new Materiais() { IdMaterial = 6, NomeMaterial = "Garrafa Pet", Material=MateriaisEnun.Plastico},      
             new Materiais() { IdMaterial = 7, NomeMaterial = "Jarra de Vidro", Material=MateriaisEnun.Vidro}
+        );
+        modelBuilder.Entity<Comentarios>().HasData
+        (
+            new Comentarios() { IdComentario = 1, MomentoComentario=DateTime.Now, TextoComentario="Blabla"}
         );
 
         modelBuilder.Entity<Parceiros>().HasData
@@ -146,27 +153,29 @@ namespace TCCEcoCria.Data
             new Coletas() { IdColeta = 7, MomentoColeta = DateTime.Now} 
         );
 
-        modelBuilder.Entity<Pontos>().HasData
-        (
-            new Pontos() { IdPonto = 1, NomePonto = "São Quirino Sucatas", EnderecoPonto= "Rua São Quirino, 468 - Vila Guilherme", CepEndereco = 02056-070, CidadeEndereco = "São Paulo", UfEndereco = "SP" , IdTipoPonto = 1},
-            new Pontos() { IdPonto = 2, NomePonto = "Reciclagem, Sucatas e Aparas Farpec", EnderecoPonto= "R. Santa Clara, 350 - Brás", CepEndereco = 03025-030, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 2},
-            new Pontos() { IdPonto = 3, NomePonto = "Helio & Richard Reciclagem", EnderecoPonto= "R. Dr. Miguel Paulo Capalbo, 75 - Pari", CepEndereco = 03035-040, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 3},
-            new Pontos() { IdPonto = 4, NomePonto = "Ecoponto Vila Guilherme", EnderecoPonto= "Rua José Bernardo Pinto, 1480 - Vila Guilherme", CepEndereco = 02055-001, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 4},
-            new Pontos() { IdPonto = 5, NomePonto = "Latasa Reciclagem", EnderecoPonto= "Av. Guilherme Cotching, 726 - Vila Maria Baixa", CepEndereco = 02113-010, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 5},
-            new Pontos() { IdPonto = 6, NomePonto = "Ciclopel Com de Aparas de Papel", EnderecoPonto= "R. Henrique Felipe da Costa, 650 - Vila Guilherme", CepEndereco = 02054-050, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 6},      
-            new Pontos() { IdPonto = 7, NomePonto = "COLETATEC", EnderecoPonto= "R. Eli, 190 - Vila Maria Baixa", CepEndereco = 02114-010, CidadeEndereco = "São Paulo", UfEndereco = "SP", IdTipoPonto = 7}
-        );
-
+       
         modelBuilder.Entity<TipoDePonto>().HasData
         (
-            new TipoDePonto() { IdTipoPonto = 1, DescricaoTipoPonto = "Ferro velho em geral"},
-            new TipoDePonto() { IdTipoPonto = 2, DescricaoTipoPonto = "Reciclagem"},
-            new TipoDePonto() { IdTipoPonto = 3, DescricaoTipoPonto = "Reciclagem em geral"},
-            new TipoDePonto() { IdTipoPonto = 4, DescricaoTipoPonto = "Ecoponto"},
-            new TipoDePonto() { IdTipoPonto = 5, DescricaoTipoPonto = "Recilagem de metais"},
-            new TipoDePonto() { IdTipoPonto = 6, DescricaoTipoPonto = "Recilcagem de papel e celulose"},      
-            new TipoDePonto() { IdTipoPonto = 7, DescricaoTipoPonto = "Recilcagem "}
+            new TipoDePonto() { IdTipoPonto = 1, DescricaoTipoPonto = "Ferro velho em geral", StatusTipoPonto=false},
+            new TipoDePonto() { IdTipoPonto = 2, DescricaoTipoPonto = "Reciclagem", StatusTipoPonto=false},
+            new TipoDePonto() { IdTipoPonto = 3, DescricaoTipoPonto = "Reciclagem em geral", StatusTipoPonto=false},
+            new TipoDePonto() { IdTipoPonto = 4, DescricaoTipoPonto = "Ecoponto", StatusTipoPonto=false},
+            new TipoDePonto() { IdTipoPonto = 5, DescricaoTipoPonto = "Recilagem de metais", StatusTipoPonto=false},
+            new TipoDePonto() { IdTipoPonto = 6, DescricaoTipoPonto = "Recilcagem de papel e celulose", StatusTipoPonto=false},      
+            new TipoDePonto() { IdTipoPonto = 7, DescricaoTipoPonto = "Recilcagem ", StatusTipoPonto=false}
+
         );
+         modelBuilder.Entity<Pontos>().HasData
+        (
+            new Pontos() { IdPonto = 1, NomePonto = "São Quirino Sucatas", EnderecoPonto= "Rua São Quirino, 468 - Vila Guilherme", CepEndereco = 02056-070, CidadeEndereco = "São Paulo", UfEndereco = "SP",IdTipoPonto = 1 },
+            new Pontos() { IdPonto = 2, NomePonto = "Reciclagem, Sucatas e Aparas Farpec", EnderecoPonto= "R. Santa Clara, 350 - Brás", CepEndereco = 03025-030, CidadeEndereco = "São Paulo", UfEndereco = "SP",IdTipoPonto = 2 },
+            new Pontos() { IdPonto = 3, NomePonto = "Helio & Richard Reciclagem", EnderecoPonto= "R. Dr. Miguel Paulo Capalbo, 75 - Pari", CepEndereco = 03035-040, CidadeEndereco = "São Paulo", UfEndereco = "SP",IdTipoPonto = 3 },
+            new Pontos() { IdPonto = 4, NomePonto = "Ecoponto Vila Guilherme", EnderecoPonto= "Rua José Bernardo Pinto, 1480 - Vila Guilherme", CepEndereco = 02055-001, CidadeEndereco = "São Paulo", UfEndereco = "SP",IdTipoPonto = 4 },
+            new Pontos() { IdPonto = 5, NomePonto = "Latasa Reciclagem", EnderecoPonto= "Av. Guilherme Cotching, 726 - Vila Maria Baixa", CepEndereco = 02113-010, CidadeEndereco = "São Paulo", UfEndereco = "SP",IdTipoPonto = 5 },
+            new Pontos() { IdPonto = 6, NomePonto = "Ciclopel Com de Aparas de Papel", EnderecoPonto= "R. Henrique Felipe da Costa, 650 - Vila Guilherme", CepEndereco = 02054-050, CidadeEndereco = "São Paulo", UfEndereco = "SP",IdTipoPonto = 6 },      
+            new Pontos() { IdPonto = 7, NomePonto = "COLETATEC", EnderecoPonto= "R. Eli, 190 - Vila Maria Baixa", CepEndereco = 02114-010, CidadeEndereco = "São Paulo", UfEndereco = "SP",IdTipoPonto = 7 }
+        );
+
           //inicio da criacao de usuário padrão
             Usuario user = new Usuario();
             Criptografia.CriarPasswordHash("123456", out byte[]hash, out byte[]salt);

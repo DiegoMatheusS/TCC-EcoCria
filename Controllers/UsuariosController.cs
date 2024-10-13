@@ -60,9 +60,9 @@ namespace TCCEcoCria.Controllers
 
         }
         
-       private async Task<bool> UsuarioExistente(string NomeUsuario)
+       private async Task<bool> UsuarioExistente(string EmailUsuario)
         {
-            if (await _context.TB_USUARIOS.AnyAsync(x => x.NomeUsuario.ToLower() == NomeUsuario.ToLower()))
+            if (await _context.TB_USUARIOS.AnyAsync(x => x.EmailUsuario.ToLower() == EmailUsuario.ToLower()))
             {
                 return true;
             }
@@ -75,8 +75,8 @@ namespace TCCEcoCria.Controllers
         {
             try
             {
-                if (await UsuarioExistente(user.NomeUsuario))
-                    throw new System.Exception("Nome de usuário já existe");
+                if (await UsuarioExistente(user.EmailUsuario))
+                    throw new System.Exception("Email de usuário já existe");
 
                 Criptografia.CriarPasswordHash(user.PasswordUsuario, out byte[] hash, out byte[] salt);
                 user.PasswordUsuario = string.Empty;
@@ -93,14 +93,14 @@ namespace TCCEcoCria.Controllers
             }
         }
 
-        [AllowAnonymous] //permitir anonymous
+        [AllowAnonymous]
         [HttpPost("Autenticar")]
         public async Task<IActionResult> AtutenticarUsuario(Usuario credenciais)
         {
             try
             {
                 Usuario? usuario = await _context.TB_USUARIOS
-                    .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower().Equals(credenciais.NomeUsuario.ToLower()));
+                    .FirstOrDefaultAsync(x => x.EmailUsuario.ToLower().Equals(credenciais.EmailUsuario.ToLower()));
                 if (usuario == null)
                 {
                     throw new System.Exception("Usuário não encontrado.");

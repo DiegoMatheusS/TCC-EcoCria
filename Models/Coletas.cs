@@ -19,8 +19,7 @@ namespace Models
         public List<ColetaItens> ColetaItens {get; set;} = new List<ColetaItens>();
 
 
-        [JsonIgnore]  // Ignora o campo original para não ser serializado
-        public string FormattedMomentoColeta => MomentoColeta.ToString("dd/MM/yyyy HH:mm:ss");
+
         
 
     }
