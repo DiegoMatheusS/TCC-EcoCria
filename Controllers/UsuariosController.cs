@@ -202,6 +202,7 @@ namespace TCCEcoCria.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
         [HttpPut("AtualizarEmail")]
         public async Task<IActionResult> AtualizarEmail(Usuario u)
         {

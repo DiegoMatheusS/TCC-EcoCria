@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using TCCEcoCria.Data;
 
@@ -32,28 +33,50 @@ namespace TCC.Controllers
 
 
         [HttpPost]
-        public IActionResult AddPublicacao(Publicacao novaPublicacao)
+        public async Task<IActionResult> AddPublicacao(Publicacao novaPublicacao)
         {
-            Publi.Add(novaPublicacao);
-            return Ok(Publi);
+            try
+            {
+                await _context.TB_PUBLICACAO.AddAsync(novaPublicacao);
+                await _context.SaveChangesAsync();
+
+                return Ok(novaPublicacao.IdPublicacao);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         } 
 
         [HttpPut]
-        public IActionResult UpdatePublicacao(Publicacao i)
+        public async Task<IActionResult> UpdatePublicacao(Publicacao novaPublicacao)
         {
-            Publicacao publicacaoAlterada = Publi.Find(mat => mat.IdPublicacao == i.IdPublicacao);
-            publicacaoAlterada.TituloPublicacao = i.TituloPublicacao;
-            publicacaoAlterada.TextoPublicacao = i.TextoPublicacao;
-
-            return Ok(Publi);
+            try
+            {
+                _context.TB_PUBLICACAO.Update(novaPublicacao);
+                int att = await _context.SaveChangesAsync();
+                return Ok(att);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         } 
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Publi.RemoveAll(mat => mat.IdPublicacao == id);
-
-            return Ok(Publi);
+            try
+            {
+                Publicacao removerP = await _context.TB_PUBLICACAO.FirstOrDefaultAsync(x => x.IdPublicacao == id);
+                _context.TB_PUBLICACAO.Remove(removerP);
+                int att = await _context.SaveChangesAsync();
+                return Ok(att);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         
     }

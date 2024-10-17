@@ -30,12 +30,15 @@ namespace TCC.Controllers
             new Trocas() { IdTroca = 6, MomentoTroca= DateTime.Now},      
             new Trocas() { IdTroca = 7, MomentoTroca= DateTime.Now}
         };
-/*
+
         [HttpPost]
         public async Task<IActionResult> AddTroca(Trocas novaTroca)
         {
             try
             {
+                await _context.TB_TROCAS.AddAsync(novaTroca);
+                await _context.SaveChangesAsync();
+                return Ok(novaTroca.IdTroca);
             }
             catch(System.Exception ex)
             {
@@ -49,7 +52,8 @@ namespace TCC.Controllers
         {
             try
             {
-
+                Trocas t = await _context.TB_TROCAS.FirstOrDefaultAsync(x => x.IdTroca == id);
+                return Ok (t);
             }
             catch(System.Exception ex)
             {
@@ -57,6 +61,6 @@ namespace TCC.Controllers
             }
         } 
 
-        */
+        
     }
 }

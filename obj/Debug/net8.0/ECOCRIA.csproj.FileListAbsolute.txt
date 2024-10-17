@@ -289,3 +289,9 @@ C:\Users\dmsdi\OneDrive\Área de Trabalho\ECOCRIA\TCC-EcoCria\TCC-EcoCria\obj\De
 C:\Users\dmsdi\OneDrive\Área de Trabalho\ECOCRIA\TCC-EcoCria\TCC-EcoCria\obj\Debug\net8.0\ECOCRIA.csproj.Up2Date
 C:\Users\dmsdi\OneDrive\Área de Trabalho\ECOCRIA\TCC-EcoCria\TCC-EcoCria\obj\Debug\net8.0\ECOCRIA.genruntimeconfig.cache
 C:\Users\dmsdi\OneDrive\Área de Trabalho\ECOCRIA\TCC-EcoCria\TCC-EcoCria\obj\Debug\net8.0\ref\ECOCRIA.dll
+C:\Users\Matheus\OneDrive\Documentos\ETEC\3°SEM\ECOCRIA\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Matheus\OneDrive\Documentos\ETEC\3°SEM\ECOCRIA\bin\Debug\net8.0\publish\web.config
+C:\Users\Matheus\OneDrive\Documentos\ETEC\3°SEM\ECOCRIA\bin\Debug\net8.0\publish\appsettings.Development.json
+C:\Users\Matheus\OneDrive\Documentos\ETEC\3°SEM\ECOCRIA\bin\Debug\net8.0\publish\appsettings.json
+C:\Users\Matheus\OneDrive\Documentos\ETEC\3°SEM\ECOCRIA\bin\Debug\net8.0\publish\ECOCRIA.deps.json
+C:\Users\Matheus\OneDrive\Documentos\ETEC\3°SEM\ECOCRIA\bin\Debug\net8.0\publish\ECOCRIA.runtimeconfig.json

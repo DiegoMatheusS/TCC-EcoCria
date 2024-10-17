@@ -11,8 +11,6 @@ namespace Models
         public int IdTipoPonto { get; set; }
         public string DescricaoTipoPonto { get; set; } = string.Empty;
         public Boolean StatusTipoPonto { get; set; }
-
-        [JsonIgnore]
-        public Pontos? Pontos {get; set;}
+        public List<Pontos> Pontos {get; set; }
     }
 }

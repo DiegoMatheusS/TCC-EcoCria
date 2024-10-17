@@ -32,14 +32,7 @@ namespace Models
         public byte[]? FotoUsuario { get; set; }
 
         [NotMapped]
-        public string PasswordUsuario { get; set; } = string.Empty;
-
-        [NotMapped]
         public string Token { get; set; } = string.Empty;
-
-
-        [JsonIgnore]
-        public List<Parceiros>? Parceiros { get; set; }
         
         [JsonIgnore]
         public List<Coletas>? Coletas {get; set;} 

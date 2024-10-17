@@ -8,6 +8,7 @@ using Models;
 using TCCEcoCria.Utils;
 using TCCEcoCria.Models.Enuns;
 using Microsoft.EntityFrameworkCore.Migrations;
+using ECOCRIA.Models;
 
 namespace TCCEcoCria.Data
 {
@@ -20,6 +21,7 @@ namespace TCCEcoCria.Data
         public DbSet<Usuario> TB_USUARIOS { get; set; }
         public DbSet<Parceiros> TB_PARCEIROS { get; set; }
         public DbSet<Coletas> TB_COLETAS{get; set;}
+        public DbSet<Contato> TB_CONTATO{get; set;}
         public DbSet<ColetaItens> TB_COLETAITENS{get; set;}
         public DbSet<Comentarios> TB_COMENTARIOS{get; set;}
         public DbSet<OrdemDeGrandeza> TB_ORDEMGRANDEZA{get; set;}
@@ -29,6 +31,7 @@ namespace TCCEcoCria.Data
         public DbSet<Premios> TB_PREMIOS{get; set;}
         public DbSet<Publicacao> TB_PUBLICACAO{get; set;}
         public DbSet<TipoDePonto> TB_TIPOPONTO{get; set;}
+        public DbSet<TipoUsuario> TB_TIPOUSUARIO{get; set;}
         public DbSet<Trocas> TB_TROCAS{get; set;}
 
        
@@ -42,6 +45,7 @@ namespace TCCEcoCria.Data
             modelBuilder.Entity<Parceiros>().ToTable("TB_PARCEIROS");
             modelBuilder.Entity<Coletas>().ToTable("TB_COLETAS");
             modelBuilder.Entity<ColetaItens>().ToTable("TB_COLETAITENS");
+            modelBuilder.Entity<Contato>().ToTable("TB_CONTATO");
             modelBuilder.Entity<Comentarios>().ToTable("TB_COMENTARIOS");
             modelBuilder.Entity<OrdemDeGrandeza>().ToTable("TB_ORDEMGRANDEZA");
             modelBuilder.Entity<Pontos>().ToTable("TB_PONTOS");
@@ -50,6 +54,7 @@ namespace TCCEcoCria.Data
             modelBuilder.Entity<Premios>().ToTable("TB_PREMIOS");
             modelBuilder.Entity<Publicacao>().ToTable("TB_PUBLICACAO");
             modelBuilder.Entity<TipoDePonto>().ToTable("TB_TIPOPONTO");
+            modelBuilder.Entity<TipoUsuario>().ToTable("TB_TIPOUSUARIO");
             modelBuilder.Entity<Trocas>().ToTable("TB_TROCAS");
 
             modelBuilder.Entity<Materiais>().HasKey(m => m.IdMaterial);
@@ -57,6 +62,7 @@ namespace TCCEcoCria.Data
             modelBuilder.Entity<Parceiros>().HasKey(m => m.IdParceiro);
             modelBuilder.Entity<Coletas>().HasKey(m => m.IdColeta);
             modelBuilder.Entity<ColetaItens>().HasKey(m => m.IdItemColeta);
+            modelBuilder.Entity<Contato>().HasKey(m => m.IdContato);
             modelBuilder.Entity<Comentarios>().HasKey(m => m.IdComentario);
             modelBuilder.Entity<OrdemDeGrandeza>().HasKey(m => m.IdOrdemGrandeza);
             modelBuilder.Entity<Pontos>().HasKey(m => m.IdPonto);
@@ -65,13 +71,14 @@ namespace TCCEcoCria.Data
             modelBuilder.Entity<Premios>().HasKey(m => m.IdPremio);
             modelBuilder.Entity<Publicacao>().HasKey(m => m.IdPublicacao);
             modelBuilder.Entity<TipoDePonto>().HasKey(m => m.IdTipoPonto);
+            modelBuilder.Entity<TipoUsuario>().HasKey(x => x.IdTipoUsuario);
             modelBuilder.Entity<Trocas>().HasKey(m => m.IdTroca);
 
 
             modelBuilder.Entity<Pontos>()
                 .HasOne(e => e.TipoDePonto)
-                .WithOne(e => e.Pontos)
-                .HasForeignKey<Pontos>(e => e.IdTipoPonto)
+                .WithMany(e => e.Pontos)
+                .HasForeignKey(e => e.IdTipoPonto)
                 .IsRequired();
             
             modelBuilder.Entity<Coletas>()

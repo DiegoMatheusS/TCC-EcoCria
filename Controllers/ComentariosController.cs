@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using TCCEcoCria.Data;
 
@@ -32,36 +34,65 @@ namespace TCC.Controllers
 
 
         [HttpPost]
-        public IActionResult AddComentario(Comentarios novoComentario)
+        public async Task<IActionResult> AddComentario(Comentarios novoComentario)
         {
-            TipoComentario.Add(novoComentario);
-            return Ok(TipoComentario);
+            try
+            {
+                await _context.TB_COMENTARIOS.AddAsync(novoComentario);
+                await _context.SaveChangesAsync();
+                return Ok(novoComentario.IdComentario);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         } 
 
         [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
+        public async Task<IActionResult> GetSingle(int id)
         {
-            return Ok(TipoComentario.FirstOrDefault(mat => mat.IdComentario == id));
+            try
+            {
+                Comentarios c = await _context.TB_COMENTARIOS.FirstOrDefaultAsync(x => x.IdComentario == id);
+                return Ok (c);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            TipoComentario.RemoveAll(mat => mat.IdComentario == id);
+            try
+            {
+                Comentarios removerC = await _context.TB_COMENTARIOS.FirstOrDefaultAsync(x => x.IdComentario == id);
 
-            return Ok(TipoComentario);
+                _context.TB_COMENTARIOS.Remove(removerC);
+                int att = await _context.SaveChangesAsync();
+                return Ok(att);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut]
-        public IActionResult UpdateComentario(Comentarios i)
+        public async Task<IActionResult> UpdateComentario(Comentarios novoComentario)
         {
-            Comentarios parceiroAlterado = TipoComentario.Find(mat => mat.IdComentario == i.IdComentario);
-            parceiroAlterado.TextoComentario = i.TextoComentario;
-
-            return Ok(TipoComentario);
+            try
+            {
+                _context.TB_COMENTARIOS.Update(novoComentario);
+                int att = await _context.SaveChangesAsync();
+                return Ok(att);
+            }
+            catch(System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         } 
-
-
 
         
     }
