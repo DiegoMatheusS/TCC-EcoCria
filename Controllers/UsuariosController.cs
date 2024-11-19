@@ -76,7 +76,7 @@ namespace TCCEcoCria.Controllers
             try
             {
                 if (await UsuarioExistente(user.EmailUsuario))
-                    throw new System.Exception("Email de usuário já existe");
+                    throw new System.Exception("Email de usuário já cadastrado");
 
                 Criptografia.CriarPasswordHash(user.PasswordUsuario, out byte[] hash, out byte[] salt);
                 user.PasswordUsuario = string.Empty;
