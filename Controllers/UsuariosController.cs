@@ -1,23 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using TCCEcoCria.Data;
-using TCCEcoCria.Models.Enuns;
-using TCCEcoCria.Models;
-using Microsoft.EntityFrameworkCore;
-using Models;
-using TCCEcoCria.Utils;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+using Models;
+using TCCEcoCria.Data;
+using TCCEcoCria.Models;
+using TCCEcoCria.Utils;
 
-
-
-namespace TCCEcoCria.Controllers
+namespace RpgApi.Controllers
 {
     [Authorize]
     [ApiController]
@@ -25,7 +22,6 @@ namespace TCCEcoCria.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly DataContext _context;
-
         private readonly IConfiguration _configuration;
 
         public UsuariosController(DataContext context, IConfiguration configuration)
@@ -34,13 +30,13 @@ namespace TCCEcoCria.Controllers
             _configuration = configuration;
         }
 
-        
-                private string CriarToken(Usuario usuario)
+        private string CriarToken(Usuario usuario)
         {
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
-                new Claim(ClaimTypes.Name, usuario.NomeUsuario)
+                new Claim(ClaimTypes.Name, usuario.NomeUsuario),
+                new Claim(ClaimTypes.Role, usuario.Perfil)
             };
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("ConfiguracaoToken:Chave").Value));
@@ -58,25 +54,27 @@ namespace TCCEcoCria.Controllers
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
 
+
+
         }
-        
-       private async Task<bool> UsuarioExistente(string EmailUsuario)
+
+        private async Task<bool> UsuarioExistente(string username)
         {
-            if (await _context.TB_USUARIOS.AnyAsync(x => x.EmailUsuario.ToLower() == EmailUsuario.ToLower()))
+            if (await _context.TB_USUARIOS.AnyAsync(x => x.NomeUsuario.ToLower() == username.ToLower()))
             {
                 return true;
             }
             return false;
         }
 
-        [AllowAnonymous] //permitir anonymous
+        [AllowAnonymous]
         [HttpPost("Registrar")]
-        public async Task<IActionResult> RegistraUsuario(Usuario user)
+        public async Task<IActionResult> RegistrarUsuario(Usuario user)
         {
             try
             {
-                if (await UsuarioExistente(user.EmailUsuario))
-                    throw new System.Exception("Email de usuário já cadastrado");
+                if (await UsuarioExistente(user.NomeUsuario))
+                    throw new System.Exception("Nome de usuário já existe");
 
                 Criptografia.CriarPasswordHash(user.PasswordUsuario, out byte[] hash, out byte[] salt);
                 user.PasswordUsuario = string.Empty;
@@ -95,20 +93,20 @@ namespace TCCEcoCria.Controllers
 
         [AllowAnonymous]
         [HttpPost("Autenticar")]
-        public async Task<IActionResult> AtutenticarUsuario(Usuario credenciais)
+        public async Task<IActionResult> AutenticarUsuario(Usuario credenciais)
         {
             try
             {
                 Usuario? usuario = await _context.TB_USUARIOS
-                    .FirstOrDefaultAsync(x => x.EmailUsuario.ToLower().Equals(credenciais.EmailUsuario.ToLower()));
+                   .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower().Equals(credenciais.NomeUsuario.ToLower()));
+
                 if (usuario == null)
                 {
                     throw new System.Exception("Usuário não encontrado.");
-
                 }
                 else if (!Criptografia.VerificarPasswordHash(credenciais.PasswordUsuario, usuario.PasswordHash, usuario.PasswordSalt))
                 {
-                    throw new System.Exception("Senha Incorreta.");
+                    throw new System.Exception("Senha incorreta.");
                 }
                 else
                 {
@@ -119,41 +117,64 @@ namespace TCCEcoCria.Controllers
                     usuario.PasswordHash = null;
                     usuario.PasswordSalt = null;
                     usuario.Token = CriarToken(usuario);
-
+                    
                     return Ok(usuario);
                 }
-
             }
             catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
-
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        //Método para alteração de Senha.
+        [HttpPut("AlterarSenha")]
+        public async Task<IActionResult> AlterarSenhaUsuario(Usuario credenciais)
         {
             try
             {
-                Usuario removerU = await _context.TB_USUARIOS.FirstOrDefaultAsync(r => r.IdUsuario == id);
-                _context.TB_USUARIOS.Remove(removerU);
-                int att = await _context.SaveChangesAsync();
-                return Ok(att);
+                Usuario? usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do login
+                   .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower().Equals(credenciais.NomeUsuario.ToLower()));
+
+                if (usuario == null) //Se não achar nenhum usuário pelo login, retorna mensagem.
+                    throw new System.Exception("Usuário não encontrado.");
+
+                Criptografia.CriarPasswordHash(credenciais.PasswordUsuario, out byte[] hash, out byte[] salt);
+                usuario.PasswordHash = hash; //Se o usuário existir, executa a criptografia 
+                usuario.PasswordSalt = salt; //guardando o hash e o salt nas propriedades do usuário 
+
+                _context.TB_USUARIOS.Update(usuario);
+                int linhasAfetadas = await _context.SaveChangesAsync(); //Confirma a alteração no banco
+                return Ok(linhasAfetadas); //Retorna as linhas afetadas (Geralmente sempre 1 linha msm)
             }
-            catch(System.Exception ex)
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-        } 
+        }
 
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetUsuarios()
+        {
+            try
+            {
+                List<Usuario> lista = await _context.TB_USUARIOS.ToListAsync();
+                return Ok(lista);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        [HttpGet("{IdUsuario}")]
+        [HttpGet("{usuarioId}")]
         public async Task<IActionResult> GetUsuario(int usuarioId)
         {
             try
             {
-                Usuario usuario = await _context.TB_USUARIOS.FirstOrDefaultAsync(x => x.IdUsuario == usuarioId);
+                //List exigirá o using System.Collections.Generic
+                Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do Id
+                   .FirstOrDefaultAsync(x => x.IdUsuario == usuarioId);
 
                 return Ok(usuario);
             }
@@ -163,7 +184,6 @@ namespace TCCEcoCria.Controllers
             }
         }
 
-        
         [HttpGet("GetByLogin/{login}")]
         public async Task<IActionResult> GetUsuario(string login)
         {
@@ -171,7 +191,8 @@ namespace TCCEcoCria.Controllers
             {
                 //List exigirá o using System.Collections.Generic
                 Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do login
-                .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower() == login.ToLower());
+                   .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower() == login.ToLower());
+
                 return Ok(usuario);
             }
             catch (System.Exception ex)
@@ -187,13 +208,16 @@ namespace TCCEcoCria.Controllers
             try
             {
                 Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do Id
-                .FirstOrDefaultAsync(x => x.IdUsuario == u.IdUsuario);
+                   .FirstOrDefaultAsync(x => x.IdUsuario == u.IdUsuario);
+
                 usuario.Latitude = u.Latitude;
                 usuario.Longitude = u.Longitude;
+
                 var attach = _context.Attach(usuario);
                 attach.Property(x => x.IdUsuario).IsModified = false;
                 attach.Property(x => x.Latitude).IsModified = true;
                 attach.Property(x => x.Longitude).IsModified = true;
+
                 int linhasAfetadas = await _context.SaveChangesAsync(); //Confirma a alteração no banco
                 return Ok(linhasAfetadas); //Retorna as linhas afetadas (Geralmente sempre 1 linha msm)
             }
@@ -202,17 +226,22 @@ namespace TCCEcoCria.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        //Método para alteração do e-mail
         [HttpPut("AtualizarEmail")]
         public async Task<IActionResult> AtualizarEmail(Usuario u)
         {
             try
             {
                 Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do Id
-                .FirstOrDefaultAsync(x => x.IdUsuario == u.IdUsuario);
-                usuario.EmailUsuario = u.EmailUsuario;
+                   .FirstOrDefaultAsync(x => x.IdUsuario == u.IdUsuario);
+
+                usuario.EmailUsuario = u.EmailUsuario;                
+
                 var attach = _context.Attach(usuario);
                 attach.Property(x => x.IdUsuario).IsModified = false;
-                attach.Property(x => x.EmailUsuario).IsModified = true;
+                attach.Property(x => x.EmailUsuario).IsModified = true;                
+
                 int linhasAfetadas = await _context.SaveChangesAsync(); //Confirma a alteração no banco
                 return Ok(linhasAfetadas); //Retorna as linhas afetadas (Geralmente sempre 1 linha msm)
             }
@@ -221,6 +250,5 @@ namespace TCCEcoCria.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
     }
 }
