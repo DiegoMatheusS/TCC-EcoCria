@@ -9,7 +9,6 @@ using TCCEcoCria.Mappings;
 using TCCEcoCria.Rest;
 using TCCEcoCria.Services;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 
@@ -17,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-   options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoSomee"));
+   options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoLocal"));
 });
 
 
@@ -27,7 +26,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSingleton<IEnderecoServices, EnderecoService>();
 
 builder.Services.AddSingleton<IBrasilApi, BrasilApiRest>();
-builder.Services.AddSwaggerGen();
+
 builder.Services.AddAutoMapper(typeof(EnderecoMapping));
 
 builder.Services.AddControllers();
@@ -37,7 +36,10 @@ builder.Services.AddControllers();
 
 
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) 
+
+
+
+/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) //baixar o framework e fazer as partes de autenticacao
 .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -55,7 +57,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options => //baixar framewor
 );
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
+*/
 
 
 
