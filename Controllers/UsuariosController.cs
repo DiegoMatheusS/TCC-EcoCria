@@ -126,32 +126,78 @@ namespace RpgApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
 
-        //Método para alteração de Senha.
-        [HttpPut("AlterarSenha")]
-        public async Task<IActionResult> AlterarSenhaUsuario(Usuario credenciais)
-        {
-            try
-            {
-                Usuario? usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do login
-                   .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower().Equals(credenciais.NomeUsuario.ToLower()));
+       [AllowAnonymous]
+[HttpGet("EsqueciSenha")]
+public IActionResult EsqueciSenha()
+{
+    return View();
+}
 
-                if (usuario == null) //Se não achar nenhum usuário pelo login, retorna mensagem.
-                    throw new System.Exception("Usuário não encontrado.");
+[AllowAnonymous]
+[HttpPost("EsqueciSenha")]
+public async Task<IActionResult> EnviarCodigoEsqueciSenha(string email)
+{
+    var usuario = await _context.TB_USUARIOS.FirstOrDefaultAsync(u => u.EmailUsuario == email);
 
-                Criptografia.CriarPasswordHash(credenciais.PasswordUsuario, out byte[] hash, out byte[] salt);
-                usuario.PasswordHash = hash; //Se o usuário existir, executa a criptografia 
-                usuario.PasswordSalt = salt; //guardando o hash e o salt nas propriedades do usuário 
+    if (usuario == null)
+    {
+        return BadRequest("E-mail não encontrado.");
+    }
 
-                _context.TB_USUARIOS.Update(usuario);
-                int linhasAfetadas = await _context.SaveChangesAsync(); //Confirma a alteração no banco
-                return Ok(linhasAfetadas); //Retorna as linhas afetadas (Geralmente sempre 1 linha msm)
-            }
-            catch (System.Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+    // Gerar código de verificação (isso deve ser um código único e temporário)
+    string codigo = GerarCodigoSeguranca(); 
+
+    // Enviar o código para o e-mail do usuário (implementar a lógica de envio de e-mail)
+    await _emailService.EnviarEmail(usuario.EmailUsuario, "Código de Recuperação", $"Seu código de recuperação é: {codigo}");
+
+    return RedirectToAction("MudandoSenha");
+}
+
+[AllowAnonymous]
+[HttpGet("MudandoSenha")]
+public IActionResult MudandoSenha()
+{
+    return View();
+}
+
+[AllowAnonymous]
+[HttpPost("MudandoSenha")]
+public async Task<IActionResult> MudandoSenha(string codigo, string novaSenha, string confirmarSenha)
+{
+    if (novaSenha != confirmarSenha)
+    {
+        return BadRequest("As senhas não coincidem.");
+    }
+
+    // Validar o código de segurança (você precisaria verificar se o código é válido)
+    var usuario = await ValidarCodigoDeSeguranca(codigo);
+    if (usuario == null)
+    {
+        return BadRequest("Código inválido ou expirado.");
+    }
+
+    // Atualizar a senha do usuário
+    Criptografia.CriarPasswordHash(novaSenha, out byte[] hash, out byte[] salt);
+    usuario.PasswordHash = hash;
+    usuario.PasswordSalt = salt;
+    await _context.SaveChangesAsync();
+
+    return RedirectToAction("Login", "Usuarios");
+}
+
+private string GerarCodigoSeguranca()
+{
+    // Gerar um código aleatório ou usar uma biblioteca de geração de códigos
+    return Guid.NewGuid().ToString("N").Substring(0, 6); // Exemplo de código de 6 dígitos
+}
+
+private async Task<Usuario> ValidarCodigoDeSeguranca(string codigo)
+{
+    // Lógica para validar o código, por exemplo, buscar em uma tabela de códigos temporários
+    return await _context.TB_USUARIOS.FirstOrDefaultAsync(u => u.CodigoRecuperacao == codigo);
+}
 
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetUsuarios()
@@ -201,31 +247,6 @@ namespace RpgApi.Controllers
             }
         }
 
-        //Método para alteração da geolocalização
-        [HttpPut("AtualizarLocalizacao")]
-        public async Task<IActionResult> AtualizarLocalizacao(Usuario u)
-        {
-            try
-            {
-                Usuario usuario = await _context.TB_USUARIOS //Busca o usuário no banco através do Id
-                   .FirstOrDefaultAsync(x => x.IdUsuario == u.IdUsuario);
-
-                usuario.Latitude = u.Latitude;
-                usuario.Longitude = u.Longitude;
-
-                var attach = _context.Attach(usuario);
-                attach.Property(x => x.IdUsuario).IsModified = false;
-                attach.Property(x => x.Latitude).IsModified = true;
-                attach.Property(x => x.Longitude).IsModified = true;
-
-                int linhasAfetadas = await _context.SaveChangesAsync(); //Confirma a alteração no banco
-                return Ok(linhasAfetadas); //Retorna as linhas afetadas (Geralmente sempre 1 linha msm)
-            }
-            catch (System.Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
 
         //Método para alteração do e-mail
         [HttpPut("AtualizarEmail")]
