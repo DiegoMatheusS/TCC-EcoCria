@@ -127,12 +127,22 @@ namespace RpgApi.Controllers
             }
         }
         
-
-       [AllowAnonymous]
-[HttpGet("EsqueciSenha")]
-public IActionResult EsqueciSenha()
+    [HttpPost("EsqueciSenha")]
+public async Task<IActionResult> EsqueciSenha([FromBody] string email)
 {
-    return View();
+    var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.EmailUsuario == email);
+    if (usuario == null)
+        return BadRequest("Email não encontrado.");
+
+    var codigo = new Random().Next(100000, 999999).ToString(); // Gera código de 6 dígitos.
+    usuario.CodigoRecuperacao = codigo;
+    usuario.DataCodigoExpiracao = DateTime.UtcNow.AddMinutes(15); // Expira em 15 minutos.
+
+    // Enviar email (implementação específica do seu serviço de email).
+    await _emailService.EnviarEmailAsync(usuario.EmailUsuario, "Código de Recuperação", $"Seu código é {codigo}");
+
+    await _context.SaveChangesAsync();
+    return Ok("Código enviado.");
 }
 
 [AllowAnonymous]
