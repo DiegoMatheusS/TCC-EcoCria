@@ -18,7 +18,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();  // Registrar o servi
 // Configuração do DbContext com a conexão ao banco de dados
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoLocal"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoSomee"));
 });
 
 // Registra outros serviços
