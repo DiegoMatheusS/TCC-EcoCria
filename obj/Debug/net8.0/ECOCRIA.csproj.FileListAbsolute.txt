@@ -342,13 +342,7 @@ C:/Users/dmsdi/OneDrive/Área de Trabalho/ECOCRIA/TCC-EcoCria/TCC-EcoCria/obj/De
 /workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Design.dll
 /workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Relational.dll
 /workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.SqlServer.dll
-/workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.Extensions.Caching.Memory.dll
-/workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.dll
-/workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
 /workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.Extensions.DependencyModel.dll
-/workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.Extensions.Logging.dll
-/workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
-/workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
 /workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.Identity.Client.dll
 /workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.Identity.Client.Extensions.Msal.dll
 /workspaces/TCC-EcoCria/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll

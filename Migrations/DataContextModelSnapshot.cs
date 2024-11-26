@@ -17,7 +17,7 @@ namespace ECOCRIA.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -119,37 +119,37 @@ namespace ECOCRIA.Migrations
                         new
                         {
                             IdColeta = 1,
-                            MomentoColeta = new DateTime(2024, 10, 12, 20, 58, 10, 116, DateTimeKind.Local).AddTicks(4937)
+                            MomentoColeta = new DateTime(2024, 11, 26, 16, 37, 8, 300, DateTimeKind.Local).AddTicks(543)
                         },
                         new
                         {
                             IdColeta = 2,
-                            MomentoColeta = new DateTime(2024, 10, 12, 20, 58, 10, 116, DateTimeKind.Local).AddTicks(4938)
+                            MomentoColeta = new DateTime(2024, 11, 26, 16, 37, 8, 300, DateTimeKind.Local).AddTicks(545)
                         },
                         new
                         {
                             IdColeta = 3,
-                            MomentoColeta = new DateTime(2024, 10, 12, 20, 58, 10, 116, DateTimeKind.Local).AddTicks(4939)
+                            MomentoColeta = new DateTime(2024, 11, 26, 16, 37, 8, 300, DateTimeKind.Local).AddTicks(547)
                         },
                         new
                         {
                             IdColeta = 4,
-                            MomentoColeta = new DateTime(2024, 10, 12, 20, 58, 10, 116, DateTimeKind.Local).AddTicks(4940)
+                            MomentoColeta = new DateTime(2024, 11, 26, 16, 37, 8, 300, DateTimeKind.Local).AddTicks(548)
                         },
                         new
                         {
                             IdColeta = 5,
-                            MomentoColeta = new DateTime(2024, 10, 12, 20, 58, 10, 116, DateTimeKind.Local).AddTicks(4941)
+                            MomentoColeta = new DateTime(2024, 11, 26, 16, 37, 8, 300, DateTimeKind.Local).AddTicks(549)
                         },
                         new
                         {
                             IdColeta = 6,
-                            MomentoColeta = new DateTime(2024, 10, 12, 20, 58, 10, 116, DateTimeKind.Local).AddTicks(4942)
+                            MomentoColeta = new DateTime(2024, 11, 26, 16, 37, 8, 300, DateTimeKind.Local).AddTicks(551)
                         },
                         new
                         {
                             IdColeta = 7,
-                            MomentoColeta = new DateTime(2024, 10, 12, 20, 58, 10, 116, DateTimeKind.Local).AddTicks(4943)
+                            MomentoColeta = new DateTime(2024, 11, 26, 16, 37, 8, 300, DateTimeKind.Local).AddTicks(552)
                         });
                 });
 
@@ -177,7 +177,7 @@ namespace ECOCRIA.Migrations
                         new
                         {
                             IdComentario = 1,
-                            MomentoComentario = new DateTime(2024, 10, 12, 20, 58, 10, 116, DateTimeKind.Local).AddTicks(4853),
+                            MomentoComentario = new DateTime(2024, 11, 26, 16, 37, 8, 300, DateTimeKind.Local).AddTicks(335),
                             TextoComentario = "Blabla"
                         });
                 });
@@ -692,16 +692,21 @@ namespace ECOCRIA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsuario"));
 
+                    b.Property<string>("CodigoRecuperacao")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("Varchar");
+
                     b.Property<DateTime?>("DataAcesso")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataCodigoExpiracao")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmailUsuario")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("Varchar");
-
-                    b.Property<byte[]>("FotoUsuario")
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<double?>("Latitude")
                         .HasColumnType("float");
@@ -735,11 +740,12 @@ namespace ECOCRIA.Migrations
                         new
                         {
                             IdUsuario = 1,
+                            CodigoRecuperacao = "",
                             EmailUsuario = "seuEmail@gmail.com",
                             Latitude = -23.520024100000001,
                             Longitude = -46.596497999999997,
                             NomeUsuario = "admin",
-                            PasswordHash = new byte[] { 28, 108, 247, 229, 185, 0, 45, 53, 176, 147, 67, 236, 46, 26, 65, 205, 151, 35, 36, 6, 191, 100, 70, 251, 83, 176, 93, 145, 23, 166, 233, 150, 77, 166, 100, 47, 188, 211, 200, 40, 88, 15, 215, 238, 198, 117, 97, 11, 249, 237, 115, 116, 49, 221, 219, 67, 155, 106, 58, 82, 60, 191, 0, 52, 248, 129, 0, 43, 62, 210, 167, 194, 132, 245, 24, 139, 91, 48, 250, 15, 175, 80, 27, 129, 203, 183, 94, 124, 62, 5, 2, 211, 26, 2, 244, 131, 58, 162, 82, 72, 143, 45, 204, 107, 157, 186, 222, 0, 126, 102, 144, 180, 158, 233, 55, 69, 47, 94, 45, 98, 25, 123, 161, 27, 160, 229, 210, 106 },
+                            PasswordHash = new byte[] { 154, 249, 225, 145, 95, 247, 8, 173, 255, 243, 181, 237, 100, 73, 64, 112, 218, 231, 227, 90, 199, 135, 125, 138, 134, 95, 115, 189, 39, 144, 87, 146, 80, 36, 138, 224, 54, 88, 74, 235, 224, 1, 118, 235, 127, 15, 248, 228, 127, 243, 55, 180, 51, 168, 6, 12, 218, 138, 21, 72, 247, 118, 105, 226, 214, 81, 30, 80, 76, 234, 130, 160, 230, 241, 7, 101, 121, 149, 243, 165, 246, 186, 156, 232, 91, 207, 126, 152, 95, 75, 77, 96, 166, 144, 134, 224, 56, 9, 85, 77, 191, 241, 42, 215, 63, 161, 152, 223, 104, 35, 9, 50, 178, 222, 134, 143, 132, 89, 187, 84, 123, 51, 191, 131, 148, 39, 33, 92 },
                             Perfil = "Admin"
                         });
                 });
