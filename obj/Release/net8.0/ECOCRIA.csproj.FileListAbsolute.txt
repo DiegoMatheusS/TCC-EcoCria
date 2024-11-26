@@ -294,8 +294,3 @@ C:/Users/dmsdi/OneDrive/Área de Trabalho/ECOCRIA/TCC-EcoCria/TCC-EcoCria/obj/Re
 /workspaces/TCC-EcoCria/obj/Release/net8.0/ECOCRIA.pdb
 /workspaces/TCC-EcoCria/obj/Release/net8.0/ECOCRIA.genruntimeconfig.cache
 /workspaces/TCC-EcoCria/obj/Release/net8.0/ref/ECOCRIA.dll
-/workspaces/TCC-EcoCria/bin/Release/net8.0/publish/web.config
-/workspaces/TCC-EcoCria/bin/Release/net8.0/publish/appsettings.Development.json
-/workspaces/TCC-EcoCria/bin/Release/net8.0/publish/appsettings.json
-/workspaces/TCC-EcoCria/bin/Release/net8.0/publish/ECOCRIA.deps.json
-/workspaces/TCC-EcoCria/bin/Release/net8.0/publish/ECOCRIA.runtimeconfig.json
