@@ -147,68 +147,65 @@ namespace RpgApi.Controllers
 
         // Enviar código de recuperação de senha para o email do usuário
         [AllowAnonymous]
-        [HttpPost("EsqueciSenha")]
-        public async Task<IActionResult> EsqueciSenha([FromBody] RecuperacaoSenhaDto dados)
-        {
-            var usuario = await _context.TB_USUARIOS.FirstOrDefaultAsync(u => u.EmailUsuario == dados.Email);
+[HttpPost("EsqueciSenha")]
+public async Task<IActionResult> EsqueciSenha([FromBody] RecuperacaoSenhaDto dados)
+{
+    var usuario = await _context.TB_USUARIOS.FirstOrDefaultAsync(u => u.EmailUsuario == dados.Email);
 
-            if (usuario == null)
-                return BadRequest("Email não encontrado.");
+    if (usuario == null)
+        return BadRequest("Email não encontrado.");
 
-            var codigo = new Random().Next(100000, 999999).ToString(); // Gera código de 6 dígitos.
-            usuario.CodigoRecuperacao = codigo;
-            usuario.DataCodigoExpiracao = DateTime.UtcNow.AddMinutes(15); // Expira em 15 minutos.
+    var codigo = new Random().Next(100000, 999999).ToString(); // Gera código de 6 dígitos.
+    usuario.CodigoRecuperacao = codigo;
+    usuario.DataCodigoExpiracao = DateTime.UtcNow.AddMinutes(15); // Expira em 15 minutos.
 
-            // Enviar email de recuperação com o código gerado
-            await _emailService.EnviarEmailAsync(usuario.EmailUsuario, "Código de Recuperação", $"Seu código é {codigo}");
+    // Enviar email de recuperação com o código gerado
+    await _emailService.EnviarEmailAsync(usuario.EmailUsuario, "Código de Recuperação", $"Seu código é {codigo}");
 
-            await _context.SaveChangesAsync();
-            return Ok("Código enviado.");
-        }
+    await _context.SaveChangesAsync();
+    return Ok("Código enviado.");
+}
 
-        // Validar o código de recuperação
         [AllowAnonymous]
-        [HttpPost("ValidarCodigo")]
-        public IActionResult ValidarCodigo([FromBody] RecuperacaoSenhaDto dados)
-        {
-            var usuario = _context.TB_USUARIOS.FirstOrDefault(u => u.EmailUsuario == dados.Email && u.CodigoRecuperacao == dados.Codigo);
+[HttpPost("ValidarCodigo")]
+public IActionResult ValidarCodigo([FromBody] RecuperacaoSenhaDto dados)
+{
+    var usuario = _context.TB_USUARIOS.FirstOrDefault(u => u.EmailUsuario == dados.Email && u.CodigoRecuperacao == dados.Codigo);
 
-            if (usuario == null || usuario.DataCodigoExpiracao < DateTime.UtcNow)
-                return BadRequest("Código inválido ou expirado.");
+    if (usuario == null || usuario.DataCodigoExpiracao < DateTime.UtcNow)
+        return BadRequest("Código inválido ou expirado.");
 
-            // Se o código for válido, retornar sucesso
-            return Ok("Código válido.");
-        }
+    // Se o código for válido, retornar sucesso
+    return Ok("Código válido.");
+}
 
-        // Alterar a senha do usuário
-        [AllowAnonymous]
-        [HttpPost("MudandoSenha")]
-        public async Task<IActionResult> MudandoSenha([FromBody] MudancaSenhaDto dados)
-        {
-            // Validação da nova senha
-            if (dados.NovaSenha != dados.ConfirmarSenha)
-            {
-                return BadRequest("As senhas não coincidem.");
-            }
+       [AllowAnonymous]
+[HttpPost("MudandoSenha")]
+public async Task<IActionResult> MudandoSenha([FromBody] MudancaSenhaDto dados)
+{
+    // Validação da nova senha
+    if (dados.NovaSenha != dados.ConfirmarSenha)
+    {
+        return BadRequest("As senhas não coincidem.");
+    }
 
-            // Lógica para atualizar a senha do usuário
-            var usuario = await _context.TB_USUARIOS
-                .FirstOrDefaultAsync(u => u.CodigoRecuperacao == dados.NovaSenha); // Exemplo de lógica para encontrar o usuário
+    var usuario = await _context.TB_USUARIOS
+        .FirstOrDefaultAsync(u => u.CodigoRecuperacao == dados.Codigo); // Aqui você usa o código para achar o usuário
 
-            if (usuario == null)
-            {
-                return BadRequest("Código de recuperação inválido.");
-            }
+    if (usuario == null || usuario.DataCodigoExpiracao < DateTime.UtcNow)
+    {
+        return BadRequest("Código de recuperação inválido ou expirado.");
+    }
 
-            Criptografia.CriarPasswordHash(dados.NovaSenha, out byte[] hash, out byte[] salt);
-            usuario.PasswordHash = hash;
-            usuario.PasswordSalt = salt;
-            usuario.CodigoRecuperacao = null; // Limpar o código de recuperação após o uso.
+    Criptografia.CriarPasswordHash(dados.NovaSenha, out byte[] hash, out byte[] salt);
+    usuario.PasswordHash = hash;
+    usuario.PasswordSalt = salt;
+    usuario.CodigoRecuperacao = null; // Limpar o código de recuperação após o uso.
 
-            await _context.SaveChangesAsync();
+    await _context.SaveChangesAsync();
 
-            return Ok("Senha alterada com sucesso.");
-        }
+    return Ok("Senha alterada com sucesso.");
+}
 
         // Obter todos os usuários
         [HttpGet("GetAll")]

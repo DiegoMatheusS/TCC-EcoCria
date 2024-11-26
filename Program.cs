@@ -11,25 +11,24 @@ using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Carregar a configuração do e-mail
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IEmailService, EmailService>();  // Registrar o serviço de email
 
-
-
-// Registra o DbContext (banco de dados) com a conexão
+// Configuração do DbContext com a conexão ao banco de dados
 builder.Services.AddDbContext<DataContext>(options =>
 {
-   options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoLocal"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoLocal"));
 });
 
 // Registra outros serviços
 builder.Services.AddSingleton<IEnderecoServices, EnderecoService>();
 builder.Services.AddSingleton<IBrasilApi, BrasilApiRest>();
 
-// Registra o AutoMapper
+// Configuração do AutoMapper
 builder.Services.AddAutoMapper(typeof(EnderecoMapping));
 
-// Adiciona os controladores da aplicação
+// Configuração dos controladores da aplicação
 builder.Services.AddControllers();
 
 // Configuração do Swagger
@@ -38,7 +37,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Minha API", Version = "v1" });
 });
 
-// Configura a autenticação JWT (caso necessário)
+// Configuração do JWT (caso necessário)
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
     {
@@ -51,9 +50,10 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
+// Configuração da aplicação
 var app = builder.Build();
 
-// Configura o pipeline de requisições
+// Configurações de ambiente
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -64,47 +64,24 @@ else
     app.UseHsts();
 }
 
+// Configuração do pipeline de requisições
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-// Usa a autenticação e autorização
+// Ativa a autenticação e autorização
 app.UseAuthentication();
 app.UseAuthorization();
 
 // Habilita o Swagger
 app.UseSwagger();
-
-// Habilita a UI do Swagger
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API V1");
 });
 
-// Configuração de endpoints
+// Mapeamento de endpoints
 app.MapControllers();
 
-// Run da aplicação
+// Inicializa a aplicação
 app.Run();
-
-// Exemplo de definição de um endpoint de previsão do tempo (como no seu código original)
-app.MapGet("/weatherforecast", () =>
-{
-    var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

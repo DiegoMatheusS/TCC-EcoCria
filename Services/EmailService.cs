@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -6,26 +7,32 @@ namespace TCCEcoCria.Services
 {
     public class EmailService : IEmailService
     {
-        // Parâmetros de configuração do servidor SMTP
-        private readonly string _smtpServer = "smtp.exemplo.com"; // Exemplo de servidor SMTP (substitua com o real)
-        private readonly int _smtpPort = 587; // Porta do servidor SMTP
-        private readonly string _smtpUser = "ecocria2024@gmail.com"; // Seu e-mail (substitua com o real)
-        private readonly string _smtpPassword = "Eco2024cria"; // Sua senha de e-mail (substitua com a real)
+        private readonly IConfiguration _configuration;
+
+        public EmailService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         public async Task EnviarEmailAsync(string destinatario, string assunto, string corpo)
         {
             try
             {
-                // Configura o cliente SMTP com as credenciais e o servidor
-                using (var cliente = new SmtpClient(_smtpServer, _smtpPort))
+                // Recupera as configurações do appsettings.json
+                var smtpServer = _configuration["EmailSettings:Host"];
+                var smtpPort = int.Parse(_configuration["EmailSettings:Port"]);
+                var smtpUser = _configuration["EmailSettings:Username"];
+                var smtpPassword = _configuration["EmailSettings:Password"];
+
+                using (var cliente = new SmtpClient(smtpServer, smtpPort))
                 {
-                    cliente.Credentials = new NetworkCredential(_smtpUser, _smtpPassword);
+                    cliente.Credentials = new NetworkCredential(smtpUser, smtpPassword);
                     cliente.EnableSsl = true; // Ativa o SSL para uma conexão segura
 
                     // Cria a mensagem de e-mail
                     var mensagem = new MailMessage
                     {
-                        From = new MailAddress(_smtpUser), // E-mail do remetente
+                        From = new MailAddress(smtpUser), // E-mail do remetente
                         Subject = assunto, // Assunto do e-mail
                         Body = corpo, // Corpo do e-mail
                         IsBodyHtml = true, // Define que o corpo é em HTML
