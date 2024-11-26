@@ -16,29 +16,25 @@ namespace Models
 
         [NotMapped]
         public string PasswordUsuario { get; set; } = string.Empty;
-        //public byte[]? FotoUsuario { get; set; }
-        //public Usuario? Usuario { get; set; }
 
+        // Relacionamento com Parceiros
         [JsonIgnore]
         public List<Parceiros> Parceiros { get; set; } = new List<Parceiros>();
-        //using System.Collections.Generic;
 
-
-        public string Perfil { get; set; }  = string.Empty;
+        public string Perfil { get; set; } = string.Empty;
         public string EmailUsuario { get; set; } = string.Empty;
         public byte[]? PasswordHash { get; set; }
         public byte[]? PasswordSalt { get; set; }
-        public DateTime?  DataAcesso { get; set; }
-
-       
+        public DateTime? DataAcesso { get; set; }
 
         [NotMapped]
         public string Token { get; set; } = string.Empty;
 
-        
         [JsonIgnore]
-        public List<Coletas>? Coletas {get; set;} 
+        public List<Coletas>? Coletas { get; set; }
 
-
+        // Propriedades adicionadas
+        public string CodigoRecuperacao { get; set; } = string.Empty; // Código de recuperação
+        public DateTime? DataCodigoExpiracao { get; set; } // Data de expiração do código
     }
 }
