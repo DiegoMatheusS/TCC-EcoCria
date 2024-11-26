@@ -33,8 +33,10 @@ namespace Models
         [JsonIgnore]
         public List<Coletas>? Coletas { get; set; }
 
-        // Propriedades adicionadas
+        [NotMapped]
         public string CodigoRecuperacao { get; set; } = string.Empty; // Código de recuperação
+
+        [NotMapped]
         public DateTime? DataCodigoExpiracao { get; set; } // Data de expiração do código
     }
 }

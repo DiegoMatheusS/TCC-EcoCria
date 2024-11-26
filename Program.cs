@@ -11,24 +11,32 @@ using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Carregar a configuração do e-mail
-builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-builder.Services.AddScoped<IEmailService, EmailService>();  // Registrar o serviço de email
+// Configuração do CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
-// Configuração do DbContext com a conexão ao banco de dados
+// Configuração do DbContext
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoSomee"));
 });
 
-// Registra outros serviços
+// Configuração de Serviços
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddSingleton<IEnderecoServices, EnderecoService>();
 builder.Services.AddSingleton<IBrasilApi, BrasilApiRest>();
 
-// Configuração do AutoMapper
+// Configuração de AutoMapper
 builder.Services.AddAutoMapper(typeof(EnderecoMapping));
 
-// Configuração dos controladores da aplicação
+// Configuração de Controladores
 builder.Services.AddControllers();
 
 // Configuração do Swagger
@@ -37,51 +45,57 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Minha API", Version = "v1" });
 });
 
-// Configuração do JWT (caso necessário)
+// Configuração do JWT
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection("ConfiguracaoToken:Chave").Value)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
+                builder.Configuration.GetSection("ConfiguracaoToken:Chave").Value!)),
             ValidateIssuer = false,
             ValidateAudience = false
         };
     });
 
-// Configuração da aplicação
+// Configuração de Logs
+builder.Logging.AddConsole();
+
+// Configuração da Aplicação
 var app = builder.Build();
 
-// Configurações de ambiente
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler(errorApp =>
+    {
+        errorApp.Run(async context =>
+        {
+            context.Response.StatusCode = 500;
+            await context.Response.WriteAsync("Ocorreu um erro inesperado.");
+        });
+    });
     app.UseHsts();
 }
 
-// Configuração do pipeline de requisições
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-// Ativa a autenticação e autorização
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Habilita o Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API V1");
 });
 
-// Mapeamento de endpoints
 app.MapControllers();
 
-// Inicializa a aplicação
 app.Run();

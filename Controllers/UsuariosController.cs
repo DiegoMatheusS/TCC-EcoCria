@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Models;
 using TCCEcoCria.Data;
-using TCCEcoCria.Utils;
 using TCCEcoCria.Services;
 using TCCEcoCria.DTOs;
+using TCCEcoCria.Utils;
+using Models;
 
-namespace RpgApi.Controllers
+namespace TCCEcoCria.Controllers
 {
     [Authorize]
     [ApiController]
@@ -24,7 +24,7 @@ namespace RpgApi.Controllers
     {
         private readonly DataContext _context;
         private readonly IConfiguration _configuration;
-        private readonly IEmailService _emailService; // Injeção do serviço de envio de e-mails
+        private readonly IEmailService _emailService;
 
         public UsuariosController(DataContext context, IConfiguration configuration, IEmailService emailService)
         {
@@ -33,25 +33,6 @@ namespace RpgApi.Controllers
             _emailService = emailService;
         }
 
-        // Enviar email (corrigido)
-        [HttpPost("EnviarEmail")]
-        public IActionResult EnviarEmail(string email)
-        {
-            if (string.IsNullOrEmpty(email))
-            {
-                return BadRequest("E-mail não pode ser vazio.");
-            }
-
-            string subject = "Código de Recuperação";
-            string body = "<h1>Código para verificação de troca de senha</h1><p>Copie e cole o código</p>";
-
-            // Envia o e-mail com o serviço injetado
-            _emailService.EnviarEmailAsync(email, subject, body);
-
-            return Ok("E-mail enviado com sucesso!");
-        }
-
-        // Método para criar token JWT
         private string CriarToken(Usuario usuario)
         {
             List<Claim> claims = new List<Claim>()
@@ -62,6 +43,7 @@ namespace RpgApi.Controllers
             };
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("ConfiguracaoToken:Chave").Value));
+
             SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
@@ -76,39 +58,35 @@ namespace RpgApi.Controllers
             return tokenHandler.WriteToken(token);
         }
 
-        // Método que verifica se o usuário já existe
         private async Task<bool> UsuarioExistente(string username)
         {
-            return await _context.TB_USUARIOS.AnyAsync(x => x.NomeUsuario.ToLower() == username.ToLower());
+            return await _context.TB_USUARIOS.AnyAsync(x => x.EmailUsuario.ToLower() == username.ToLower());
         }
 
-        // Registrar novo usuário
         [AllowAnonymous]
         [HttpPost("Registrar")]
         public async Task<IActionResult> RegistrarUsuario(Usuario user)
         {
             try
             {
-                if (await UsuarioExistente(user.NomeUsuario))
-                    throw new System.Exception("Nome de usuário já existe");
+                if (await UsuarioExistente(user.EmailUsuario))
+                    throw new Exception("Email de usuário já existe");
 
                 Criptografia.CriarPasswordHash(user.PasswordUsuario, out byte[] hash, out byte[] salt);
                 user.PasswordUsuario = string.Empty;
                 user.PasswordHash = hash;
                 user.PasswordSalt = salt;
-
                 await _context.TB_USUARIOS.AddAsync(user);
                 await _context.SaveChangesAsync();
 
                 return Ok(user.IdUsuario);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        // Autenticar usuário e gerar token
         [AllowAnonymous]
         [HttpPost("Autenticar")]
         public async Task<IActionResult> AutenticarUsuario(Usuario credenciais)
@@ -116,98 +94,98 @@ namespace RpgApi.Controllers
             try
             {
                 Usuario? usuario = await _context.TB_USUARIOS
-                    .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower().Equals(credenciais.NomeUsuario.ToLower()));
+                   .FirstOrDefaultAsync(x => x.EmailUsuario.ToLower() == credenciais.EmailUsuario.ToLower());
 
                 if (usuario == null)
-                {
-                    throw new System.Exception("Usuário não encontrado.");
-                }
-                else if (!Criptografia.VerificarPasswordHash(credenciais.PasswordUsuario, usuario.PasswordHash, usuario.PasswordSalt))
-                {
-                    throw new System.Exception("Senha incorreta.");
-                }
-                else
-                {
-                    usuario.DataAcesso = DateTime.Now;
-                    _context.TB_USUARIOS.Update(usuario);
-                    await _context.SaveChangesAsync();
+                    throw new Exception("Usuário não encontrado.");
 
-                    usuario.PasswordHash = null;
-                    usuario.PasswordSalt = null;
-                    usuario.Token = CriarToken(usuario);
-                    
-                    return Ok(usuario);
-                }
+                if (!Criptografia.VerificarPasswordHash(credenciais.PasswordUsuario, usuario.PasswordHash, usuario.PasswordSalt))
+                    throw new Exception("Senha incorreta.");
+
+                usuario.DataAcesso = DateTime.Now;
+                _context.TB_USUARIOS.Update(usuario);
+                await _context.SaveChangesAsync();
+
+                usuario.PasswordHash = null;
+                usuario.PasswordSalt = null;
+                usuario.Token = CriarToken(usuario);
+
+                return Ok(usuario);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        // Enviar código de recuperação de senha para o email do usuário
         [AllowAnonymous]
-[HttpPost("EsqueciSenha")]
-public async Task<IActionResult> EsqueciSenha([FromBody] RecuperacaoSenhaDto dados)
-{
-    var usuario = await _context.TB_USUARIOS.FirstOrDefaultAsync(u => u.EmailUsuario == dados.Email);
+        [HttpPost("EsqueciSenha")]
+        public async Task<IActionResult> EnviarCodigoEsqueciSenha(string email)
+        {
+            try
+            {
+                var usuario = await _context.TB_USUARIOS.FirstOrDefaultAsync(u => u.EmailUsuario == email);
 
-    if (usuario == null)
-        return BadRequest("Email não encontrado.");
+                if (usuario == null)
+                    return BadRequest("E-mail não encontrado.");
 
-    var codigo = new Random().Next(100000, 999999).ToString(); // Gera código de 6 dígitos.
-    usuario.CodigoRecuperacao = codigo;
-    usuario.DataCodigoExpiracao = DateTime.UtcNow.AddMinutes(15); // Expira em 15 minutos.
+                string codigo = GerarCodigoSeguranca();
+                usuario.CodigoRecuperacao = codigo;
+                usuario.DataCodigoExpiracao = DateTime.Now.AddHours(1); // O código expira em 1 hora
+                _context.TB_USUARIOS.Update(usuario);
+                await _context.SaveChangesAsync();
 
-    // Enviar email de recuperação com o código gerado
-    await _emailService.EnviarEmailAsync(usuario.EmailUsuario, "Código de Recuperação", $"Seu código é {codigo}");
+                // Enviar código para o e-mail do usuário
+                await _emailService.EnviarEmailAsync(usuario.EmailUsuario, "Código de Recuperação", $"Seu código de recuperação é: {codigo}");
 
-    await _context.SaveChangesAsync();
-    return Ok("Código enviado.");
-}
+                return Ok("Código enviado para o seu e-mail.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [AllowAnonymous]
-[HttpPost("ValidarCodigo")]
-public IActionResult ValidarCodigo([FromBody] RecuperacaoSenhaDto dados)
-{
-    var usuario = _context.TB_USUARIOS.FirstOrDefault(u => u.EmailUsuario == dados.Email && u.CodigoRecuperacao == dados.Codigo);
+        [HttpPost("MudandoSenha")]
+        public async Task<IActionResult> MudandoSenha(string codigo, string novaSenha, string confirmarSenha)
+        {
+            try
+            {
+                if (novaSenha != confirmarSenha)
+                    return BadRequest("As senhas não coincidem.");
 
-    if (usuario == null || usuario.DataCodigoExpiracao < DateTime.UtcNow)
-        return BadRequest("Código inválido ou expirado.");
+                // Validar o código de segurança
+                var usuario = await _context.TB_USUARIOS
+                 .FirstOrDefaultAsync(u => u.CodigoRecuperacao == codigo && u.DataCodigoExpiracao.HasValue && u.DataCodigoExpiracao > DateTime.Now);
 
-    // Se o código for válido, retornar sucesso
-    return Ok("Código válido.");
-}
 
-       [AllowAnonymous]
-[HttpPost("MudandoSenha")]
-public async Task<IActionResult> MudandoSenha([FromBody] MudancaSenhaDto dados)
-{
-    // Validação da nova senha
-    if (dados.NovaSenha != dados.ConfirmarSenha)
-    {
-        return BadRequest("As senhas não coincidem.");
-    }
+                if (usuario == null)
+                    return BadRequest("Código inválido ou expirado.");
 
-    var usuario = await _context.TB_USUARIOS
-        .FirstOrDefaultAsync(u => u.CodigoRecuperacao == dados.Codigo); // Aqui você usa o código para achar o usuário
+                Criptografia.CriarPasswordHash(novaSenha, out byte[] hash, out byte[] salt);
+                usuario.PasswordHash = hash;
+                usuario.PasswordSalt = salt;
+                usuario.DataCodigoExpiracao = null; // Limpar o código após a alteração
+                usuario.DataCodigoExpiracao = null; // Limpar a expiração
 
-    if (usuario == null || usuario.DataCodigoExpiracao < DateTime.UtcNow)
-    {
-        return BadRequest("Código de recuperação inválido ou expirado.");
-    }
+                _context.TB_USUARIOS.Update(usuario);
+                await _context.SaveChangesAsync();
 
-    Criptografia.CriarPasswordHash(dados.NovaSenha, out byte[] hash, out byte[] salt);
-    usuario.PasswordHash = hash;
-    usuario.PasswordSalt = salt;
-    usuario.CodigoRecuperacao = null; // Limpar o código de recuperação após o uso.
+                return Ok("Senha alterada com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-    await _context.SaveChangesAsync();
+        private string GerarCodigoSeguranca()
+        {
+            // Gerar um código aleatório ou usar uma biblioteca de geração de códigos
+            return Guid.NewGuid().ToString("N").Substring(0, 6); // Exemplo de código de 6 dígitos
+        }
 
-    return Ok("Senha alterada com sucesso.");
-}
-
-        // Obter todos os usuários
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetUsuarios()
         {
@@ -216,37 +194,52 @@ public async Task<IActionResult> MudandoSenha([FromBody] MudancaSenhaDto dados)
                 List<Usuario> lista = await _context.TB_USUARIOS.ToListAsync();
                 return Ok(lista);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        // Obter um usuário por ID
         [HttpGet("{usuarioId}")]
         public async Task<IActionResult> GetUsuario(int usuarioId)
         {
             try
             {
                 Usuario usuario = await _context.TB_USUARIOS
-                    .FirstOrDefaultAsync(x => x.IdUsuario == usuarioId);
+                   .FirstOrDefaultAsync(x => x.IdUsuario == usuarioId);
 
                 return Ok(usuario);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        // Alterar e-mail do usuário
+        [HttpGet("GetByLogin/{login}")]
+        public async Task<IActionResult> GetUsuario(string login)
+        {
+            try
+            {
+                Usuario usuario = await _context.TB_USUARIOS
+                   .FirstOrDefaultAsync(x => x.NomeUsuario.ToLower() == login.ToLower());
+
+                return Ok(usuario);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // Método para alteração do e-mail
         [HttpPut("AtualizarEmail")]
         public async Task<IActionResult> AtualizarEmail(Usuario u)
         {
             try
             {
                 Usuario usuario = await _context.TB_USUARIOS
-                    .FirstOrDefaultAsync(x => x.IdUsuario == u.IdUsuario);
+                   .FirstOrDefaultAsync(x => x.IdUsuario == u.IdUsuario);
 
                 usuario.EmailUsuario = u.EmailUsuario;
 
@@ -257,7 +250,7 @@ public async Task<IActionResult> MudandoSenha([FromBody] MudancaSenhaDto dados)
                 int linhasAfetadas = await _context.SaveChangesAsync();
                 return Ok(linhasAfetadas);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
