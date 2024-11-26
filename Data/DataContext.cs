@@ -193,7 +193,7 @@ namespace TCCEcoCria.Data
             modelBuilder.Entity<Usuario>().Property(u => u.Perfil).HasDefaultValue("Cliente"); //Define que se o perfil nao for informado, o valor padrao sera jogador
 
         }
-        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)//convensao para configurar a base, regras
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
             configurationBuilder.Properties<string>().HaveColumnType("Varchar").HaveMaxLength(200);
         }
