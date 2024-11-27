@@ -1,6 +1,11 @@
 /workspaces/TCC-EcoCria/publish/ECOCRIA
+/workspaces/TCC-EcoCria/publish/publish/web.config
 /workspaces/TCC-EcoCria/publish/appsettings.Development.json
 /workspaces/TCC-EcoCria/publish/appsettings.json
+/workspaces/TCC-EcoCria/publish/publish/appsettings.Development.json
+/workspaces/TCC-EcoCria/publish/publish/appsettings.json
+/workspaces/TCC-EcoCria/publish/publish/ECOCRIA.deps.json
+/workspaces/TCC-EcoCria/publish/publish/ECOCRIA.runtimeconfig.json
 /workspaces/TCC-EcoCria/publish/ECOCRIA.dll
 /workspaces/TCC-EcoCria/publish/ECOCRIA.deps.json
 /workspaces/TCC-EcoCria/publish/ECOCRIA.runtimeconfig.json
@@ -9,7 +14,9 @@
 /workspaces/TCC-EcoCria/publish/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /workspaces/TCC-EcoCria/publish/Azure.Core.dll
 /workspaces/TCC-EcoCria/publish/Azure.Identity.dll
+/workspaces/TCC-EcoCria/publish/BouncyCastle.Cryptography.dll
 /workspaces/TCC-EcoCria/publish/Humanizer.dll
+/workspaces/TCC-EcoCria/publish/MailKit.dll
 /workspaces/TCC-EcoCria/publish/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /workspaces/TCC-EcoCria/publish/Microsoft.AspNetCore.JsonPatch.dll
 /workspaces/TCC-EcoCria/publish/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
@@ -37,6 +44,7 @@
 /workspaces/TCC-EcoCria/publish/Microsoft.OpenApi.dll
 /workspaces/TCC-EcoCria/publish/Microsoft.SqlServer.Server.dll
 /workspaces/TCC-EcoCria/publish/Microsoft.Win32.SystemEvents.dll
+/workspaces/TCC-EcoCria/publish/MimeKit.dll
 /workspaces/TCC-EcoCria/publish/Mono.TextTemplating.dll
 /workspaces/TCC-EcoCria/publish/Newtonsoft.Json.dll
 /workspaces/TCC-EcoCria/publish/Newtonsoft.Json.Bson.dll

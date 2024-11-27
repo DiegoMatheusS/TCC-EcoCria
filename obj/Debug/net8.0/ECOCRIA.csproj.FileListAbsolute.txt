@@ -449,3 +449,6 @@ C:/Users/dmsdi/OneDrive/Área de Trabalho/ECOCRIA/TCC-EcoCria/TCC-EcoCria/obj/De
 /workspaces/TCC-EcoCria/obj/Debug/net8.0/ECOCRIA.csproj.Up2Date
 /workspaces/TCC-EcoCria/obj/Debug/net8.0/ECOCRIA.genruntimeconfig.cache
 /workspaces/TCC-EcoCria/obj/Debug/net8.0/ref/ECOCRIA.dll
+/workspaces/TCC-EcoCria/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
+/workspaces/TCC-EcoCria/bin/Debug/net8.0/MailKit.dll
+/workspaces/TCC-EcoCria/bin/Debug/net8.0/MimeKit.dll

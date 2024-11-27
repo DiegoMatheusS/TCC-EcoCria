@@ -118,73 +118,103 @@ namespace TCCEcoCria.Controllers
             }
         }
 
-        [AllowAnonymous]
-        [HttpPost("EsqueciSenha")]
-        public async Task<IActionResult> EnviarCodigoEsqueciSenha(string email)
+   [AllowAnonymous]
+[HttpPost("EsqueciSenha")]
+public async Task<IActionResult> EnviarCodigoEsqueciSenha(string email)
+{
+    try
+    {
+        var usuario = await _context.TB_USUARIOS.FirstOrDefaultAsync(u => u.EmailUsuario == email);
+
+        if (usuario == null)
         {
-            try
-            {
-                var usuario = await _context.TB_USUARIOS.FirstOrDefaultAsync(u => u.EmailUsuario == email);
-
-                if (usuario == null)
-                    return BadRequest("E-mail não encontrado.");
-
-                string codigo = GerarCodigoSeguranca();
-                usuario.CodigoRecuperacao = codigo;
-                usuario.DataCodigoExpiracao = DateTime.Now.AddHours(1); // O código expira em 1 hora
-                _context.TB_USUARIOS.Update(usuario);
-                await _context.SaveChangesAsync();
-
-                // Enviar código para o e-mail do usuário
-                await _emailService.EnviarEmailAsync(usuario.EmailUsuario, "Código de Recuperação", $"Seu código de recuperação é: {codigo}");
-
-                return Ok("Código enviado para o seu e-mail.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return BadRequest("E-mail não encontrado."); // Certifique-se de que a resposta é BadRequest
         }
 
-        [AllowAnonymous]
-        [HttpPost("MudandoSenha")]
-        public async Task<IActionResult> MudandoSenha(string codigo, string novaSenha, string confirmarSenha)
-        {
-            try
-            {
-                if (novaSenha != confirmarSenha)
-                    return BadRequest("As senhas não coincidem.");
+        // Geração do código de recuperação e envio de e-mail
+        string codigo = GerarCodigoSeguranca();
+        usuario.CodigoRecuperacao = codigo;
+        usuario.DataCodigoExpiracao = DateTime.Now.AddHours(1); // O código expira em 1 hora
+        _context.TB_USUARIOS.Update(usuario);
+        await _context.SaveChangesAsync();
 
-                // Validar o código de segurança
-                var usuario = await _context.TB_USUARIOS
-                 .FirstOrDefaultAsync(u => u.CodigoRecuperacao == codigo && u.DataCodigoExpiracao.HasValue && u.DataCodigoExpiracao > DateTime.Now);
+        // Enviar código para o e-mail do usuário
+        await _emailService.EnviarEmailAsync(usuario.EmailUsuario, "Código de Recuperação", $"Seu código de recuperação é: {codigo}");
 
+        return Ok("Código enviado para o seu e-mail.");
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(ex.Message); // Captura outros erros e retorna como BadRequest
+    }
+}
 
-                if (usuario == null)
-                    return BadRequest("Código inválido ou expirado.");
+       [AllowAnonymous]
+[HttpPost("MudandoSenha")]
+public async Task<IActionResult> MudandoSenha(string codigo, string novaSenha, string confirmarSenha)
+{
+    try
+    {
+        if (novaSenha != confirmarSenha)
+            return BadRequest("As senhas não coincidem.");
 
-                Criptografia.CriarPasswordHash(novaSenha, out byte[] hash, out byte[] salt);
-                usuario.PasswordHash = hash;
-                usuario.PasswordSalt = salt;
-                usuario.DataCodigoExpiracao = null; // Limpar o código após a alteração
-                usuario.DataCodigoExpiracao = null; // Limpar a expiração
+        // Validar o código de segurança
+        var usuario = await _context.TB_USUARIOS
+         .FirstOrDefaultAsync(u => u.CodigoRecuperacao == codigo && u.DataCodigoExpiracao.HasValue && u.DataCodigoExpiracao > DateTime.Now);
 
-                _context.TB_USUARIOS.Update(usuario);
-                await _context.SaveChangesAsync();
+        if (usuario == null)
+            return BadRequest("Código inválido ou expirado."); // Aqui retornamos o erro se o código for inválido ou expirado.
 
-                return Ok("Senha alterada com sucesso.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        // Criptografar a nova senha
+        Criptografia.CriarPasswordHash(novaSenha, out byte[] hash, out byte[] salt);
+        usuario.PasswordHash = hash;
+        usuario.PasswordSalt = salt;
+        usuario.DataCodigoExpiracao = null; // Limpar o código após a alteração de senha
+
+        _context.TB_USUARIOS.Update(usuario);
+        await _context.SaveChangesAsync();
+
+        return Ok("Senha alterada com sucesso.");
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(ex.Message);
+    }
+}
 
         private string GerarCodigoSeguranca()
         {
             // Gerar um código aleatório ou usar uma biblioteca de geração de códigos
             return Guid.NewGuid().ToString("N").Substring(0, 6); // Exemplo de código de 6 dígitos
         }
+        [AllowAnonymous]
+[HttpPost("ValidarCodigo")]
+public async Task<IActionResult> ValidarCodigo([FromBody] ValidacaoCodigoRequest request)
+{
+    try
+    {
+        // Verificar se o usuário existe
+        var usuario = await _context.TB_USUARIOS
+            .FirstOrDefaultAsync(u => u.EmailUsuario == request.Email);
+
+        if (usuario == null)
+        {
+            return BadRequest("Usuário não encontrado.");
+        }
+
+        // Verificar se o código corresponde e se ainda não expirou
+        if (usuario.CodigoRecuperacao != request.Codigo || usuario.DataCodigoExpiracao == null || usuario.DataCodigoExpiracao <= DateTime.Now)
+        {
+            return BadRequest("Código inválido ou expirado.");
+        }
+
+        return Ok("Código validado com sucesso.");
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(ex.Message);
+    }
+}
 
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetUsuarios()

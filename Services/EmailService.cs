@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using System;
 
 namespace TCCEcoCria.Services
 {
@@ -44,10 +45,15 @@ namespace TCCEcoCria.Services
                     await cliente.SendMailAsync(mensagem);
                 }
             }
+            catch (SmtpException smtpEx)
+            {
+                // Exibe a exceção específica de SMTP
+                throw new InvalidOperationException("Erro ao enviar o e-mail via SMTP", smtpEx);
+            }
             catch (Exception ex)
             {
-                // Caso ocorra algum erro ao enviar o e-mail, lança uma exceção com a mensagem de erro
-                throw new InvalidOperationException("Erro ao enviar o e-mail", ex);
+                // Exibe qualquer outra exceção que possa ocorrer
+                throw new InvalidOperationException("Erro desconhecido ao enviar o e-mail", ex);
             }
         }
     }
