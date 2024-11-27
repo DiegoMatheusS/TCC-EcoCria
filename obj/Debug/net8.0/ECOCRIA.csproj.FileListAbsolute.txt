@@ -452,3 +452,8 @@ C:/Users/dmsdi/OneDrive/Área de Trabalho/ECOCRIA/TCC-EcoCria/TCC-EcoCria/obj/De
 /workspaces/TCC-EcoCria/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
 /workspaces/TCC-EcoCria/bin/Debug/net8.0/MailKit.dll
 /workspaces/TCC-EcoCria/bin/Debug/net8.0/MimeKit.dll
+/workspaces/TCC-EcoCria/bin/Debug/net8.0/publish/publish/web.config
+/workspaces/TCC-EcoCria/bin/Debug/net8.0/publish/publish/appsettings.Development.json
+/workspaces/TCC-EcoCria/bin/Debug/net8.0/publish/publish/appsettings.json
+/workspaces/TCC-EcoCria/bin/Debug/net8.0/publish/publish/ECOCRIA.deps.json
+/workspaces/TCC-EcoCria/bin/Debug/net8.0/publish/publish/ECOCRIA.runtimeconfig.json
