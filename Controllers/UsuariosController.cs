@@ -34,7 +34,7 @@ namespace TCCEcoCria.Controllers
         }
 
         #region Autenticação e Registro
-        private string CriarToken(Usuario usuario)
+              private string CriarToken(Usuario usuario)
         {
             List<Claim> claims = new()
             {
@@ -63,8 +63,8 @@ namespace TCCEcoCria.Controllers
         {
             return await _context.TB_USUARIOS.AnyAsync(x => x.EmailUsuario.ToLower() == email.ToLower());
         }
-
-        [AllowAnonymous]
+        
+      [AllowAnonymous]
         [HttpPost("Registrar")]
         public async Task<IActionResult> RegistrarUsuario([FromBody] Usuario user)
         {
@@ -105,7 +105,7 @@ namespace TCCEcoCria.Controllers
         #endregion
 
         #region Recuperação de Senha
-       [AllowAnonymous]
+      /* [AllowAnonymous]
 [HttpPost("EsqueciSenha")]
 public async Task<IActionResult> EsqueciSenha([FromBody] EsqueciSenhaDto request)
 {
@@ -212,7 +212,7 @@ public async Task<IActionResult> MudandoSenha([FromBody] MudancaSenhaDto request
         private string GerarCodigoSeguranca()
         {
             return Guid.NewGuid().ToString("N").Substring(0, 6); // Código de 6 dígitos
-        }
+        }*/
         #endregion
 
         #region Consultas e Atualizações
