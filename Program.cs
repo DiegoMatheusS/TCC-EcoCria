@@ -11,7 +11,6 @@ using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuração do CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -22,30 +21,24 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Configuração do DbContext
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoSomee"));
 });
 
-// Configuração de Serviços
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddSingleton<IEnderecoServices, EnderecoService>();
 builder.Services.AddSingleton<IBrasilApi, BrasilApiRest>();
 
-// Configuração de AutoMapper
 builder.Services.AddAutoMapper(typeof(EnderecoMapping));
 
-// Configuração de Controladores
 builder.Services.AddControllers();
 
-// Configuração do Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Minha API", Version = "v1" });
 });
 
-// Configuração do JWT
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
     {
@@ -59,10 +52,8 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
-// Configuração de Logs
 builder.Logging.AddConsole();
 
-// Configuração da Aplicação
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
