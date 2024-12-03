@@ -25,7 +25,7 @@ builder.Services.AddCors(options =>
 // Configuração do DbContext
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoDiego"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoSomee"));
 });
 
 // Configuração de Serviços

@@ -64,7 +64,7 @@ namespace TCCEcoCria.Controllers
             return await _context.TB_USUARIOS.AnyAsync(x => x.EmailUsuario.ToLower() == email.ToLower());
         }
         
-      [AllowAnonymous]
+        [AllowAnonymous]
         [HttpPost("Registrar")]
         public async Task<IActionResult> RegistrarUsuario([FromBody] Usuario user)
         {
