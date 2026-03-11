@@ -13,7 +13,6 @@ namespace TCC.Controllers
     [Route("[controller]")]
     public class ColetaItensController : ControllerBase
     {
-        
         private readonly DataContext _context;
         
         public ColetaItensController(DataContext context)
