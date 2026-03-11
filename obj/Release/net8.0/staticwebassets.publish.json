@@ -1,11 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "DtAEXOCgeJw2XXJtj9AuhztRRjy21LMlVMPli2Qdbbc=",
-  "Source": "ECOCRIA",
-  "BasePath": "_content/ECOCRIA",
-  "Mode": "Default",
-  "ManifestType": "Publish",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
-}
+{"Version":1,"Hash":"7IntyDfS78ivLn9xz4bhXJ/yTbkdqsa+GL2xozQLucI=","Source":"ECOCRIA","BasePath":"/","Mode":"Root","ManifestType":"Publish","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

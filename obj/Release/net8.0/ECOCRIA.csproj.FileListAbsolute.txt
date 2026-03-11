@@ -282,11 +282,6 @@ C:/Users/dmsdi/OneDrive/Área de Trabalho/ECOCRIA/TCC-EcoCria/TCC-EcoCria/obj/Re
 /workspaces/TCC-EcoCria/obj/Release/net8.0/ECOCRIA.sourcelink.json
 /workspaces/TCC-EcoCria/obj/Release/net8.0/staticwebassets.build.json
 /workspaces/TCC-EcoCria/obj/Release/net8.0/staticwebassets.development.json
-/workspaces/TCC-EcoCria/obj/Release/net8.0/staticwebassets/msbuild.ECOCRIA.Microsoft.AspNetCore.StaticWebAssets.props
-/workspaces/TCC-EcoCria/obj/Release/net8.0/staticwebassets/msbuild.build.ECOCRIA.props
-/workspaces/TCC-EcoCria/obj/Release/net8.0/staticwebassets/msbuild.buildMultiTargeting.ECOCRIA.props
-/workspaces/TCC-EcoCria/obj/Release/net8.0/staticwebassets/msbuild.buildTransitive.ECOCRIA.props
-/workspaces/TCC-EcoCria/obj/Release/net8.0/staticwebassets.pack.json
 /workspaces/TCC-EcoCria/obj/Release/net8.0/scopedcss/bundle/ECOCRIA.styles.css
 /workspaces/TCC-EcoCria/obj/Release/net8.0/ECOCRIA.csproj.Up2Date
 /workspaces/TCC-EcoCria/obj/Release/net8.0/ECOCRIA.dll
@@ -297,3 +292,11 @@ C:/Users/dmsdi/OneDrive/Área de Trabalho/ECOCRIA/TCC-EcoCria/TCC-EcoCria/obj/Re
 /workspaces/TCC-EcoCria/bin/Release/net8.0/BouncyCastle.Cryptography.dll
 /workspaces/TCC-EcoCria/bin/Release/net8.0/MailKit.dll
 /workspaces/TCC-EcoCria/bin/Release/net8.0/MimeKit.dll
+/workspaces/TCC-EcoCria/bin/Release/net8.0/ECOCRIA.staticwebassets.endpoints.json
+/workspaces/TCC-EcoCria/obj/Release/net8.0/rpswa.dswa.cache.json
+/workspaces/TCC-EcoCria/obj/Release/net8.0/rjimswa.dswa.cache.json
+/workspaces/TCC-EcoCria/obj/Release/net8.0/rjsmrazor.dswa.cache.json
+/workspaces/TCC-EcoCria/obj/Release/net8.0/rjsmcshtml.dswa.cache.json
+/workspaces/TCC-EcoCria/obj/Release/net8.0/staticwebassets.build.json.cache
+/workspaces/TCC-EcoCria/obj/Release/net8.0/staticwebassets.build.endpoints.json
+/workspaces/TCC-EcoCria/obj/Release/net8.0/swae.build.ex.cache
