@@ -61,6 +61,17 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Logging.AddConsole();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirMVC",
+        policy =>
+        {
+            policy.WithOrigins("http://www.ecocria.somee.com") // O link exato do seu MVC
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // 6. Tratamento de Erros (Habilitando página de erro detalhada para te ajudar no debug)
@@ -79,6 +90,7 @@ else
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseCors("PermitirMVC");
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -90,7 +102,6 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("v1/swagger.json", "Minha API V1");
     c.RoutePrefix = "swagger"; // O link será ecocria.somee.com/site/swagger
 });
-
 app.MapControllers();
 
 app.Run();
