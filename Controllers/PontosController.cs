@@ -88,6 +88,20 @@ namespace TCC.Controllers
             
         }    
 
+        [HttpGet("GetAll")]
+            public async Task<IActionResult> GetAll()
+            {
+            try
+            {
+                List<Pontos> lista = await _context.TB_PONTOS.ToListAsync();
+                return Ok(lista);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         
     }
 }
